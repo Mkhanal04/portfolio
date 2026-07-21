@@ -1,0 +1,173 @@
+<!-- ================================================================
+     PILOT-SUITE HOST INJECT
+     ================================================================
+     Everything pilot-suite adds on top of the raw NewsLens.dc.html.
+     Re-inject this block on every design re-sync (see CLAUDE.md).
+
+     Placement: <head>, immediately before <script src="./support.js">.
+     Sits between: 3 things
+       1. React 18 + ReactDOM 18 CDN scripts (support.js needs them)
+       2. <style> — portfolio strip look + mobile responsive overrides
+       3. <script> — inserts the portfolio strip, keeps it alive against
+          any body mutations from support.js
+     ================================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<style>
+  /* ---------- Portfolio strip (persistent "back to portfolio" ramp) ---------- */
+  #pilot-suite-strip {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 8px 20px; box-sizing: border-box;
+    background: #1c1b19; color: #f4f2ec;
+    font: 500 12px/1.4 -apple-system, BlinkMacSystemFont, "IBM Plex Sans", sans-serif;
+    text-decoration: none; letter-spacing: 0.01em;
+    border-bottom: 1px solid #2a2823;
+    transition: background 0.15s ease;
+  }
+  #pilot-suite-strip:hover { background: #26241f; text-decoration: none; }
+  #pilot-suite-strip .pss-left { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+  #pilot-suite-strip .pss-arrow { display: inline-block; transform: translateY(-1px); }
+  #pilot-suite-strip .pss-name { font-weight: 600; }
+  #pilot-suite-strip .pss-sep { opacity: 0.4; }
+  #pilot-suite-strip .pss-tag { opacity: 0.75; }
+  #pilot-suite-strip .pss-right {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6;
+    white-space: nowrap;
+  }
+  /* Push body down so strip never overlaps design content. */
+  body { padding-top: 34px !important; }
+  /* Design's own sticky header sits below our strip. */
+  header[style*="position:sticky"] { top: 34px !important; }
+
+  /* Clip horizontal overflow at the root. Support.js renders inside a shadow
+     root that our attribute selectors can't reach, so any fixed-pixel columns
+     the design authored (280px right rail, 172px row rails, 3-col grids that
+     don't collapse) would otherwise force a horizontal scrollbar on mobile.
+     Applied at all widths; the design has no legitimate horizontal-scroll
+     content — everything intended to be visible flows vertically.
+     Applied to both html AND body — Chrome/WebKit propagates body's
+     overflow-x: visible up to the viewport, so setting only html is a no-op.
+     Kept as overflow-x (not overflow: hidden) so `position: sticky` on the
+     design's own top header still works. */
+  html, body { overflow-x: hidden !important; }
+
+  /* ---------- Mobile responsive overrides (design source is desktop-only) ---------- */
+  @media (max-width: 768px) {
+    /* Story page: collapse two-column grid (main + right rail) to one column. */
+    div[style*="grid-template-columns:minmax(0,1fr) 280px"],
+    div[style*="grid-template-columns: minmax(0px, 1fr) 280px"] {
+      grid-template-columns: 1fr !important;
+      gap: 20px !important;
+    }
+    /* Right rail: sticky becomes static so it doesn't overlap the strip. */
+    aside[style*="position:sticky"] { position: static !important; top: 0 !important; }
+
+    /* Home story rows: stack vertically instead of horizontal flex. */
+    article[style*="cursor:pointer"] {
+      flex-direction: column !important;
+      align-items: stretch !important;
+    }
+    /* Home story rows' right column (fixed 172px badge/action strip). */
+    article > div[style*="width:172px"],
+    article > div[style*="width: 172px"] {
+      width: 100% !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+      gap: 12px !important;
+      padding-top: 10px !important;
+    }
+
+    /* 3-column grids (headlines strip, About-page evaluation tiles). */
+    div[style*="grid-template-columns:repeat(3,1fr)"],
+    div[style*="grid-template-columns: repeat(3, 1fr)"] {
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+    }
+    /* 2-column grids (About-page layers, personas). */
+    div[style*="grid-template-columns:1fr 1fr"],
+    div[style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+    }
+    /* Source-panel two-column (outlet name / quote). */
+    div[style*="grid-template-columns:130px 1fr"],
+    div[style*="grid-template-columns: 130px 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 6px !important;
+    }
+    /* About-page iteration rows (56px number + body). */
+    div[style*="grid-template-columns:56px 1fr"],
+    div[style*="grid-template-columns: 56px 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 4px !important;
+    }
+    /* Glass box explanation two-column rows (180px label + body). */
+    div[style*="grid-template-columns:180px 1fr"],
+    div[style*="grid-template-columns: 180px 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 4px !important;
+    }
+
+    /* Design's sticky header: wrap the right-hand controls on mobile. */
+    header[style*="position:sticky"] > div {
+      padding: 10px 16px !important;
+      flex-wrap: wrap !important;
+      gap: 10px !important;
+    }
+    /* Trim the wide horizontal padding on main containers. */
+    main[style*="padding:0 28px 96px"],
+    main[style*="padding: 0px 28px 96px"] {
+      padding: 0 16px 60px !important;
+    }
+    main[style*="max-width:1080px"][style*="padding:0 28px"],
+    main[style*="max-width: 1080px"][style*="padding: 0px 28px"] {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+
+    /* Strip: keep name + arrow, drop the tagline on narrow screens. */
+    #pilot-suite-strip .pss-sep,
+    #pilot-suite-strip .pss-tag,
+    #pilot-suite-strip .pss-right { display: none !important; }
+    #pilot-suite-strip { padding: 8px 16px; }
+  }
+</style>
+<script>
+  // Portfolio strip: insert as first body child, keep it alive if support.js
+  // rewrites body during React render. Idempotent — safe to call any time.
+  (function () {
+    function ensureStrip() {
+      if (document.getElementById('pilot-suite-strip')) return;
+      if (!document.body) return;
+      var a = document.createElement('a');
+      a.id = 'pilot-suite-strip';
+      a.href = '/';
+      a.setAttribute('aria-label', 'Back to Milan Khanal portfolio');
+      a.innerHTML =
+        '<span class="pss-left">' +
+          '<span class="pss-arrow" aria-hidden="true">←</span> ' +
+          '<span class="pss-name">Milan Khanal</span>' +
+          '<span class="pss-sep">·</span>' +
+          '<span class="pss-tag">Part of the portfolio at milankhanal.com</span>' +
+        '</span>' +
+        '<span class="pss-right">Back to portfolio</span>';
+      document.body.insertBefore(a, document.body.firstChild);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', ensureStrip);
+    } else {
+      ensureStrip();
+    }
+    // Support.js processes <x-dc> after DOMContentLoaded; if the render
+    // strategy touches body children we need to survive it.
+    new MutationObserver(ensureStrip).observe(document.documentElement, {
+      childList: true, subtree: true,
+    });
+  })();
+</script>
+<!-- ================================================================
+     END PILOT-SUITE HOST INJECT
+     ================================================================ -->

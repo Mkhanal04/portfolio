@@ -132,21 +132,52 @@ newslens/
 
 The design lives at claude.ai/design (project id
 `1bf55bc3-36f5-48e5-96ce-d1cf7ffedb0c`). When Milan iterates on the design,
-the shipped `newslens/index.html` and `newslens/support.js` must be re-synced:
+the shipped `newslens/index.html` and `newslens/support.js` must be re-synced.
+
+**Everything pilot-suite adds on top of the raw design lives in one file:**
+`newslens/scripts/host-inject.html`. It contains:
+
+1. React 18 + ReactDOM 18 CDN scripts (support.js needs them; the Design
+   Composer authoring environment provides React itself, so the raw design
+   file doesn't include them).
+2. Portfolio strip CSS + JS — the fixed "← Milan Khanal · Back to portfolio"
+   bar at the top of every /newslens/ page. Without this the design is a
+   black-hole with no exit ramp back to the rest of the portfolio.
+3. Mobile responsive overrides — the design was authored desktop-first with
+   fixed-pixel columns and one media query. This block adds the collapses
+   (two-col grids → one column below 768px) and clips horizontal overflow at
+   `html, body` level (Support.js renders inside a shadow root our selectors
+   can't reach; the design has no legitimate horizontal-scroll content).
+
+The block is inserted verbatim into the design's `<head>`, right before
+`<script src="./support.js"></script>`, wrapped in BEGIN/END marker comments
+that render-check.cjs looks for on every push.
+
+**Re-sync workflow (all steps required):**
 
 ```
-# from an environment with DesignSync MCP loaded:
-# 1. Pull the two files fresh
-# 2. Write NewsLens.dc.html as newslens/index.html WITH the React CDN scripts
-#    injected right before <script src="./support.js">
-# 3. Write support.js verbatim to newslens/support.js
-# 4. Re-run render-check.cjs + browser spot-check
-# 5. Commit + push
+# 1. Pull the two current files from claude.ai/design via DesignSync MCP:
+#      get_file NewsLens.dc.html  → scratchpad
+#      get_file support.js        → scratchpad
+# 2. Write support.js verbatim to newslens/support.js
+# 3. Regenerate newslens/index.html: take the pulled NewsLens.dc.html and
+#    insert newslens/scripts/host-inject.html RIGHT BEFORE the line
+#    <script src="./support.js"></script>. The one-liner:
+#      node -e 'const fs=require("fs");const d=/* design string */;const i=fs.readFileSync("newslens/scripts/host-inject.html","utf8");fs.writeFileSync("newslens/index.html",d.replace(`<script src="./support.js"></script>`,i+`\n<script src="./support.js"></script>`))'
+# 4. node newslens/scripts/render-check.cjs — must print 15/15
+# 5. Manually spot-check at 375 / 768 / 1440 in a real browser. Confirm:
+#    - Home + Story views render, no console errors
+#    - Portfolio strip visible at top, "Milan Khanal" click goes to /
+#    - No horizontal scrollbar at any width
+# 6. Commit + push
 ```
 
-The injected React script tags are the only local modification to the design
-file. Every re-sync must re-inject them (they are not in the claude.ai/design
-authoring environment because that environment provides React itself).
+**If you edit host-inject.html itself** (e.g., changing the strip's copy,
+adjusting a mobile breakpoint), you still need to run step 3 to rebuild
+index.html. The design isn't re-pulled — the current index.html contains a
+snapshot of the design, and we're re-applying the (edited) inject on top of
+the same design. Or use the last-saved NewsLens.dc.html in the scratchpad
+without re-fetching. Either works.
 
 ## What lives outside this repo, and stays outside
 
