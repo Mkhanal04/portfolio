@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NewsLens · One story, side by side, across the newsrooms that covered it</title>
+<style>
+  :root{
+    --ink:#182230; --body:#3f4a5a; --faint:#677284;
+    --bg:#fafbfc; --card:#ffffff; --line:#e4e8ee; --line2:#d3d9e2;
+    --accent:#0f766e; --accent-soft:#e6f2f0;
+    --warn:#9a5b13; --warn-soft:#fbf3e6;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--body);
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+       font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);}
+  .wrap{max-width:940px; margin:0 auto; padding:0 22px;}
+
+  .top{border-bottom:1px solid var(--line); background:var(--card);}
+  .top .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:16px; padding-bottom:16px; gap:18px; flex-wrap:wrap;}
+  .brand{font-weight:700; color:var(--ink); font-size:1.06rem; letter-spacing:-.01em;}
+  .brand span{color:var(--accent);}
+  .topnav a{margin-left:18px; font-size:.86rem; color:var(--faint); text-decoration:none; border-bottom:1px solid transparent;}
+  .topnav a:hover{color:var(--accent); border-bottom-color:var(--accent);}
+
+  .hero{padding:60px 0 34px; max-width:720px;}
+  .hero h1{color:var(--ink); font-size:2.1rem; line-height:1.22; letter-spacing:-.02em; margin:0 0 16px;}
+  .hero p{font-size:1.06rem; margin:0 0 14px;}
+  .who{margin:26px 0 0; padding:16px 18px; background:var(--accent-soft); border-left:3px solid var(--accent);
+       border-radius:0 8px 8px 0; font-size:.94rem; color:var(--ink);}
+  .who b{display:block; margin-bottom:4px; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--accent);}
+
+  .rule{border:0; border-top:1px solid var(--line); margin:44px 0 0;}
+  .sec{padding:34px 0 0;}
+  .sec h2{color:var(--ink); font-size:1.16rem; margin:0 0 6px;}
+  .sec .lede{font-size:.94rem; color:var(--faint); margin:0 0 22px;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:16px;}
+  .story{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 18px 16px;
+         display:flex; flex-direction:column; min-height:196px;}
+  .story .tag{font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--faint); margin-bottom:9px;}
+  .story h3{margin:0 0 8px; font-size:1.02rem; color:var(--ink); line-height:1.34;}
+  .story p{margin:0 0 14px; font-size:.88rem; color:var(--body);}
+  .story .foot{margin-top:auto; font-size:.82rem;}
+  .story.live{border-color:var(--accent); box-shadow:0 1px 3px rgba(15,118,110,.09);}
+  .story.live .tag{color:var(--accent); font-weight:600;}
+  .story.soon{background:#fcfdfe;}
+  .story.soon h3, .story.soon p{color:var(--faint);}
+  .story.soon .foot{color:var(--faint); font-style:italic;}
+  .open{display:inline-block; background:var(--accent); color:#fff; text-decoration:none;
+        padding:8px 15px; border-radius:8px; font-size:.86rem; font-weight:600;}
+  .open:hover{background:#0c5f59;}
+  .stat{display:flex; gap:14px; flex-wrap:wrap; font-size:.79rem; color:var(--faint); margin-top:10px;}
+  .stat span{background:var(--bg); border:1px solid var(--line); border-radius:99px; padding:2px 9px;}
+
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  @media(max-width:700px){ .cols{grid-template-columns:1fr;} .hero h1{font-size:1.72rem;} }
+  .cols h3{color:var(--ink); font-size:.94rem; margin:0 0 7px;}
+  .cols p{font-size:.9rem; margin:0;}
+
+  .never{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; margin-top:22px;}
+  .never ul{margin:10px 0 0; padding-left:20px; font-size:.92rem;}
+  .never li{margin-bottom:7px;}
+
+  .honest{background:var(--warn-soft); border:1px solid #f0dfc2; border-radius:var(--radius);
+          padding:18px 20px; margin-top:26px; font-size:.9rem; color:#5f3d0c;}
+  .honest b{color:var(--warn);}
+  .honest ul{margin:9px 0 0; padding-left:20px;}
+  .honest li{margin-bottom:6px;}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding:24px 0 46px; font-size:.82rem; color:var(--faint);}
+  footer .no{color:var(--ink); font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <div class="brand">News<span>Lens</span></div>
+    <nav class="topnav">
+      <a href="stories/jobs-report-2026-06.html">The jobs report</a>
+      <a href="#panel">Why these outlets</a>
+      <a href="#how">How it works</a>
+      <a href="#honest">What is not built</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>One story, side by side, across the newsrooms that covered it. Every claim traced back to the sentence it came from.</h1>
+    <p>Nobody has time to read every article about the same story. NewsLens reads them, breaks each one into the factual claims it makes, and shows you which outlets carried which claim. Every claim opens to the exact sentence behind it, in the original article.</p>
+    <p>There are no bias labels here. No accuracy scores. No verdict about who was right. The site counts what a set of newsrooms did with the same facts, and you decide what that means.</p>
+    <p>The panel is picked per story, not fixed across the site. A jobs report draws business and economics desks. A sports story draws sports desks, and comparing the two panels would be meaningless. Every story says who is in its panel and why.</p>
+
+    <div class="who">
+      <b>Who this is built for</b>
+      NewsLens is built for the reader who already suspects the press is spinning them. That reader will not accept another rating, so the tool does not offer one. It shows the receipts and gets out of the way. If it works for the most suspicious reader in the room, it works for everyone else too.
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="sec">
+    <h2>Stories</h2>
+    <p class="lede">Six precomputed stories, capped on purpose. Each one carries its own panel of outlets, chosen for that story and disclosed on the page. Every claim in a published story has been checked by a human against the live articles before it appears here.</p>
+
+    <div class="grid">
+
+      <div class="story live">
+        <div class="tag">Published · Economy</div>
+        <h3>The June 2026 Jobs Report</h3>
+        <p>Employers added 57,000 jobs. Six outlets read the same government release and told six different stories. All six say hiring missed expectations, and not one of them agrees on what was expected.</p>
+        <div class="stat"><span>10 claims</span><span>6 outlets</span><span>3 edited after publishing</span></div>
+        <div class="stat" style="margin-top:6px;"><span style="background:var(--accent-soft);border-color:#bfded9;">Business and economics desks, plus one policy analysis</span></div>
+        <div class="foot" style="margin-top:14px;"><a class="open" href="stories/jobs-report-2026-06.html">Open this story</a></div>
+      </div>
+
+      <div class="story soon">
+        <div class="tag">Not built yet · Disaster</div>
+        <h3>Central Texas floods</h3>
+        <p>A disaster story, where the primary source is an emergency management briefing rather than a clean data release. Chosen to test whether the method survives when there is no single ground-truth document.</p>
+        <div class="stat"><span>Panel would be local affiliates and wire services</span></div>
+        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+      </div>
+
+      <div class="story soon">
+        <div class="tag">Not built yet · Policy</div>
+        <h3>The federal housing bill</h3>
+        <p>A legislative story, where outlets quote different sections of the same bill text. Chosen to test claim matching when every outlet is technically accurate and still leaves a different impression.</p>
+        <div class="stat"><span>Panel would be politics desks and trade press</span></div>
+        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+      </div>
+
+      <div class="story soon">
+        <div class="tag">Not built yet · Health</div>
+        <h3>Story four</h3>
+        <p>Reserved for a health story, where the gap between what a study found and what the coverage says it found is usually widest.</p>
+        <div class="stat"><span>Panel would be health desks, not business desks</span></div>
+        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+      </div>
+
+      <div class="story soon">
+        <div class="tag">Not built yet · Technology</div>
+        <h3>Story five</h3>
+        <p>Reserved for a technology story, to test the method on coverage that leans heavily on company statements rather than public records.</p>
+        <div class="stat"><span>Panel would be tech trade press and general news</span></div>
+        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+      </div>
+
+      <div class="story soon">
+        <div class="tag">Not built yet · Sport or culture</div>
+        <h3>Story six</h3>
+        <p>Reserved for a lower-stakes story, as a control. If the tool only feels useful on political news, that is worth knowing.</p>
+        <div class="stat"><span>Panel would share no outlets with the jobs report</span></div>
+        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sec" id="panel">
+    <h2>The part worth arguing with</h2>
+    <p class="lede">Every credibility tool has one judgment it cannot avoid making. This is ours, stated plainly rather than buried.</p>
+    <div class="never" style="border-color:#d9c9a3; background:var(--warn-soft);">
+      <h3 style="margin-bottom:2px; color:#5f3d0c;">Whoever picks the panel decides what agreement looks like</h3>
+      <p style="font-size:.92rem; margin:8px 0 0; color:#5f3d0c;">"Reported by 6 of 6" sounds like arithmetic. It is arithmetic, but only over a list somebody chose. Six outlets make unanimity easy. Thirty would make it rare. Include only business desks and a jobs story looks settled. Add a labour reporter and it may not.</p>
+      <p style="font-size:.92rem; margin:10px 0 0; color:#5f3d0c;">NewsLens refuses to rate outlets, refuses to score accuracy, and refuses to let an AI write explanations. Choosing who gets counted is the one piece of editorial power it still holds, so it is disclosed on every story page rather than treated as a footnote.</p>
+      <p style="font-size:.92rem; margin:10px 0 0; color:#5f3d0c;"><b>What would fix it properly:</b> letting you add or remove an outlet yourself and watch every count move. That is not built yet, and it is the most important thing missing from this prototype.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="how">
+    <h2>How a story gets here</h2>
+    <p class="lede">Four steps. One model, one human reviewer, and a rule that the reader can always check the work.</p>
+    <div class="cols">
+      <div>
+        <h3>1. An AI reads every article</h3>
+        <p>A language model reads every article in that story's panel and lists the factual claims each one makes. It does not judge whether a claim is true.</p>
+      </div>
+      <div>
+        <h3>2. Matching claims are grouped</h3>
+        <p>Claims stating the same fact are grouped together. The corroboration count is nothing more than how many outlets landed in that group. It is arithmetic you can redo by hand.</p>
+      </div>
+      <div>
+        <h3>3. A human checks every extraction</h3>
+        <p>A reviewer checks each claim against the source article using a published checklist. The reviewer only fixes fidelity errors, and never adds, removes, or rewords a claim by preference.</p>
+      </div>
+      <div>
+        <h3>4. Sentences are dated and kept</h3>
+        <p>Outlets edit stories after publishing. Every sentence carries the date it was captured, so a claim can still be checked even after the original article changes.</p>
+      </div>
+    </div>
+
+    <div class="never">
+      <h3 style="margin-bottom:2px;">What NewsLens never does</h3>
+      <ul>
+        <li><b>No bias labels.</b> Third-party outlet ratings stay off by default and are never switched on by a reading mode. A political label sitting next to an omission count reads as a verdict, whoever issued it.</li>
+        <li><b>No truth verdicts.</b> The site shows who reported what. It does not tell you who was right.</li>
+        <li><b>No generated explanations.</b> Rather than have the AI write a story about why two sentences were grouped, the site shows you both sentences.</li>
+        <li><b>No accounts, no personalisation, no engagement optimisation.</b> Nothing here learns what you like and gives you more of it.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec" id="honest">
+    <h2>What is not built</h2>
+    <p class="lede">This is a research prototype, and the gaps are part of what it is showing.</p>
+    <div class="honest">
+      <b>Known gaps in this build, disclosed rather than hidden:</b>
+      <ul>
+        <li>Five of the six stories are not built. Only the jobs report has an extracted, reviewed claim set.</li>
+        <li>The Methods page, model card, and independence statement are referenced from inside the story page but were never written. A self-audit against published human-AI design guidelines found this to be the single most damaging gap, because it is the one disclosure a reader most needs to reach.</li>
+        <li>Reader flags are recorded in the page but are not transmitted anywhere and do not survive a refresh. There is no reference number and no public log of resolved flags.</li>
+        <li>Corrections made during the first design-phase review pass were not logged as they happened. That gap is disclosed rather than backfilled with a reconstructed number.</li>
+        <li>No wire-service overlap audit has been run, so outlets sharing syndicated copy could still look like independent confirmations.</li>
+        <li>Readers cannot change the outlet panel. Since panel composition decides every count on the page, handing that control to the reader is the most significant unbuilt feature here.</li>
+        <li>No user study has been run. Nothing on this site has been tested with a reader who is not its designer.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <p><span class="no">No bias labels. No truth verdicts. You judge.</span></p>
+    <p>NewsLens is a student research prototype built for HCAI 4304 at Texas Tech University. The claim extraction runs on a commercial language model built by a third party and trained on web-scale data that itself contains media bias. The prototype was designed and built with AI assistance, human-directed, which is disclosed here because the tool holds itself to the same standard it applies to the newsrooms it compares.</p>
+  </footer>
+
+</div>
+</body>
+</html>

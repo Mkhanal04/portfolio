@@ -317,6 +317,20 @@
       }
     },
     {
+      "slug": "newslens",
+      "type": "product",
+      "title": "NewsLens",
+      "domain": "Journalism",
+      "color": "teal",
+      "status": "live",
+      "date": "2026-08",
+      "appUrl": "/newslens/",
+      "summary": "One story, side by side, across the newsrooms that covered it. Every claim traced back to the sentence it came from. No bias labels, no verdicts.",
+      "tags": ["Glass Box", "Staged Disclosure", "10-80-10 Workflow"],
+      "stats": { "metricLabel": "6 newsrooms · 10 claims" },
+      "hideDetails": true
+    },
+    {
       "slug": "crc-group",
       "type": "engagement",
       "title": "CRC Group: $900M Billing Transformation",

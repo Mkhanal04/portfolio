@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NewsLens · The June 2026 Jobs Report</title>
+<style>
+  :root{
+    --ink:#182230; --body:#3f4a5a; --faint:#677284; /* AC8 fix: v3's #8b95a5 failed AA (~2.9:1); same hue/sat, darkened to pass 4.5:1 */
+    --bg:#fafbfc; --card:#ffffff; --line:#e4e8ee; --line2:#d3d9e2;
+    --accent:#0f766e; --accent-soft:#e6f2f0;
+    --warn:#9a5b13; --warn-soft:#fbf3e6;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{font-size:var(--base,16px); scroll-behavior:smooth;}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--body); line-height:1.6;}
+  .wrap{max-width:820px; margin:0 auto; padding:0 22px;}
+
+  .top{position:sticky; top:0; background:rgba(250,251,252,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); z-index:10;}
+  .top .wrap{display:flex; align-items:center; gap:14px; padding:12px 22px; max-width:1000px;}
+  .logo{font-weight:700; color:var(--ink); font-size:1.02rem;}
+  .logo small{font-weight:400; color:var(--faint); font-size:.66rem; border:1px solid var(--line2); border-radius:999px; padding:1px 8px; margin-left:6px; vertical-align:middle;}
+  .top nav{margin-left:auto; display:flex; align-items:center; gap:16px; font-size:.82rem;}
+  .top nav a{color:var(--body); text-decoration:none;}
+  .top nav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px;}
+  .fontctl{display:flex; border:1px solid var(--line2); border-radius:8px; overflow:hidden;}
+  .fontctl button{border:0; background:#fff; padding:4px 9px; cursor:pointer; color:var(--ink); font-size:.72rem;}
+  .fontctl button+button{border-left:1px solid var(--line2); font-size:.88rem;}
+  .fontctl button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px;}
+
+  /* ACT 1 — hero */
+  .hero{padding:72px 0 40px; text-align:center;}
+  .hero .kicker{font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:var(--faint);}
+  .hero .sub{font-size:1.05rem; max-width:34rem; margin:0 auto;}
+  .hero .sub .figure{font-size:1.5rem; font-weight:800; color:var(--ink); letter-spacing:-.02em;}
+  .hero .src{margin-top:14px;}
+  .src-chip{display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--line2); border-radius:999px; padding:7px 16px; font-size:.8rem; color:var(--ink); text-decoration:none;}
+  .src-chip .go{color:var(--accent); font-weight:600;}
+  .src-chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  .heads{margin:44px auto 0; max-width:640px; text-align:left; display:grid; gap:10px;}
+  .hcard{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:14px 18px; display:flex; gap:14px; align-items:baseline;}
+  .hcard .outlet{font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); white-space:nowrap; width:92px;}
+  .hcard p{font-size:.95rem; color:var(--ink); line-height:1.4;}
+  .punch{text-align:center; font-size:1.25rem; color:var(--ink); font-weight:650; margin:34px auto 8px; max-width:30rem; letter-spacing:-.01em;}
+  .punch-sub{text-align:center; font-size:.9rem; color:var(--faint);}
+  .down{display:block; text-align:center; margin:30px auto 0; color:var(--accent); text-decoration:none; font-size:.86rem; font-weight:600;}
+  .down:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .seeall{text-align:center; margin-top:12px; font-size:.8rem;}
+  .seeall a{color:var(--faint);}
+
+  /* narrative sections */
+  section.act{padding:58px 0 8px;}
+  .q{font-size:1.5rem; color:var(--ink); font-weight:700; letter-spacing:-.02em; margin-bottom:4px;}
+  .q-sub{font-size:.92rem; color:var(--faint); margin-bottom:18px;}
+
+  .agree{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:8px 0;}
+  .agree .row{display:flex; gap:14px; align-items:center; padding:11px 20px; font-size:.93rem; color:var(--ink);}
+  .agree .row+.row{border-top:1px solid var(--line);}
+  .tick{color:var(--accent); font-weight:700;}
+  .agree .note{font-size:.78rem; color:var(--faint); padding:10px 20px 12px;}
+
+  /* guided example */
+  .guide{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px;}
+  .guide .claim-txt{font-size:1.02rem; color:var(--ink); font-weight:600; margin-bottom:14px;}
+  .strip{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:6px;}
+  .pill{display:flex; align-items:center; gap:7px; border:1px solid var(--line2); border-radius:999px; padding:5px 12px; font-size:.76rem; color:var(--body); background:#fff;}
+  .dot{width:12px; height:12px; border-radius:50%; flex:none;}
+  .dot.full{background:var(--ink);}
+  .dot.half{background:linear-gradient(90deg,var(--ink) 50%,#eef1f5 50%); border:1px solid var(--line2);}
+  .dot.none{background:#fff; border:1.5px solid var(--line2);}
+  .teach{background:var(--accent-soft); color:var(--accent); border-radius:10px; padding:10px 14px; font-size:.83rem; margin:14px 0;}
+  .qte{border-left:3px solid var(--accent); padding:2px 0 2px 12px; margin:10px 0; font-size:.88rem;}
+  .qte b{color:var(--ink);}
+  .qte a{color:var(--accent); text-decoration:none; font-size:.78rem; margin-left:6px;}
+  .qte a:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .conf{font-size:.8rem; color:var(--faint); margin-top:8px;}
+  .capture{font-size:.74rem; color:var(--faint); margin-top:6px; font-style:italic;}
+
+  /* omissions */
+  .omit{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  .omit .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; font-size:.85rem;}
+  .omit .outlet{font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); margin-bottom:6px;}
+  .omit .n{font-size:1.5rem; font-weight:750; color:var(--ink);}
+  .omit .lbl{color:var(--faint); font-size:.78rem;}
+  .omit .what{margin-top:8px; font-size:.8rem;}
+  .omit .what a{color:var(--accent); text-decoration:none;}
+  .ctx{margin-top:10px; font-size:.76rem;}
+  .ctx button{border:0; background:none; color:var(--faint); text-decoration:underline dotted; cursor:pointer; font-size:.76rem; padding:0; font-family:inherit;}
+  .ctx button:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .ctx .reveal{display:none; margin-top:6px; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:8px 10px; color:var(--body);}
+  .ctx.open .reveal{display:block;}
+  @media (max-width:700px){ .omit{grid-template-columns:1fr;} }
+
+  /* explore */
+  .explore-intro{font-size:.9rem; margin-bottom:14px;}
+  .claim{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); margin-bottom:8px; overflow:hidden;}
+  .claim-row{display:flex; align-items:center; gap:14px; padding:12px 16px; cursor:pointer; width:100%; border:0; background:none; text-align:left; font-family:inherit;}
+  .claim-row:hover{background:#f4f6f9;}
+  .claim-row:focus-visible{outline:2px solid var(--accent); outline-offset:-2px;}
+  .claim-row .txt{flex:1; font-size:.9rem; color:var(--ink);}
+  .conf-low .txt{border-bottom:1px dotted var(--warn);}
+  .mini{display:flex; gap:5px;}
+  .mini .dot{width:11px; height:11px;}
+  .count{font-size:.74rem; color:var(--faint); width:36px; text-align:right;}
+  .prov{display:none; border-top:1px solid var(--line); background:#fbfcfd; padding:14px 18px;}
+  .claim.open .prov{display:block;}
+  .syn-note{font-size:.78rem; color:var(--faint); margin-top:8px; font-style:italic;}
+  .flag{margin-top:8px; font-size:.78rem;}
+  .flag button{border:0; background:none; color:var(--faint); text-decoration:underline dotted; cursor:pointer; font-size:.78rem; padding:0; font-family:inherit;}
+  .flag button:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .lens-link{margin:16px 0 0; font-size:.86rem;}
+  .lens-link a{color:var(--accent); text-decoration:none; font-weight:600;}
+
+  .tierbar{display:flex; justify-content:space-between; align-items:center; border:1px dashed var(--line2); border-radius:10px; padding:11px 16px; margin:44px 0 8px; font-size:.8rem; color:var(--faint); flex-wrap:wrap; gap:8px;}
+  .tierbar a, .tierbar button{color:var(--body); text-decoration:none;}
+  .tierbar button{border:0; background:none; cursor:pointer; font-size:.8rem; font-family:inherit; padding:0;}
+  .tierbar button:focus-visible, .tierbar a:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .toggle-group{display:inline-flex; border:1px solid var(--line2); border-radius:999px; overflow:hidden;}
+  .toggle-group button{padding:4px 12px; font-size:.78rem;}
+  .toggle-group button[aria-pressed="true"]{background:var(--ink); color:#fff;}
+  .toggle-group button[aria-pressed="false"]{background:#fff; color:var(--body);}
+
+  footer{border-top:1px solid var(--line); margin-top:34px; padding:20px 0 46px; font-size:.78rem; color:var(--faint);}
+  footer .wrap{display:flex; gap:18px; flex-wrap:wrap; max-width:1000px;}
+  footer a{color:var(--body); text-decoration:none;}
+  footer a:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  .fade{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+  .fade.in{opacity:1; transform:none;}
+  @media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none;} }
+
+  /* framing lens */
+  .pairbox{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; margin-bottom:10px;}
+  .pairline{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+  .wchip{background:var(--accent-soft); color:var(--accent); border-radius:8px; padding:4px 12px; font-size:.9rem; font-weight:600;}
+  .wtag{font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--faint);}
+  .vs{color:var(--faint); font-size:.75rem;}
+  .pairbox details{margin-top:10px;}
+  .pairbox summary{font-size:.8rem; color:var(--accent); cursor:pointer; font-weight:600;}
+  .pairbox summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .ledwith{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px;}
+  .ledwith .lw{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:.82rem;}
+  .ledwith .outlet{font-size:.66rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); margin-bottom:4px;}
+  @media (max-width:700px){ .ledwith{grid-template-columns:1fr;} }
+
+  /* tier 2 glass box */
+  .glass{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .glass summary{list-style:none; cursor:pointer; padding:16px 20px; display:flex; align-items:center; gap:12px; font-size:.95rem; color:var(--ink); font-weight:600;}
+  .glass summary::-webkit-details-marker{display:none;}
+  .glass summary:focus-visible{outline:2px solid var(--accent); outline-offset:-2px;}
+  .glass summary .hint{margin-left:auto; font-size:.78rem; color:var(--accent); font-weight:600;}
+  .glass .inner{border-top:1px solid var(--line); padding:6px 20px 18px;}
+  .step{display:flex; gap:14px; padding:11px 0; font-size:.88rem; border-bottom:1px solid var(--line);}
+  .step:last-of-type{border-bottom:0;}
+  .step .n{flex:none; width:24px; height:24px; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-size:.75rem; font-weight:700; display:flex; align-items:center; justify-content:center;}
+  .mcgrid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
+  .mc{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:.8rem;}
+  .mc b{color:var(--ink); display:block; margin-bottom:4px; font-size:.82rem;}
+  @media (max-width:700px){ .mcgrid{grid-template-columns:1fr;} }
+
+  /* contest modal */
+  .overlay{display:none; position:fixed; inset:0; background:rgba(24,34,48,.45); z-index:50; align-items:center; justify-content:center; padding:20px;}
+  .overlay.on{display:flex;}
+  .modal{background:#fff; border-radius:16px; max-width:480px; width:100%; padding:22px; max-height:88vh; overflow-y:auto;}
+  .modal h3{color:var(--ink); font-size:1.05rem; margin-bottom:4px;}
+  .modal .which{font-size:.85rem; color:var(--faint); margin-bottom:14px;}
+  .modal .stepnum{font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:14px 0 6px;}
+  .modal .stepnum:first-of-type{margin-top:0;}
+  .modal label{display:flex; gap:10px; align-items:flex-start; font-size:.88rem; padding:8px 0; cursor:pointer;}
+  .modal input{margin-top:3px; accent-color:var(--accent);}
+  .modal input:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .modal textarea{width:100%; border:1px solid var(--line2); border-radius:8px; padding:8px 10px; font-size:.85rem; font-family:inherit; margin-top:6px; resize:vertical; min-height:52px;}
+  .evslice{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:.8rem; margin:10px 0;}
+  .evslice .qte{margin:8px 0;}
+  .nexttxt{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:.78rem; color:var(--faint); margin:12px 0;}
+  .modal .row{display:flex; gap:10px; justify-content:flex-end;}
+  .btn{display:inline-block; background:var(--ink); color:#fff; border:0; border-radius:10px; padding:9px 16px; font-size:.86rem; cursor:pointer; font-family:inherit;}
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn.ghost{background:#fff; color:var(--ink); border:1px solid var(--line2);}
+  .contested{display:inline-flex; align-items:center; gap:6px; background:var(--warn-soft); color:var(--warn); border-radius:999px; padding:2px 10px; font-size:.7rem; font-weight:600; margin-left:8px;}
+  .evselect{font-size:.8rem; color:var(--faint); margin-bottom:2px;}
+  .evselect select{width:100%; border:1px solid var(--line2); border-radius:8px; padding:7px 9px; font-size:.85rem; font-family:inherit; margin-top:4px;}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <a href="../index.html" style="text-decoration:none;"><span class="logo">NewsLens<small>all stories</small></span></a>
+    <nav>
+      <div class="fontctl" aria-label="Text size"><button type="button" onclick="setFs(15)" aria-label="Smaller text">A</button><button type="button" onclick="setFs(17)" aria-label="Larger text">A</button></div>
+      <a href="#">How it works</a>
+      <a href="#">Methods</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ACT 1: the aha -->
+  <div class="hero">
+    <div class="kicker">Last month, US employers added jobs</div>
+    <p class="sub"><span class="figure">57,000</span> jobs. One number, from one government report.</p>
+    <div class="src"><a class="src-chip" href="https://www.bls.gov/news.release/empsit.nr0.htm" target="_blank" rel="noopener noreferrer">📄 BLS Employment Situation, June 2026 <span class="go">read the report ↗</span></a></div>
+
+    <div class="heads">
+      <div class="hcard fade"><span class="outlet">Fox Business</span><p>"US economy added jobs at a slower pace than expected in June"</p><div class="capture"><a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div></div>
+      <div class="hcard fade"><span class="outlet">ABC News</span><p>"Hiring worse than expected in June, but White House says labor market on &#x27;upward trajectory&#x27;"</p><div class="capture"><a href="https://abcnews.go.com/Business/jobs-report-set-show-hiring-robust-pace/story?id=134336526" target="_blank" rel="noopener noreferrer">read the original ↗</a></div></div>
+      <div class="hcard fade"><span class="outlet">CAP</span><p>"June Jobs Numbers Are Not the Boost for Workers That Was Expected"</p><div class="capture"><a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div></div>
+      <div class="hcard fade"><span class="outlet">CNN</span><p>"Steady but not strong: US job growth slowed in June"</p><div class="capture"><a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div></div>
+      <div class="hcard fade"><span class="outlet">CNBC</span><p>"U.S. job creation cools in June with payrolls growth of just 57,000; unemployment rate at 4.2%"</p><div class="capture"><a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div></div>
+      <div class="hcard fade"><span class="outlet">NPR</span><p>"June gloom for the job market as employers add just 57,000 jobs"</p><div class="capture"><a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div></div>
+    </div>
+    <div class="seeall" style="max-width:760px;margin:14px auto 0;">All six headlines above are live links. Fox Business published under one headline and changed it the same morning: the page title still reads "added jobs at a steady pace" while the headline now reads "slower pace than expected." That is why every sentence on this page carries a capture date.</div>
+
+    <p class="punch fade">Same report. Six different stories.<br>Which one did you read?</p>
+    <p class="punch-sub fade">We compared 10 claims across the six newsrooms that covered it. You judge.</p>
+    <a class="down" href="#agree">Start with what they all agreed on ↓</a>
+  </div>
+
+  <!-- ACT 2: agreement -->
+  <section class="act" id="agree">
+    <h2 class="q fade">What did everyone agree on?</h2>
+    <p class="q-sub">3 of the 10 claims appear in every article in this panel. Solid ground first.</p>
+    <div class="agree fade">
+      <div class="row"><span class="tick">✓</span> Employers added 57,000 jobs in June</div>
+      <div class="row"><span class="tick">✓</span> The unemployment rate fell to 4.2 percent</div>
+      <div class="row"><span class="tick">✓</span> Hiring came in below what economists expected</div>
+      <div class="note">A ✓ means the claim appears in that outlet's article. In the full claim list below, each claim opens to the sentence it came from. Agreement here is counted, not judged.</div>
+    </div>
+  </section>
+
+  <!-- ACT 3: the split, guided -->
+  <section class="act">
+    <h2 class="q fade">Where did they split?</h2>
+    <p class="q-sub">Here's one example, up close.</p>
+    <div class="guide fade" data-claimtext="The unemployment rate fell because people left the labor force, not because more people found work">
+      <div class="claim-txt">"The unemployment rate fell because people left the labor force, not because more people found work."</div>
+      <div class="strip">
+        <span class="pill"><span class="dot full"></span> CAP · reported it</span>
+        <span class="pill"><span class="dot full"></span> CNN · reported it</span>
+        <span class="pill"><span class="dot full"></span> CNBC · reported it</span>
+        <span class="pill"><span class="dot full"></span> NPR · reported it</span>
+        <span class="pill"><span class="dot half"></span> Fox Business · halfway</span>
+        <span class="pill"><span class="dot none"></span> ABC News · didn't</span>
+      </div>
+      <div class="teach">How to read this: Fox Business gets a half dot because it reports the participation decline as its own fact and never connects it to the falling unemployment rate. ABC News gets an empty dot because the connection does not appear in its article at all. That is the whole notation. You can now read every chart on this site.</div>
+      <div class="qte"><b>CAP:</b> "The unemployment rate dropped slightly to 4.2 percent, but this was entirely driven by people leaving the labor force rather than moving into employment." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+      <div class="qte"><b>NPR:</b> "The unemployment rate fell, but only because a large number of people stopped looking for work." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+      <div class="qte"><b>Fox Business (partial):</b> "The labor force participation rate decreased by 0.3 percentage points to 61.5% in June, while the employment-population ratio edged down by 0.2 percentage points to 59%." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+      <div class="capture">Sentences captured July 20, 2026.</div>
+      <div class="conf">Reported by 4 of 6 outlets, plus 1 partial · <button type="button" class="flag-open" style="border:0;background:none;color:var(--faint);text-decoration:underline dotted;cursor:pointer;font-size:.8rem;font-family:inherit;padding:0;" data-claim="The unemployment rate fell because people left the labor force, not because more people found work">flag an error</button></div>
+    </div>
+  </section>
+
+  <!-- ACT 4: omissions -->
+  <section class="act">
+    <h2 class="q fade">Who covered what?</h2>
+    <p class="q-sub">How many of the 10 claims each outlet did not carry. Read these next to the kind of article each one ran, because a three minute radio segment and a 900 word business report are not the same assignment. A low count here is not a scandal and a high count is not diligence.</p>
+    <div class="omit fade">
+      <div class="card">
+        <div class="outlet">Fox Business</div>
+        <div class="n">3</div><div class="lbl">of 10 claims not carried</div>
+        <div class="capture" style="margin-top:6px;"><b>Business desk news report</b><br>Full report, roughly 900 words, with sector-by-sector breakdown.</div>
+        <div class="what" style="margin-top:8px;"><a href="#explore">see the full claim list ↓</a></div>
+        <div class="ctx"><button type="button" onclick="this.parentElement.classList.toggle('open')">Third-party ratings ›</button>
+          <div class="reveal">Organisations such as AllSides publish left-to-right ratings for news outlets. This build does not carry a verified rating for Fox Business and will not display one until it is checked against the rating organisation's own published methodology. NewsLens does not rate outlets itself. Ratings stay off by default and are never opened by the reading-mode toggle, because a bias label sitting next to a claim count reads as a verdict even when someone else issued it.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="outlet">ABC News</div>
+        <div class="n">6</div><div class="lbl">of 10 claims not carried</div>
+        <div class="capture" style="margin-top:6px;"><b>General news report</b><br>Shorter general-audience piece. Covers the headline numbers and the political reaction, not the technical detail.</div>
+        <div class="what" style="margin-top:8px;"><a href="#explore">see the full claim list ↓</a></div>
+        <div class="ctx"><button type="button" onclick="this.parentElement.classList.toggle('open')">Third-party ratings ›</button>
+          <div class="reveal">Organisations such as AllSides publish left-to-right ratings for news outlets. This build does not carry a verified rating for ABC News and will not display one until it is checked against the rating organisation's own published methodology. NewsLens does not rate outlets itself. Ratings stay off by default and are never opened by the reading-mode toggle, because a bias label sitting next to a claim count reads as a verdict even when someone else issued it.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="outlet">CAP</div>
+        <div class="n">2</div><div class="lbl">of 10 claims not carried</div>
+        <div class="capture" style="margin-top:6px;"><b>Policy analysis</b><br>Think tank analysis, not a news report. Written to argue a position about worker outcomes.</div>
+        <div class="what" style="margin-top:8px;"><a href="#explore">see the full claim list ↓</a></div>
+        <div class="ctx"><button type="button" onclick="this.parentElement.classList.toggle('open')">Third-party ratings ›</button>
+          <div class="reveal">Organisations such as AllSides publish left-to-right ratings for news outlets. This build does not carry a verified rating for CAP and will not display one until it is checked against the rating organisation's own published methodology. NewsLens does not rate outlets itself. Ratings stay off by default and are never opened by the reading-mode toggle, because a bias label sitting next to a claim count reads as a verdict even when someone else issued it.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="outlet">CNN</div>
+        <div class="n">2</div><div class="lbl">of 10 claims not carried</div>
+        <div class="capture" style="margin-top:6px;"><b>Business desk news report</b><br>Full report with economist quotes and market context.</div>
+        <div class="what" style="margin-top:8px;"><a href="#explore">see the full claim list ↓</a></div>
+        <div class="ctx"><button type="button" onclick="this.parentElement.classList.toggle('open')">Third-party ratings ›</button>
+          <div class="reveal">Organisations such as AllSides publish left-to-right ratings for news outlets. This build does not carry a verified rating for CNN and will not display one until it is checked against the rating organisation's own published methodology. NewsLens does not rate outlets itself. Ratings stay off by default and are never opened by the reading-mode toggle, because a bias label sitting next to a claim count reads as a verdict even when someone else issued it.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="outlet">CNBC</div>
+        <div class="n">2</div><div class="lbl">of 10 claims not carried</div>
+        <div class="capture" style="margin-top:6px;"><b>Markets desk news report</b><br>Written against the forecast. Leads with the miss versus consensus.</div>
+        <div class="what" style="margin-top:8px;"><a href="#explore">see the full claim list ↓</a></div>
+        <div class="ctx"><button type="button" onclick="this.parentElement.classList.toggle('open')">Third-party ratings ›</button>
+          <div class="reveal">Organisations such as AllSides publish left-to-right ratings for news outlets. This build does not carry a verified rating for CNBC and will not display one until it is checked against the rating organisation's own published methodology. NewsLens does not rate outlets itself. Ratings stay off by default and are never opened by the reading-mode toggle, because a bias label sitting next to a claim count reads as a verdict even when someone else issued it.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="outlet">NPR</div>
+        <div class="n">2</div><div class="lbl">of 10 claims not carried</div>
+        <div class="capture" style="margin-top:6px;"><b>Radio transcript</b><br>All Things Considered segment, roughly three minutes of audio. Carries far fewer claims than any written piece, by format.</div>
+        <div class="what" style="margin-top:8px;"><a href="#explore">see the full claim list ↓</a></div>
+        <div class="ctx"><button type="button" onclick="this.parentElement.classList.toggle('open')">Third-party ratings ›</button>
+          <div class="reveal">Organisations such as AllSides publish left-to-right ratings for news outlets. This build does not carry a verified rating for NPR and will not display one until it is checked against the rating organisation's own published methodology. NewsLens does not rate outlets itself. Ratings stay off by default and are never opened by the reading-mode toggle, because a bias label sitting next to a claim count reads as a verdict even when someone else issued it.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 4.5: framing lens -->
+  <section class="act">
+    <h2 class="q fade">Same facts. Different words.</h2>
+    <p class="q-sub">When outlets report the same number, the wording still carries a temperature. Compare for yourself.</p>
+    <div class="fade">
+      <div class="pairbox">
+        <div class="pairline">
+          <span><span class="wtag">Fox Business</span><br><span class="wchip">"steady pace"</span></span>
+          <span class="vs">same 57,000</span>
+          <span><span class="wtag">NPR</span><br><span class="wchip">"June gloom"</span></span>
+        </div>
+        <details>
+          <summary>Read both sentences in full</summary>
+          <div class="qte" style="margin-top:10px;"><b>Fox Business:</b> "The U.S. economy added jobs at a steady pace in June despite headwinds caused by elevated inflation and uncertainty over the Iran war's economic impact." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "U.S. employers added only 57,000 jobs in June." <span style="color:var(--faint);">(headline: "June gloom for the job market")</span> <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+        </details>
+      </div>
+      <div class="pairbox">
+        <div class="pairline">
+          <span><span class="wtag">CNN</span><br><span class="wchip">"settled down after a spring surge"</span></span>
+          <span class="vs">same 57,000</span>
+          <span><span class="wtag">ABC News</span><br><span class="wchip">"slowed markedly"</span></span>
+        </div>
+      </div>
+      <div class="ledwith">
+        <div class="lw"><div class="outlet">Fox Business opened with</div>"added jobs at a steady pace"</div>
+        <div class="lw"><div class="outlet">CNN opened with</div>"settled down after a spring surge"</div>
+        <div class="lw"><div class="outlet">NPR opened with</div>"added only 57,000 jobs"</div>
+      </div>
+      <p class="q-sub" style="margin-top:12px;">Each phrase above is the opening sentence of that outlet's article, quoted in full behind the toggle and linked to the original. Whether the difference is spin, emphasis, or house style is your call.</p>
+    </div>
+  </section>
+
+
+  <!-- WHO IS IN THE PANEL, AND WHY -->
+  <section class="act" id="panel">
+    <h2 class="q fade">Why these six newsrooms?</h2>
+    <p class="q-sub">This is the biggest judgment call on the page, and no AI made it.</p>
+    <div class="guide fade">
+      <div class="claim-txt" style="font-size:1rem;">Panel size decides what agreement looks like.</div>
+      <div class="teach">Panel size decides what agreement looks like. Six outlets make unanimity easy; thirty would make it rare. Every count on this page is relative to these six and to nothing wider. This is the most consequential judgment NewsLens makes and it is not made by the AI.</div>
+      <div class="qte"><b>How this panel was picked.</b> The panel is chosen per story, not fixed across the site. For this story the panel is outlets that ran original coverage of the BLS release within 24 hours, spanning a business desk, a markets desk, general broadcast news, public radio, and a policy think tank.</div>
+      <div class="qte"><b>Why it changes per story.</b> A jobs report is covered by business and economics desks. A sports story or a health story would draw a completely different panel, and the counts on this page would mean nothing if applied to one.</div>
+      <div class="qte"><b>Who chose it.</b> The panel was chosen by the designer, Milan Khanal. No outlet was excluded for what it said. Reuters, the Associated Press, and The New York Times were attempted and blocked automated retrieval, so they were left out rather than quoted secondhand.</div>
+      <div class="conf" style="border-left:2px solid var(--warn); padding-left:8px; margin-top:10px;"><b>Not built yet.</b> Readers cannot currently add or remove an outlet and watch the counts change. That is the single most important missing feature, because it is the one that would hand this judgment to the reader.</div>
+    </div>
+  </section>
+
+  <!-- ACT 5: explore -->
+  <section class="act" id="explore">
+    <h2 class="q fade">Dig into all 10 claims</h2>
+    <p class="explore-intro q-sub">Every claim, every outlet, every source sentence. Same dots you already know.</p>
+    <div class="fade">
+      <div class="note" style="margin-bottom:14px;">Dot order, left to right: Fox Business · ABC News · CAP · CNN · CNBC · NPR. A filled dot means the outlet reported the claim, a half dot means it reported part of it, an empty dot means the claim does not appear in that article.</div>
+      <div class="claim" data-claimtext="Employers added 57,000 jobs in June">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">Employers added 57,000 jobs in June</span><span class="mini"><span class="dot full" role="img" aria-label="Fox Business: reported it"></span><span class="dot full" role="img" aria-label="ABC News: reported it"></span><span class="dot full" role="img" aria-label="CAP: reported it"></span><span class="dot full" role="img" aria-label="CNN: reported it"></span><span class="dot full" role="img" aria-label="CNBC: reported it"></span><span class="dot full" role="img" aria-label="NPR: reported it"></span></span><span class="count">6/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>Fox Business:</b> "The Bureau of Labor Statistics on Thursday reported that employers added 57,000 jobs in June." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>ABC News:</b> "The U.S. added 57,000 jobs in June, according to the federal government&#x27;s monthly jobs report, which marked a decline from 129,000 jobs added in May." <a href="https://abcnews.go.com/Business/jobs-report-set-show-hiring-robust-pace/story?id=134336526" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CAP:</b> "The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNN:</b> "US job growth settled down after a spring surge, as employers added a lower-than-expected 57,000 positions last month, according to Bureau of Labor Statistics data released Thursday." <a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNBC:</b> "Nonfarm payrolls for June increased by a seasonally adjusted 57,000 for the month, slower than the downwardly revised 129,000 added in May and worse than the 115,000 Dow Jones consensus forecast." <a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "U.S. employers added only 57,000 jobs in June." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="Employers added 57,000 jobs in June"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="Employers added 57,000 jobs in June">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim" data-claimtext="The unemployment rate fell to 4.2 percent">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">The unemployment rate fell to 4.2 percent</span><span class="mini"><span class="dot full" role="img" aria-label="Fox Business: reported it"></span><span class="dot full" role="img" aria-label="ABC News: reported it"></span><span class="dot full" role="img" aria-label="CAP: reported it"></span><span class="dot full" role="img" aria-label="CNN: reported it"></span><span class="dot full" role="img" aria-label="CNBC: reported it"></span><span class="dot full" role="img" aria-label="NPR: reported it"></span></span><span class="count">6/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>Fox Business:</b> "The unemployment rate dipped to 4.2%, which was also below the estimate of 4.3%." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>ABC News:</b> "The unemployment rate fell slightly from 4.3% in May to 4.2% in June, the Bureau of Labor Statistics (BLS) said." <a href="https://abcnews.go.com/Business/jobs-report-set-show-hiring-robust-pace/story?id=134336526" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CAP:</b> "The unemployment rate dropped slightly to 4.2 percent, but this was entirely driven by people leaving the labor force rather than moving into employment." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNN:</b> "Thursday&#x27;s data also showed that the unemployment rate dropped to 4.2% from 4.3% as more people left the labor force." <a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNBC:</b> "The unemployment rate, however, dropped to 4.2%, slightly ahead of the 4.1% where it was a year ago." <a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "People who are not looking for work don&#x27;t count as unemployed, and that&#x27;s why the jobless rate inched down to 4.2%." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="The unemployment rate fell to 4.2 percent"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="The unemployment rate fell to 4.2 percent">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim" data-claimtext="Hiring came in below what economists expected">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">Hiring came in below what economists expected</span><span class="mini"><span class="dot full" role="img" aria-label="Fox Business: reported it"></span><span class="dot full" role="img" aria-label="ABC News: reported it"></span><span class="dot full" role="img" aria-label="CAP: reported it"></span><span class="dot full" role="img" aria-label="CNN: reported it"></span><span class="dot full" role="img" aria-label="CNBC: reported it"></span><span class="dot full" role="img" aria-label="NPR: reported it"></span></span><span class="count">6/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>Fox Business:</b> "That figure was below the estimate of economists polled by LSEG, who estimated 110,000 jobs added." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>ABC News:</b> "Hiring slowed markedly in June, falling short of economists&#x27; expectations and displaying a wobbly labor market amid elevated inflation set off by the Iran war." <a href="https://abcnews.go.com/Business/jobs-report-set-show-hiring-robust-pace/story?id=134336526" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CAP:</b> "The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNN:</b> "Economists, by consensus, had expected a total of 100,000 jobs added in June and a jobless rate remaining at 4.3% for the fourth consecutive month." <a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNBC:</b> "Nonfarm payrolls for June increased by a seasonally adjusted 57,000 for the month, slower than the downwardly revised 129,000 added in May and worse than the 115,000 Dow Jones consensus forecast." <a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "U.S. employers added fewer jobs than expected last month." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="conf" style="border-left:2px solid var(--accent); padding-left:8px;"><b>Worth noticing.</b> All six say the number missed expectations. They do not agree on what was expected. CNBC cites 115,000 from Dow Jones, Fox Business cites 110,000 from an LSEG poll, CNN cites 100,000 without naming a provider, and ABC, CAP and NPR give no figure at all.</div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="Hiring came in below what economists expected"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="Hiring came in below what economists expected">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim" data-claimtext="The unemployment rate fell because people left the labor force, not because more people found work">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">The unemployment rate fell because people left the labor force, not because more people found work</span><span class="mini"><span class="dot half" role="img" aria-label="Fox Business: partly reported it"></span><span class="dot none" role="img" aria-label="ABC News: did not report it"></span><span class="dot full" role="img" aria-label="CAP: reported it"></span><span class="dot full" role="img" aria-label="CNN: reported it"></span><span class="dot full" role="img" aria-label="CNBC: reported it"></span><span class="dot full" role="img" aria-label="NPR: reported it"></span></span><span class="count">4/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>Fox Business:</b> "The labor force participation rate decreased by 0.3 percentage points to 61.5% in June, while the employment-population ratio edged down by 0.2 percentage points to 59%." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CAP:</b> "The unemployment rate dropped slightly to 4.2 percent, but this was entirely driven by people leaving the labor force rather than moving into employment." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNN:</b> "Not only were employment gains softer in June, but the unemployment rate dropped as fewer people were in the labor market." <a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNBC:</b> "The unemployment rate, however, dropped to 4.2%, largely due to a slump in the labor force participation rate, which fell 0.3 percentage point to 61.5%, the lowest since March 2021." <a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "The unemployment rate fell, but only because a large number of people stopped looking for work." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="conf"><b>Fox Business:</b> Reports the participation decline as a separate fact and never connects it to the falling unemployment rate.</div>
+          <div class="conf"><b>ABC News:</b> Does not mention the labor force participation decline at all.</div>
+          <div class="conf"><b>CNBC:</b> States it unambiguously in the article&#x27;s key-points list. In the body the antecedent of &#x27;The move lower&#x27; is ambiguous after a post-publication edit.</div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="The unemployment rate fell because people left the labor force, not because more people found work"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="The unemployment rate fell because people left the labor force, not because more people found work">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim" data-claimtext="Payrolls for April and May were revised down by a combined 74,000">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">Payrolls for April and May were revised down by a combined 74,000</span><span class="mini"><span class="dot full" role="img" aria-label="Fox Business: reported it"></span><span class="dot none" role="img" aria-label="ABC News: did not report it"></span><span class="dot full" role="img" aria-label="CAP: reported it"></span><span class="dot full" role="img" aria-label="CNN: reported it"></span><span class="dot half" role="img" aria-label="CNBC: partly reported it"></span><span class="dot full" role="img" aria-label="NPR: reported it"></span></span><span class="count">4/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>Fox Business:</b> "Taken together, employment in April and May was 74,000 jobs lower than previously reported." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CAP:</b> "The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNN:</b> "Monthly totals for April and May were revised down by a combined 74,000 jobs, to 148,000 and 129,000, respectively." <a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNBC:</b> "Prior months also saw significant downward revisions — the May total, which had been much stronger than economists had anticipated, was cut by 43,000, while April&#x27;s figure came down 31,000 to 148,000 as the report showed labor market growth significantly slower than previously thought." <a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "And what&#x27;s more, the jobs numbers for April and May were revised down, wiping out a total of 74,000 jobs we thought were added during the two previous months." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="conf"><b>CNBC:</b> Gives the two components, 43,000 for May and 31,000 for April, but never states the combined 74,000 total.</div>
+          <div class="conf"><b>ABC News:</b> Does not mention the revisions.</div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="Payrolls for April and May were revised down by a combined 74,000"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="Payrolls for April and May were revised down by a combined 74,000">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim" data-claimtext="Labor force participation fell to 61.5 percent">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">Labor force participation fell to 61.5 percent</span><span class="mini"><span class="dot full" role="img" aria-label="Fox Business: reported it"></span><span class="dot none" role="img" aria-label="ABC News: did not report it"></span><span class="dot none" role="img" aria-label="CAP: did not report it"></span><span class="dot full" role="img" aria-label="CNN: reported it"></span><span class="dot full" role="img" aria-label="CNBC: reported it"></span><span class="dot none" role="img" aria-label="NPR: did not report it"></span></span><span class="count">3/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>Fox Business:</b> "The labor force participation rate decreased by 0.3 percentage points to 61.5% in June, while the employment-population ratio edged down by 0.2 percentage points to 59%." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNN:</b> "Labor force participation dropped to a five-year low of 61.5% last month, falling from 61.8% in May." <a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNBC:</b> "The move lower was largely due to a slump in the labor force participation rate, which dropped 0.3 percentage point to 61.5%, the lowest since March 2021." <a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="conf"><b>ABC News:</b> Not mentioned.</div>
+          <div class="conf"><b>CAP:</b> Refers to people leaving the labor force but never gives the participation rate.</div>
+          <div class="conf"><b>NPR:</b> Not mentioned in either NPR piece.</div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="Labor force participation fell to 61.5 percent"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="Labor force participation fell to 61.5 percent">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim" data-claimtext="Average hourly earnings rose 3.5 percent from a year earlier">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">Average hourly earnings rose 3.5 percent from a year earlier</span><span class="mini"><span class="dot none" role="img" aria-label="Fox Business: did not report it"></span><span class="dot none" role="img" aria-label="ABC News: did not report it"></span><span class="dot full" role="img" aria-label="CAP: reported it"></span><span class="dot full" role="img" aria-label="CNN: reported it"></span><span class="dot full" role="img" aria-label="CNBC: reported it"></span><span class="dot full" role="img" aria-label="NPR: reported it"></span></span><span class="count">4/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>CAP:</b> "In comparison, the June jobs report shows that nominal wages grew 3.5 percent from the prior year." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNN:</b> "Workers&#x27; annual pay gains, which registered at 3.5% in June, are being entirely eaten away, and then some, by inflation, which rose at a 4.2% clip in May." <a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNBC:</b> "Average hourly earnings rose 0.3% for the month and 3.5% from a year ago, both in line with the consensus forecasts." <a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "Average wages in June were up 3.5% from a year ago." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="Average hourly earnings rose 3.5 percent from a year earlier"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="Average hourly earnings rose 3.5 percent from a year earlier">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim" data-claimtext="Leisure and hospitality lost 61,000 jobs">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">Leisure and hospitality lost 61,000 jobs</span><span class="mini"><span class="dot full" role="img" aria-label="Fox Business: reported it"></span><span class="dot none" role="img" aria-label="ABC News: did not report it"></span><span class="dot half" role="img" aria-label="CAP: partly reported it"></span><span class="dot full" role="img" aria-label="CNN: reported it"></span><span class="dot full" role="img" aria-label="CNBC: reported it"></span><span class="dot half" role="img" aria-label="NPR: partly reported it"></span></span><span class="count">3/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>Fox Business:</b> "Leisure and hospitality employment declined by 61,000 in June, which reflected weaker than usual seasonal hiring." <a href="https://www.foxbusiness.com/economy/us-jobs-report-june-2026" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CAP:</b> "June 2026 data even show that hiring was below average in low-wage industries that have driven the labor market growth over the past year, such as the health care and leisure and hospitality industries." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNN:</b> "Thursday&#x27;s report showed that leisure and hospitality businesses shed 61,000 jobs last month, a reflection of weaker-than-usual seasonal hiring, the BLS noted in the report." <a href="https://www.cnn.com/2026/07/02/economy/us-jobs-report-june-final" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>CNBC:</b> "However, leisure and hospitality reported a loss of 61,000 jobs, which the BLS said reflected slower-than-usual seasonal hiring." <a href="https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "Restaurants and retailers cut jobs last month." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="conf"><b>CAP:</b> Says hiring was below average in leisure and hospitality but gives no job-loss figure.</div>
+          <div class="conf"><b>NPR:</b> The main transcript says only that restaurants and retailers cut jobs. A companion NPR piece gives the 61,000 figure.</div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="Leisure and hospitality lost 61,000 jobs"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="Leisure and hospitality lost 61,000 jobs">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim conf-low" data-claimtext="Job growth over the past year was concentrated in low-wage industries">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">Job growth over the past year was concentrated in low-wage industries</span><span class="mini"><span class="dot none" role="img" aria-label="Fox Business: did not report it"></span><span class="dot none" role="img" aria-label="ABC News: did not report it"></span><span class="dot full" role="img" aria-label="CAP: reported it"></span><span class="dot none" role="img" aria-label="CNN: did not report it"></span><span class="dot none" role="img" aria-label="CNBC: did not report it"></span><span class="dot half" role="img" aria-label="NPR: partly reported it"></span></span><span class="count">1/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>CAP:</b> "The data also showed that job growth over the past year was concentrated in low-wage industries." <a href="https://www.americanprogress.org/article/june-jobs-numbers-are-not-the-boost-for-workers-that-was-expected/" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="qte"><b>NPR:</b> "That is a slightly bigger annual increase than the previous month, but that improvement is probably at least partly the result of a lot of low-wage leisure and hospitality jobs drying up last month." <a href="https://www.npr.org/2026/07/02/nx-s1-5879205/june-gloom-for-the-job-market-as-employers-add-just-57-000-jobs" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="conf"><b>NPR:</b> A companion NPR piece attributes part of the wage-growth uptick to low-wage jobs disappearing, which is a related but different claim.</div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="Job growth over the past year was concentrated in low-wage industries"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="Job growth over the past year was concentrated in low-wage industries">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="claim conf-low" data-claimtext="Professional and business services led job gains, adding 36,000">
+        <button type="button" class="claim-row" onclick="var o=this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',o?'true':'false');" aria-expanded="false"><span class="txt">Professional and business services led job gains, adding 36,000</span><span class="mini"><span class="dot none" role="img" aria-label="Fox Business: did not report it"></span><span class="dot full" role="img" aria-label="ABC News: reported it"></span><span class="dot none" role="img" aria-label="CAP: did not report it"></span><span class="dot none" role="img" aria-label="CNN: did not report it"></span><span class="dot none" role="img" aria-label="CNBC: did not report it"></span><span class="dot none" role="img" aria-label="NPR: did not report it"></span></span><span class="count">1/6</span></button>
+        <div class="prov">
+          <div class="qte"><b>ABC News:</b> "The professional and business services sector led job gains in June, adding 36,000 positions." <a href="https://abcnews.go.com/Business/jobs-report-set-show-hiring-robust-pace/story?id=134336526" target="_blank" rel="noopener noreferrer">read the original ↗</a></div>
+          <div class="conf">Recorded as 1/6 because only the ABC sentence was verified verbatim. Other outlets may cover this; it was not confirmed and is therefore not counted.</div>
+          <div class="capture">Sentences captured July 20, 2026. Outlets edit stories after publication; see "How was this comparison made?" below.</div>
+          <div class="syn-note" data-syn-for="Professional and business services led job gains, adding 36,000"></div>
+          <div class="flag"><button type="button" class="flag-open" data-claim="Professional and business services led job gains, adding 36,000">flag this extraction</button></div>
+        </div>
+      </div>
+      <div class="lens-link">These 10 claims are the full set extracted from this panel of six. A wider panel would change every count on this page. <a href="#panel">Who is in the panel, and why ↑</a></div>
+    </div>
+  </section>
+
+  <!-- TIER 2: the glass box -->
+  <section class="act" id="glassbox">
+    <h2 class="q fade">How was this comparison made?</h2>
+    <p class="q-sub">The machinery, in plain words. Open it whenever you want; it never opens itself.</p>
+    <details class="glass fade" id="glassDetails">
+      <summary>ⓘ Five steps, one model, one human. See inside <span class="hint">open the glass box</span></summary>
+      <div class="inner">
+        <div class="step"><span class="n">1</span><span>We captured each outlet's article on Jul 2–3, 2026, and dated the snapshots (outlets edit stories after publishing).</span></div>
+        <div class="step"><span class="n">2</span><span>An AI read each article and listed the factual claims it makes. What counts as a "claim" is defined in Methods; that boundary is a choice, so we disclose it.</span></div>
+        <div class="step"><span class="n">3</span><span>Claims saying the same thing were grouped, so we can count who reported what. Counting is the only math on this site.</span></div>
+        <div class="step"><span class="n">4</span><span>A human reviewed every extraction against a published checklist. Fidelity fixes only, never adding, removing, or rewording claims by preference. <b style="color:var(--ink);">All 10 claims in this story were reviewed against the six live articles on July 20, 2026.</b> Every sentence shown on this page was copied from the article, not summarised. Three of the six articles were edited after publication, so each sentence carries a capture date. Corrections made during the very first design-phase pass were not logged as they happened, and that gap is disclosed rather than backfilled.</span></div>
+        <div class="step"><span class="n">5</span><span>Each claim shows a confidence level, and anything the AI might have gotten wrong stays flaggable by you.</span></div>
+        <div class="mcgrid">
+          <div class="mc"><b>Model card</b>Extraction: Claude (Anthropic) - exact model version being confirmed for the model card. Built by a third party, trained on web-scale data that itself contains media bias. Known failure modes and the extraction prompt: in Methods.</div>
+          <div class="mc"><b>What this pipeline tends to get wrong</b>Merging claims that say almost the same thing, missing claims phrased as implication rather than statement, and over-splitting compound sentences. Every extraction was human-reviewed; this story's corpus is small, so we publish patterns, not percentages.</div>
+          <div class="mc"><b>What was filtered out</b>Some sentences failed extraction or matching and never reached this page. They were not recorded for this story's first pass; they are recorded for every story after it.</div>
+          <div class="mc"><b>Syndication</b>Syndication overlap between outlets has not yet been annotated for this story.</div>
+          <div class="mc"><b>What we never do</b>No bias labels. No truth verdicts. No engagement optimization. The prototype itself was designed and built with AI assistance (Claude), human-directed. Disclosed because we hold ourselves to the same standard.</div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div class="tierbar">
+    <a href="#glassbox">ⓘ How this comparison was made</a>
+    <span>Extraction: Claude (Anthropic) - exact model version being confirmed for the model card · human-reviewed, checklist published · review log: pending</span>
+    <span class="toggle-group" role="group" aria-label="Reading modes, for the study">
+      <button type="button" id="btnStaged" aria-pressed="true" onclick="setMode('staged')">Staged</button><button type="button" id="btnExpanded" aria-pressed="false" onclick="setMode('expanded')">Everything expanded</button>
+    </span>
+  </div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <a href="#">Methods</a><a href="#">The outlet panel</a><a href="#">Model card</a><a href="#">Accessibility</a><a href="#">Independence</a>
+    <span style="margin-left:auto;">No bias labels. No verdicts. You judge.</span>
+  </div>
+</footer>
+
+<div class="overlay" id="contestOverlay" role="dialog" aria-modal="true" aria-labelledby="contestTitle">
+  <div class="modal" id="contestModal">
+    <h3 id="contestTitle">Flag this extraction</h3>
+    <div class="which" id="contestWhich">"claim text"</div>
+
+    <div class="stepnum">Step 1 · point at the evidence</div>
+    <div class="evselect">
+      Which claim?
+      <select id="claimSelect" aria-label="Select the claim you are disputing"></select>
+      <div class="conf">This demo carries source sentences for 4 of the 10 claims. The rest arrive with the corpus data pass.</div>
+    </div>
+    <div class="evselect">
+      Which outlet sentence?
+      <select id="sentenceSelect" aria-label="Select the specific outlet sentence you are disputing"></select>
+    </div>
+
+    <div class="stepnum">Step 2 · say what's wrong</div>
+    <label><input type="radio" name="why" value="nosupport" checked> This sentence doesn't support this claim</label>
+    <label><input type="radio" name="why" value="grouped"> These grouped sentences say different things</label>
+    <label><input type="radio" name="why" value="missing"> A claim is missing from this outlet</label>
+    <label><input type="radio" name="why" value="other"> Something else about this specific claim (describe)
+      <textarea id="otherDescribe" aria-label="Describe the issue" placeholder="Describe the issue"></textarea>
+    </label>
+
+    <div class="stepnum">How this was made, for this claim</div>
+    <div class="evslice" id="evidenceSlice">
+      <!-- populated by JS from claim matrix data already on the page -->
+    </div>
+
+    <div class="nexttxt">Thanks - flags are reviewed by a human before anything changes publicly. This claim now shows a "contested" mark while it's reviewed.</div>
+    <div class="row">
+      <button class="btn ghost" type="button" onclick="closeContest()">Cancel</button>
+      <button class="btn" type="button" onclick="submitContest()">Submit flag</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setFs(px){document.documentElement.style.setProperty('--base',px+'px');}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.15});
+  document.querySelectorAll('.fade').forEach(function(el){io.observe(el);});
+
+  /* ---- Syndication annotation data (B4): empty until the syndication audit is done ---- */
+  var SYNDICATION_ANNOTATIONS = [];
+  function renderSyndicationAnnotations(){
+    document.querySelectorAll('.syn-note').forEach(function(el){
+      var claim = el.getAttribute('data-syn-for');
+      var match = SYNDICATION_ANNOTATIONS.find(function(a){ return a.claim === claim; });
+      if(match){
+        el.textContent = 'Note: ' + match.n + ' of these outlets used shared wire copy for this claim.';
+        el.style.display = '';
+      } else {
+        el.style.display = 'none';
+      }
+    });
+  }
+  renderSyndicationAnnotations();
+
+  /* ---- Claim data for the contest modal's evidence slice + selects ---- */
+  /* Built from what is already on the page (claim matrix + guided example). No invented per-claim pipeline detail. */
+  var CLAIMS = [
+    {
+      claim: "Employers added 57,000 jobs in June",
+      corroboration: "6/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"Fox Business", text:"The Bureau of Labor Statistics on Thursday reported that employers added 57,000 jobs in June."},
+        {outlet:"ABC News", text:"The U.S. added 57,000 jobs in June, according to the federal government's monthly jobs report, which marked a decline from 129,000 jobs added in May."},
+        {outlet:"CAP", text:"The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000."},
+        {outlet:"CNN", text:"US job growth settled down after a spring surge, as employers added a lower-than-expected 57,000 positions last month, according to Bureau of Labor Statistics data released Thursday."},
+        {outlet:"CNBC", text:"Nonfarm payrolls for June increased by a seasonally adjusted 57,000 for the month, slower than the downwardly revised 129,000 added in May and worse than the 115,000 Dow Jones consensus forecast."},
+        {outlet:"NPR", text:"U.S. employers added only 57,000 jobs in June."}
+      ]
+    },
+    {
+      claim: "The unemployment rate fell to 4.2 percent",
+      corroboration: "6/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"Fox Business", text:"The unemployment rate dipped to 4.2%, which was also below the estimate of 4.3%."},
+        {outlet:"ABC News", text:"The unemployment rate fell slightly from 4.3% in May to 4.2% in June, the Bureau of Labor Statistics (BLS) said."},
+        {outlet:"CAP", text:"The unemployment rate dropped slightly to 4.2 percent, but this was entirely driven by people leaving the labor force rather than moving into employment."},
+        {outlet:"CNN", text:"Thursday's data also showed that the unemployment rate dropped to 4.2% from 4.3% as more people left the labor force."},
+        {outlet:"CNBC", text:"The unemployment rate, however, dropped to 4.2%, slightly ahead of the 4.1% where it was a year ago."},
+        {outlet:"NPR", text:"People who are not looking for work don't count as unemployed, and that's why the jobless rate inched down to 4.2%."}
+      ]
+    },
+    {
+      claim: "Hiring came in below what economists expected",
+      corroboration: "6/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"Fox Business", text:"That figure was below the estimate of economists polled by LSEG, who estimated 110,000 jobs added."},
+        {outlet:"ABC News", text:"Hiring slowed markedly in June, falling short of economists' expectations and displaying a wobbly labor market amid elevated inflation set off by the Iran war."},
+        {outlet:"CAP", text:"The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000."},
+        {outlet:"CNN", text:"Economists, by consensus, had expected a total of 100,000 jobs added in June and a jobless rate remaining at 4.3% for the fourth consecutive month."},
+        {outlet:"CNBC", text:"Nonfarm payrolls for June increased by a seasonally adjusted 57,000 for the month, slower than the downwardly revised 129,000 added in May and worse than the 115,000 Dow Jones consensus forecast."},
+        {outlet:"NPR", text:"U.S. employers added fewer jobs than expected last month."}
+      ]
+    },
+    {
+      claim: "The unemployment rate fell because people left the labor force, not because more people found work",
+      corroboration: "4/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"Fox Business", text:"The labor force participation rate decreased by 0.3 percentage points to 61.5% in June, while the employment-population ratio edged down by 0.2 percentage points to 59%."},
+        {outlet:"CAP", text:"The unemployment rate dropped slightly to 4.2 percent, but this was entirely driven by people leaving the labor force rather than moving into employment."},
+        {outlet:"CNN", text:"Not only were employment gains softer in June, but the unemployment rate dropped as fewer people were in the labor market."},
+        {outlet:"CNBC", text:"The unemployment rate, however, dropped to 4.2%, largely due to a slump in the labor force participation rate, which fell 0.3 percentage point to 61.5%, the lowest since March 2021."},
+        {outlet:"NPR", text:"The unemployment rate fell, but only because a large number of people stopped looking for work."}
+      ]
+    },
+    {
+      claim: "Payrolls for April and May were revised down by a combined 74,000",
+      corroboration: "4/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"Fox Business", text:"Taken together, employment in April and May was 74,000 jobs lower than previously reported."},
+        {outlet:"CAP", text:"The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000."},
+        {outlet:"CNN", text:"Monthly totals for April and May were revised down by a combined 74,000 jobs, to 148,000 and 129,000, respectively."},
+        {outlet:"CNBC", text:"Prior months also saw significant downward revisions \u2014 the May total, which had been much stronger than economists had anticipated, was cut by 43,000, while April's figure came down 31,000 to 148,000 as the report showed labor market growth significantly slower than previously thought."},
+        {outlet:"NPR", text:"And what's more, the jobs numbers for April and May were revised down, wiping out a total of 74,000 jobs we thought were added during the two previous months."}
+      ]
+    },
+    {
+      claim: "Labor force participation fell to 61.5 percent",
+      corroboration: "3/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"Fox Business", text:"The labor force participation rate decreased by 0.3 percentage points to 61.5% in June, while the employment-population ratio edged down by 0.2 percentage points to 59%."},
+        {outlet:"CNN", text:"Labor force participation dropped to a five-year low of 61.5% last month, falling from 61.8% in May."},
+        {outlet:"CNBC", text:"The move lower was largely due to a slump in the labor force participation rate, which dropped 0.3 percentage point to 61.5%, the lowest since March 2021."}
+      ]
+    },
+    {
+      claim: "Average hourly earnings rose 3.5 percent from a year earlier",
+      corroboration: "4/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"CAP", text:"In comparison, the June jobs report shows that nominal wages grew 3.5 percent from the prior year."},
+        {outlet:"CNN", text:"Workers' annual pay gains, which registered at 3.5% in June, are being entirely eaten away, and then some, by inflation, which rose at a 4.2% clip in May."},
+        {outlet:"CNBC", text:"Average hourly earnings rose 0.3% for the month and 3.5% from a year ago, both in line with the consensus forecasts."},
+        {outlet:"NPR", text:"Average wages in June were up 3.5% from a year ago."}
+      ]
+    },
+    {
+      claim: "Leisure and hospitality lost 61,000 jobs",
+      corroboration: "3/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"Fox Business", text:"Leisure and hospitality employment declined by 61,000 in June, which reflected weaker than usual seasonal hiring."},
+        {outlet:"CAP", text:"June 2026 data even show that hiring was below average in low-wage industries that have driven the labor market growth over the past year, such as the health care and leisure and hospitality industries."},
+        {outlet:"CNN", text:"Thursday's report showed that leisure and hospitality businesses shed 61,000 jobs last month, a reflection of weaker-than-usual seasonal hiring, the BLS noted in the report."},
+        {outlet:"CNBC", text:"However, leisure and hospitality reported a loss of 61,000 jobs, which the BLS said reflected slower-than-usual seasonal hiring."},
+        {outlet:"NPR", text:"Restaurants and retailers cut jobs last month."}
+      ]
+    },
+    {
+      claim: "Job growth over the past year was concentrated in low-wage industries",
+      corroboration: "1/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"CAP", text:"The data also showed that job growth over the past year was concentrated in low-wage industries."},
+        {outlet:"NPR", text:"That is a slightly bigger annual increase than the previous month, but that improvement is probably at least partly the result of a lot of low-wage leisure and hospitality jobs drying up last month."}
+      ]
+    },
+    {
+      claim: "Professional and business services led job gains, adding 36,000",
+      corroboration: "1/6",
+      review: "Human-reviewed July 20, 2026",
+      sentences: [
+        {outlet:"ABC News", text:"The professional and business services sector led job gains in June, adding 36,000 positions."}
+      ]
+    }
+  ];
+
+  function populateClaimSelect(preselectClaim){
+    var sel = document.getElementById('claimSelect');
+    sel.innerHTML = '';
+    CLAIMS.forEach(function(c, i){
+      var opt = document.createElement('option');
+      opt.value = i; opt.textContent = c.claim;
+      sel.appendChild(opt);
+    });
+    if(preselectClaim){
+      var idx = CLAIMS.findIndex(function(c){ return c.claim === preselectClaim; });
+      if(idx >= 0) sel.value = idx;
+    }
+    updateSentenceSelect();
+    updateEvidenceSlice();
+  }
+
+  function updateSentenceSelect(){
+    var claim = CLAIMS[document.getElementById('claimSelect').value];
+    var sel = document.getElementById('sentenceSelect');
+    sel.innerHTML = '';
+    claim.sentences.forEach(function(s, i){
+      var opt = document.createElement('option');
+      opt.value = i; opt.textContent = s.outlet + ': "' + s.text + '"';
+      sel.appendChild(opt);
+    });
+  }
+
+  function updateEvidenceSlice(){
+    var claim = CLAIMS[document.getElementById('claimSelect').value];
+    var el = document.getElementById('evidenceSlice');
+    var html = '';
+    claim.sentences.forEach(function(s){
+      html += '<div class="qte"><b>' + s.outlet + ':</b> "' + s.text + '"</div>';
+    });
+    html += '<div class="conf">Corroboration: ' + claim.corroboration + ' &middot; ' + claim.review + '</div>';
+    html += '<div class="conf">Every extraction was human-reviewed against a published checklist before appearing here.</div>';
+    el.innerHTML = html;
+  }
+
+  document.getElementById('claimSelect').addEventListener('change', function(){
+    updateSentenceSelect(); updateEvidenceSlice();
+    var selected = CLAIMS[this.value];
+    if(selected){ document.getElementById('contestWhich').textContent = '"' + selected.claim + '"'; }
+  });
+
+  /* ---- Contest flow (evidence-bound, focus-trapped) ---- */
+  var contestTarget=null;
+  var lastFocused=null;
+
+  function openContestFor(claimText){
+    contestTarget = resolveClaimEl(claimText);
+    document.getElementById('contestWhich').textContent = '"' + claimText + '"';
+    populateClaimSelect(claimText);
+    var overlay = document.getElementById('contestOverlay');
+    overlay.classList.add('on');
+    lastFocused = document.activeElement;
+    document.getElementById('claimSelect').focus();
+    document.addEventListener('keydown', trapFocus);
+  }
+
+  document.querySelectorAll('.flag-open').forEach(function(btn){
+    btn.addEventListener('click', function(ev){
+      ev.preventDefault(); ev.stopPropagation();
+      openContestFor(btn.getAttribute('data-claim'));
+    });
+  });
+
+  function closeContest(){
+    document.getElementById('contestOverlay').classList.remove('on');
+    document.removeEventListener('keydown', trapFocus);
+    if(lastFocused) lastFocused.focus();
+  }
+
+  function resolveClaimEl(claimText){
+    var claimEls = document.querySelectorAll('[data-claimtext]');
+    for(var i=0;i<claimEls.length;i++){
+      if(claimEls[i].getAttribute('data-claimtext') === claimText){ return claimEls[i]; }
+    }
+    return null;
+  }
+
+  function submitContest(){
+    /* Bind to the claim SELECTED IN THE DROPDOWN at submit time, not to the button that
+       opened the modal. A reader who changes the dropdown must contest the claim they chose. */
+    var selected = CLAIMS[document.getElementById('claimSelect').value];
+    contestTarget = selected ? resolveClaimEl(selected.claim) : null;
+    if(contestTarget){
+      var txtEl = contestTarget.querySelector('.txt') || contestTarget.querySelector('.claim-txt');
+      if(txtEl && !txtEl.querySelector('.contested')){
+        var chip=document.createElement('span');
+        chip.className='contested'; chip.textContent='⚑ contested · under review';
+        txtEl.appendChild(chip);
+      }
+    }
+    closeContest();
+  }
+
+  document.getElementById('contestOverlay').addEventListener('click',function(e){if(e.target===this)closeContest();});
+
+  function trapFocus(e){
+    if(e.key === 'Escape'){ closeContest(); return; }
+    if(e.key !== 'Tab') return;
+    var modal = document.getElementById('contestModal');
+    var focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if(!focusable.length) return;
+    var first = focusable[0], last = focusable[focusable.length-1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+
+  /* ---- Reading mode toggle: staged (default) vs everything expanded ---- */
+  function setMode(mode){
+    var staged = mode === 'staged';
+    document.getElementById('btnStaged').setAttribute('aria-pressed', staged ? 'true' : 'false');
+    document.getElementById('btnExpanded').setAttribute('aria-pressed', staged ? 'false' : 'true');
+
+    document.querySelectorAll('.claim[data-claimtext]').forEach(function(el){
+      if(staged) el.classList.remove('open'); else el.classList.add('open');
+      var rowBtn = el.querySelector('.claim-row');
+      if(rowBtn) rowBtn.setAttribute('aria-expanded', staged ? 'false' : 'true');
+    });
+    /* .ctx panels (third-party outlet ratings) are deliberately EXCLUDED from this toggle.
+       They are off by default and open only when a reader clicks them. Auto-revealing them
+       in expanded mode would surface AllSides bias labels on a page that promises none. */
+    document.querySelectorAll('.pairbox details').forEach(function(el){
+      el.open = !staged;
+    });
+    var glassDetails = document.getElementById('glassDetails');
+    glassDetails.open = !staged;
+  }
+</script>
+</body>
+</html>

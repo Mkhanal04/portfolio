@@ -352,7 +352,7 @@ function Portfolio() {
     const handleClick = () => {
       if (!clickable) return;
       if (isEngagement && item.appUrl) { window.location.href = item.appUrl; }
-      else { go("detail", item.slug); }
+      else if (item.detail) { go("detail", item.slug); }
     };
     return (
       <div onClick={handleClick} style={{ ...s.card, padding: 0, overflow: "hidden", cursor: clickable ? "pointer" : "default", opacity: item.status === "coming" ? 0.6 : 1, transition: "border-color 0.3s, transform 0.3s", borderLeft: isEngagement ? `3px solid ${c}` : undefined }} onMouseEnter={e => { if (clickable) { e.currentTarget.style.borderColor = t.borderH; e.currentTarget.style.transform = "translateY(-2px)"; } }} onMouseLeave={e => { e.currentTarget.style.borderColor = t.border; e.currentTarget.style.transform = "translateY(0)"; }}>
@@ -402,9 +402,9 @@ function Portfolio() {
           )}
           {item.status === "live" && (
             <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${t.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: t.t2 }}>{item.stats?.agents || 0} agents</span>
+              <span style={{ fontSize: 12, color: t.t2 }}>{item.stats?.metricLabel || `${item.stats?.agents || 0} agents`}</span>
               <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                <span style={{ fontSize: 12, color: t.t1, fontWeight: 500, cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); go("detail", item.slug); }}>View details {"\u2192"}</span>
+                {!item.hideDetails && <span style={{ fontSize: 12, color: t.t1, fontWeight: 500, cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); go("detail", item.slug); }}>View details {"\u2192"}</span>}
                 {item.appUrl && <a href={item.appUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: 12, color: t.blue, fontWeight: 500, textDecoration: "none" }}>Try it {"\u2192"}</a>}
               </div>
             </div>
