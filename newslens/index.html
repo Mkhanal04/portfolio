@@ -10,31 +10,38 @@
      Re-inject this block on every design re-sync (see CLAUDE.md).
 
      Placement: <head>, immediately before <script src="./support.js">.
-     Sits between: 3 things
+     Two things:
        1. React 18 + ReactDOM 18 CDN scripts (support.js needs them)
-       2. <style> — portfolio strip look + mobile responsive overrides
-       3. <script> — inserts the portfolio strip, keeps it alive against
-          any body mutations from support.js
+       2. Portfolio strip CSS + JS — the persistent "back to portfolio"
+          bar at the top of every /newslens/ page.
+
+     History: previous versions of this file also contained mobile
+     responsive @media overrides and an html/body overflow-x: hidden
+     safety net. The design source now owns mobile responsive rules
+     (added by Claude Design 2026-07-21, alongside the cool-palette
+     swap), so those local patches were removed. If a design re-sync
+     regresses mobile behavior, restore them from git history.
      ================================================================ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <style>
   /* ---------- Portfolio strip (persistent "back to portfolio" ramp) ---------- */
+  /* Palette tuned for the design's cool gray + navy scheme. */
   #pilot-suite-strip {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
     padding: 8px 20px; box-sizing: border-box;
-    background: #1c1b19; color: #f4f2ec;
+    background: #0d1220; color: #eaeef4;
     font: 500 12px/1.4 -apple-system, BlinkMacSystemFont, "IBM Plex Sans", sans-serif;
     text-decoration: none; letter-spacing: 0.01em;
-    border-bottom: 1px solid #2a2823;
+    border-bottom: 1px solid #1e2532;
     transition: background 0.15s ease;
   }
-  #pilot-suite-strip:hover { background: #26241f; text-decoration: none; }
+  #pilot-suite-strip:hover { background: #151b2a; text-decoration: none; }
   #pilot-suite-strip .pss-left { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
   #pilot-suite-strip .pss-arrow { display: inline-block; transform: translateY(-1px); }
   #pilot-suite-strip .pss-name { font-weight: 600; }
-  #pilot-suite-strip .pss-sep { opacity: 0.4; }
+  #pilot-suite-strip .pss-sep { opacity: 0.45; }
   #pilot-suite-strip .pss-tag { opacity: 0.75; }
   #pilot-suite-strip .pss-right {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -46,94 +53,17 @@
   /* Design's own sticky header sits below our strip. */
   header[style*="position:sticky"] { top: 34px !important; }
 
-  /* Clip horizontal overflow at the root. Support.js renders inside a shadow
-     root that our attribute selectors can't reach, so any fixed-pixel columns
-     the design authored (280px right rail, 172px row rails, 3-col grids that
-     don't collapse) would otherwise force a horizontal scrollbar on mobile.
-     Applied at all widths; the design has no legitimate horizontal-scroll
-     content — everything intended to be visible flows vertically.
-     Applied to both html AND body — Chrome/WebKit propagates body's
-     overflow-x: visible up to the viewport, so setting only html is a no-op.
-     Kept as overflow-x (not overflow: hidden) so `position: sticky` on the
-     design's own top header still works. */
+  /* Clip residual horizontal overflow. The design owns responsive layout
+     via @media rules on .nl-* classes, but support.js renders inside a
+     shadow root whose scrollWidth still leaks a few px past viewport at
+     narrow widths (verified: 375px viewport → 504px document scrollWidth
+     with a horizontal scrollbar). Belt-and-suspenders. Applied to both
+     html AND body — WebKit/Chrome propagate body overflow-x: visible up
+     to the viewport, so setting only html is a no-op. */
   html, body { overflow-x: hidden !important; }
 
-  /* ---------- Mobile responsive overrides (design source is desktop-only) ---------- */
-  @media (max-width: 768px) {
-    /* Story page: collapse two-column grid (main + right rail) to one column. */
-    div[style*="grid-template-columns:minmax(0,1fr) 280px"],
-    div[style*="grid-template-columns: minmax(0px, 1fr) 280px"] {
-      grid-template-columns: 1fr !important;
-      gap: 20px !important;
-    }
-    /* Right rail: sticky becomes static so it doesn't overlap the strip. */
-    aside[style*="position:sticky"] { position: static !important; top: 0 !important; }
-
-    /* Home story rows: stack vertically instead of horizontal flex. */
-    article[style*="cursor:pointer"] {
-      flex-direction: column !important;
-      align-items: stretch !important;
-    }
-    /* Home story rows' right column (fixed 172px badge/action strip). */
-    article > div[style*="width:172px"],
-    article > div[style*="width: 172px"] {
-      width: 100% !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      flex-wrap: wrap !important;
-      gap: 12px !important;
-      padding-top: 10px !important;
-    }
-
-    /* 3-column grids (headlines strip, About-page evaluation tiles). */
-    div[style*="grid-template-columns:repeat(3,1fr)"],
-    div[style*="grid-template-columns: repeat(3, 1fr)"] {
-      grid-template-columns: 1fr !important;
-      gap: 10px !important;
-    }
-    /* 2-column grids (About-page layers, personas). */
-    div[style*="grid-template-columns:1fr 1fr"],
-    div[style*="grid-template-columns: 1fr 1fr"] {
-      grid-template-columns: 1fr !important;
-      gap: 10px !important;
-    }
-    /* Source-panel two-column (outlet name / quote). */
-    div[style*="grid-template-columns:130px 1fr"],
-    div[style*="grid-template-columns: 130px 1fr"] {
-      grid-template-columns: 1fr !important;
-      gap: 6px !important;
-    }
-    /* About-page iteration rows (56px number + body). */
-    div[style*="grid-template-columns:56px 1fr"],
-    div[style*="grid-template-columns: 56px 1fr"] {
-      grid-template-columns: 1fr !important;
-      gap: 4px !important;
-    }
-    /* Glass box explanation two-column rows (180px label + body). */
-    div[style*="grid-template-columns:180px 1fr"],
-    div[style*="grid-template-columns: 180px 1fr"] {
-      grid-template-columns: 1fr !important;
-      gap: 4px !important;
-    }
-
-    /* Design's sticky header: wrap the right-hand controls on mobile. */
-    header[style*="position:sticky"] > div {
-      padding: 10px 16px !important;
-      flex-wrap: wrap !important;
-      gap: 10px !important;
-    }
-    /* Trim the wide horizontal padding on main containers. */
-    main[style*="padding:0 28px 96px"],
-    main[style*="padding: 0px 28px 96px"] {
-      padding: 0 16px 60px !important;
-    }
-    main[style*="max-width:1080px"][style*="padding:0 28px"],
-    main[style*="max-width: 1080px"][style*="padding: 0px 28px"] {
-      padding-left: 16px !important;
-      padding-right: 16px !important;
-    }
-
-    /* Strip: keep name + arrow, drop the tagline on narrow screens. */
+  /* On narrow screens, strip drops the tagline and mono label; keeps arrow + name. */
+  @media (max-width: 640px) {
     #pilot-suite-strip .pss-sep,
     #pilot-suite-strip .pss-tag,
     #pilot-suite-strip .pss-right { display: none !important; }
@@ -188,29 +118,45 @@
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
-  body { font-family: "IBM Plex Sans", system-ui, sans-serif; background: #ebe3d5; color: #1c1b19; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-  a { color: #0f6d63; text-decoration: none; }
-  a:hover { color: #0a544c; text-decoration: underline; }
-  ::selection { background: #cfe6e2; }
+  body { font-family: "IBM Plex Sans", system-ui, sans-serif; background: #f3f5f8; color: #14171c; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  a { color: #16467e; text-decoration: none; }
+  a:hover { color: #0f3560; text-decoration: underline; }
+  ::selection { background: #dbe6f4; }
   @keyframes nlFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 767px) {
+    main { padding-left: 16px !important; padding-right: 16px !important; }
+    .nl-header-bar { padding-left: 16px !important; padding-right: 16px !important; flex-wrap: wrap !important; gap: 10px 14px !important; }
+    .nl-story-grid { grid-template-columns: 1fr !important; gap: 30px !important; }
+    .nl-rail { position: static !important; top: auto !important; }
+    .nl-grid-3 { grid-template-columns: 1fr !important; }
+    .nl-grid-2 { grid-template-columns: 1fr !important; }
+    .nl-stack-sm { grid-template-columns: 1fr !important; gap: 6px !important; }
+    .nl-row { flex-direction: column !important; gap: 14px !important; }
+    .nl-row-meta { width: auto !important; align-items: flex-start !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 16px !important; padding-top: 0 !important; }
+    .nl-claim-head { flex-wrap: wrap !important; }
+    .nl-claim-meta { width: 100% !important; }
+    .nl-claim-meta > div { justify-content: flex-start !important; }
+    .nl-hero-h1 { font-size: 32px !important; }
+    .nl-hero-h1-story { font-size: 27px !important; }
+  }
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column">
 
   <!-- ===================== TOP BAR ===================== -->
-  <header style="position:sticky;top:0;z-index:20;background:rgba(237,230,217,0.9);backdrop-filter:blur(8px);border-bottom:1px solid #e0dbd0">
-    <div style="max-width:1080px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:20px">
+  <header style="position:sticky;top:0;z-index:20;background:rgba(243,245,248,0.9);backdrop-filter:blur(8px);border-bottom:1px solid #e0e3e9">
+    <div class="nl-header-bar" style="max-width:1080px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:20px">
       <div onClick="{{ goHome }}" style="cursor:pointer;display:flex;align-items:baseline;gap:9px">
         <span style="font-family:'Source Serif 4',serif;font-weight:700;font-size:22px;letter-spacing:-0.01em">NewsLens</span>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8478;border:1px solid #d6d1c6;padding:2px 6px;border-radius:3px">Prototype</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#7b818c;border:1px solid #d3d7de;padding:2px 6px;border-radius:3px">Prototype</span>
       </div>
       <div style="flex:1"></div>
-      <a onClick="{{ goAbout }}" style="cursor:pointer;font-family:'IBM Plex Sans';font-size:13px;font-weight:500;color:#77716a;margin-right:4px" style-hover="color:#0f6d63">About this prototype</a>
+      <a onClick="{{ goAbout }}" style="cursor:pointer;font-family:'IBM Plex Sans';font-size:13px;font-weight:500;color:#6b6f79;margin-right:4px" style-hover="color:#16467e">About this prototype</a>
       <sc-if value="{{ isStory }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;align-items:center;gap:16px">
           <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#8a8478">Reading</span>
-            <div style="display:flex;background:#eae6dd;border:1px solid #ded9cf;border-radius:7px;padding:2px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#7b818c">Reading</span>
+            <div style="display:flex;background:#eaedf1;border:1px solid #d9dde3;border-radius:7px;padding:2px">
               <button onClick="{{ setStaged }}" style="{{ stagedBtnStyle }}">Staged</button>
               <button onClick="{{ setExpanded }}" style="{{ expandedBtnStyle }}">Expanded</button>
             </div>
@@ -227,32 +173,32 @@
   <!-- ===================== HOME ===================== -->
   <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
   <main style="max-width:1080px;margin:0 auto;padding:0 28px;width:100%">
-    <section style="padding:64px 0 36px;border-bottom:1px solid #e0dbd0">
+    <section style="padding:64px 0 36px;border-bottom:1px solid #e0e3e9">
       <div style="max-width:730px">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#0f6d63;margin-bottom:20px">Read the news elsewhere · cross-check it here</div>
-        <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-0.02em;margin:0 0 20px">Just read about it? See what the other outlets left out.</h1>
-        <p style="font-size:18px;line-height:1.6;color:#4a463f;margin:0 0 8px">NewsLens is a second stop, not a news source. Look up an event you have already read about and see how several outlets framed the same facts: which claims everyone reported, and which showed up in only one or two.</p>
-        <p style="font-size:15px;line-height:1.6;color:#77716a;margin:14px 0 0">No bias ratings. No accuracy verdicts. Just the claims, the sources, and a count you can check by hand.</p>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#16467e;margin-bottom:20px">Read the news elsewhere · cross-check it here</div>
+        <h1 class="nl-hero-h1" style="font-family:'Source Serif 4',serif;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-0.02em;margin:0 0 20px">Just read about it? See what the other outlets left out.</h1>
+        <p style="font-size:18px;line-height:1.6;color:#424751;margin:0 0 8px">NewsLens is a second stop, not a news source. Look up an event you have already read about and see how several outlets framed the same facts: which claims everyone reported, and which showed up in only one or two.</p>
+        <p style="font-size:15px;line-height:1.6;color:#6b6f79;margin:14px 0 0">No bias ratings. No accuracy verdicts. Just the claims, the sources, and a count you can check by hand.</p>
       </div>
 
       <!-- lookup bar -->
       <div style="margin-top:30px;max-width:560px">
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #d6d1c6;border-radius:10px;padding:13px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
-          <span style="width:16px;height:16px;border:2px solid #a49d92;border-radius:50%;position:relative;flex-shrink:0"><span style="position:absolute;width:6px;height:2px;background:#a49d92;bottom:-2px;right:-3px;transform:rotate(45deg);border-radius:1px"></span></span>
-          <input value="{{ lookupValue }}" onInput="{{ onLookup }}" placeholder="Find a story you've been reading about, like the jobs report or chip rules" style="flex:1;border:none;outline:none;background:none;font-family:'IBM Plex Sans';font-size:15px;color:#1c1b19" />
+        <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #d3d7de;border-radius:10px;padding:13px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
+          <span style="width:16px;height:16px;border:2px solid #9aa0aa;border-radius:50%;position:relative;flex-shrink:0"><span style="position:absolute;width:6px;height:2px;background:#9aa0aa;bottom:-2px;right:-3px;transform:rotate(45deg);border-radius:1px"></span></span>
+          <input value="{{ lookupValue }}" onInput="{{ onLookup }}" placeholder="Find a story you've been reading about, like the jobs report or chip rules" style="flex:1;border:none;outline:none;background:none;font-family:'IBM Plex Sans';font-size:15px;color:#14171c" />
         </div>
-        <p style="font-size:12.5px;line-height:1.5;color:#6b655d;margin:10px 2px 0">NewsLens only compares events it has already processed and a human has reviewed. The search looks inside that set. It will not fetch or analyze a new article on demand.</p>
+        <p style="font-size:12.5px;line-height:1.5;color:#60646c;margin:10px 2px 0">NewsLens only compares events it has already processed and a human has reviewed. The search looks inside that set. It will not fetch or analyze a new article on demand.</p>
       </div>
     </section>
 
     <!-- who this is for -->
     <section style="padding:26px 0 6px">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <div class="nl-grid-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
         <sc-for list="{{ audiences }}" as="a" hint-placeholder-count="3">
-          <div style="background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:9px;padding:16px 17px">
-            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#0f6d63;margin-bottom:8px">{{ a.tag }}</div>
-            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:16.5px;color:#26241f;margin-bottom:6px">{{ a.title }}</div>
-            <p style="font-size:13px;line-height:1.5;color:#6b655d;margin:0">{{ a.body }}</p>
+          <div style="background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);border-radius:9px;padding:16px 17px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#16467e;margin-bottom:8px">{{ a.tag }}</div>
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:16.5px;color:#1f2329;margin-bottom:6px">{{ a.title }}</div>
+            <p style="font-size:13px;line-height:1.5;color:#60646c;margin:0">{{ a.body }}</p>
           </div>
         </sc-for>
       </div>
@@ -261,7 +207,7 @@
     <section style="padding:30px 0 8px">
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
         <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;margin:0">Available comparisons</h2>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8a8478">{{ resultCountLabel }}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7b818c">{{ resultCountLabel }}</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
@@ -271,32 +217,32 @@
     </section>
 
     <section style="padding:14px 0 80px">
-      <div style="display:grid;gap:0;border-top:1px solid #e0dbd0">
+      <div style="display:grid;gap:0;border-top:1px solid #e0e3e9">
         <sc-for list="{{ homeStories }}" as="s" hint-placeholder-count="6">
-          <article onClick="{{ s.onClick }}" style="{{ s.rowStyle }}" style-hover="background:rgba(28,27,25,0.03)">
+          <article class="nl-row" onClick="{{ s.onClick }}" style="{{ s.rowStyle }}" style-hover="background:rgba(20,32,54,0.04)">
             <div style="flex:1;min-width:0">
               <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0f6d63">{{ s.categoryLabel }}</span>
-                <span style="color:#c9c3b8">·</span>
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#595855">{{ s.date }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#16467e">{{ s.categoryLabel }}</span>
+                <span style="color:#c3c8d0">·</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#55585f">{{ s.date }}</span>
               </div>
               <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;line-height:1.2;letter-spacing:-0.01em;margin:0 0 8px">{{ s.headline }}</h2>
-              <p style="font-size:14.5px;line-height:1.55;color:#6b655d;margin:0;max-width:640px">{{ s.dek }}</p>
+              <p style="font-size:14.5px;line-height:1.55;color:#60646c;margin:0;max-width:640px">{{ s.dek }}</p>
             </div>
-            <div style="width:172px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px;padding-top:2px">
+            <div class="nl-row-meta" style="width:172px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px;padding-top:2px">
               <span style="{{ s.statusStyle }}">{{ s.statusLabel }}</span>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#595855">{{ s.outletCountLabel }}</span>
-              <span style="font-size:13px;color:#0f6d63;font-weight:600">{{ s.actionLabel }} →</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#55585f">{{ s.outletCountLabel }}</span>
+              <span style="font-size:13px;color:#16467e;font-weight:600">{{ s.actionLabel }} →</span>
             </div>
           </article>
         </sc-for>
       </div>
       <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:34px 4px;border-bottom:1px solid #e0dbd0">
-          <p style="font-size:15px;line-height:1.6;color:#6b655d;margin:0;max-width:560px">No comparison matches “<strong style="color:#1c1b19">{{ lookupValue }}</strong>”. NewsLens only covers events it has already processed and reviewed, so it can't analyze a new article on demand. Try a broader term, or clear the search to see everything available.</p>
+        <div style="padding:34px 4px;border-bottom:1px solid #e0e3e9">
+          <p style="font-size:15px;line-height:1.6;color:#60646c;margin:0;max-width:560px">No comparison matches “<strong style="color:#14171c">{{ lookupValue }}</strong>”. NewsLens only covers events it has already processed and reviewed, so it can't analyze a new article on demand. Try a broader term, or clear the search to see everything available.</p>
         </div>
       </sc-if>
-      <p style="font-size:12.5px;line-height:1.6;color:#6b655d;margin:28px 0 0;max-width:640px">NewsLens publishes a fixed set of precomputed stories. Each one is run once, ahead of time, and passes a human review before it appears here. Stories still in the extraction queue are shown but not yet open.</p>
+      <p style="font-size:12.5px;line-height:1.6;color:#60646c;margin:28px 0 0;max-width:640px">NewsLens publishes a fixed set of precomputed stories. Each one is run once, ahead of time, and passes a human review before it appears here. Stories still in the extraction queue are shown but not yet open.</p>
     </section>
   </main>
   </sc-if>
@@ -304,14 +250,14 @@
   <!-- ===================== STORY: QUEUED ===================== -->
   <sc-if value="{{ isQueued }}" hint-placeholder-val="{{ false }}">
   <main style="max-width:760px;margin:0 auto;padding:40px 28px 80px;width:100%">
-    <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#8a8478">← All stories</a>
-    <div style="margin-top:28px;padding:40px 36px;background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:10px">
+    <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#7b818c">← All stories</a>
+    <div style="margin-top:28px;padding:40px 36px;background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);border-radius:10px">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#b8892b;margin-bottom:14px">In extraction queue</div>
       <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1.15;letter-spacing:-0.015em;margin:0 0 16px">{{ story.headline }}</h1>
-      <p style="font-size:16px;line-height:1.6;color:#4a463f;margin:0 0 20px">{{ story.dek }}</p>
-      <div style="height:1px;background:#e8dfce;margin:24px 0"></div>
-      <p style="font-size:14.5px;line-height:1.65;color:#6b655d;margin:0">This story has not been published yet. NewsLens only opens a comparison after the AI has extracted the claims <em>and</em> a person has checked that work against a fidelity checklist, looking for omitted context, altered meaning, and wrong attribution. Nothing reaches the public page before that review.</p>
-      <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#6f695f;margin:18px 0 0">Queued · {{ story.outletCountLabel }} · review pending</p>
+      <p style="font-size:16px;line-height:1.6;color:#424751;margin:0 0 20px">{{ story.dek }}</p>
+      <div style="height:1px;background:#e6e9ee;margin:24px 0"></div>
+      <p style="font-size:14.5px;line-height:1.65;color:#60646c;margin:0">This story has not been published yet. NewsLens only opens a comparison after the AI has extracted the claims <em>and</em> a person has checked that work against a fidelity checklist, looking for omitted context, altered meaning, and wrong attribution. Nothing reaches the public page before that review.</p>
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#63676f;margin:18px 0 0">Queued · {{ story.outletCountLabel }} · review pending</p>
     </div>
   </main>
   </sc-if>
@@ -320,7 +266,7 @@
   <sc-if value="{{ isPublished }}" hint-placeholder-val="{{ false }}">
   <main style="max-width:1080px;margin:0 auto;padding:0 28px 96px;width:100%">
     <div style="padding:22px 0 0">
-      <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#8a8478">← All stories</a>
+      <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#7b818c">← All stories</a>
     </div>
 
     <sc-if value="{{ showGuide }}" hint-placeholder-val="{{ true }}">
@@ -330,35 +276,35 @@
         <button onClick="{{ dismissGuide }}" style="flex-shrink:0;font-family:'IBM Plex Sans';font-size:12px;font-weight:500;color:#a9812a;background:none;border:none;cursor:pointer">Dismiss</button>
       </div>
     </sc-if>
-    <div style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:44px;align-items:start;margin-top:8px">
+    <div class="nl-story-grid" style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:44px;align-items:start;margin-top:8px">
       <!-- MAIN COLUMN -->
       <div style="min-width:0">
 
         <!-- (1) HEADER -->
-        <section style="padding:20px 0 30px;border-bottom:2px solid #1c1b19">
+        <section style="padding:20px 0 30px;border-bottom:2px solid #14171c">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#0f6d63">{{ story.categoryLabel }}</span>
-            <span style="color:#c9c3b8">·</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8a8478">{{ story.date }}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#16467e">{{ story.categoryLabel }}</span>
+            <span style="color:#c3c8d0">·</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7b818c">{{ story.date }}</span>
           </div>
-          <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0 0 16px;text-wrap:pretty">{{ story.headline }}</h1>
-          <p style="font-size:18px;line-height:1.55;color:#4a463f;margin:0 0 22px;max-width:660px;text-wrap:pretty">{{ story.dek }}</p>
+          <h1 class="nl-hero-h1-story" style="font-family:'Source Serif 4',serif;font-weight:600;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0 0 16px;text-wrap:pretty">{{ story.headline }}</h1>
+          <p style="font-size:18px;line-height:1.55;color:#424751;margin:0 0 22px;max-width:660px;text-wrap:pretty">{{ story.dek }}</p>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#77716a">Comparing {{ story.outletCount }} outlets:</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6b6f79">Comparing {{ story.outletCount }} outlets:</span>
             <sc-for list="{{ story.outlets }}" as="o" hint-placeholder-count="6">
-              <span style="font-size:12.5px;color:#39352e;background:#ffffff;border:1px solid #d9cfba;border-radius:20px;padding:4px 12px">{{ o.name }}</span>
+              <span style="font-size:12.5px;color:#30343b;background:#ffffff;border:1px solid #d6dae1;border-radius:20px;padding:4px 12px">{{ o.name }}</span>
             </sc-for>
           </div>
         </section>
 
         <!-- (2) HEADLINES STRIP -->
         <section style="padding:34px 0 8px">
-          <h3 style="font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0f6d63;margin:0 0 16px">How the outlets framed it</h3>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+          <h3 style="font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#16467e;margin:0 0 16px">How the outlets framed it</h3>
+          <div class="nl-grid-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
             <sc-for list="{{ story.frames }}" as="f" hint-placeholder-count="3">
-              <div style="background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:8px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:10px">
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#0f6d63">{{ f.outlet }}</span>
-                <span style="font-family:'Source Serif 4',serif;font-weight:500;font-size:16.5px;line-height:1.3;color:#26241f">“{{ f.title }}”</span>
+              <div style="background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);border-radius:8px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#16467e">{{ f.outlet }}</span>
+                <span style="font-family:'Source Serif 4',serif;font-weight:500;font-size:16.5px;line-height:1.3;color:#1f2329">“{{ f.title }}”</span>
               </div>
             </sc-for>
           </div>
@@ -372,13 +318,13 @@
 
         <!-- (3) GUIDING QUESTIONS -->
         <section style="padding:26px 0 8px">
-          <div style="background:#eef4f2;border:1px solid #d3e3df;border-radius:8px;padding:20px 22px">
-            <h3 style="font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0a544c;margin:0 0 12px">As you read, ask</h3>
+          <div style="background:#eef3f9;border:1px solid #d9e4f1;border-radius:8px;padding:20px 22px">
+            <h3 style="font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0f3560;margin:0 0 12px">As you read, ask</h3>
             <div style="display:flex;flex-direction:column;gap:9px">
               <sc-for list="{{ story.questions }}" as="q" hint-placeholder-count="3">
                 <div style="display:flex;gap:11px;align-items:baseline">
-                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0f6d63;flex-shrink:0">{{ q.n }}</span>
-                  <span style="font-size:15.5px;line-height:1.5;color:#2a4742">{{ q.text }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#16467e;flex-shrink:0">{{ q.n }}</span>
+                  <span style="font-size:15.5px;line-height:1.5;color:#1c3350">{{ q.text }}</span>
                 </div>
               </sc-for>
             </div>
@@ -389,9 +335,9 @@
         <section style="padding:38px 0 8px">
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px">
             <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:26px;letter-spacing:-0.01em;margin:0">The claims, side by side</h3>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8a8478">{{ story.claimCountLabel }}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7b818c">{{ story.claimCountLabel }}</span>
           </div>
-          <p style="font-size:14px;line-height:1.55;color:#8a8478;margin:0 0 20px;max-width:620px">Each row is one factual claim and a count of how many of the {{ story.outletCount }} outlets reported it. Open a row to read the exact source sentence, or contest it if the grouping looks wrong.</p>
+          <p style="font-size:14px;line-height:1.55;color:#7b818c;margin:0 0 20px;max-width:620px">Each row is one factual claim and a count of how many of the {{ story.outletCount }} outlets reported it. Open a row to read the exact source sentence, or contest it if the grouping looks wrong.</p>
 
           <sc-if value="{{ alignmentMode }}" hint-placeholder-val="{{ false }}">
             <div style="margin-bottom:18px;padding:12px 14px;background:#fbf3df;border:1px solid #ecdcb0;border-left:3px solid #b8892b;border-radius:4px;font-size:13px;line-height:1.55;color:#6b5a2e">
@@ -402,34 +348,34 @@
 
           <div style="display:flex;flex-direction:column;gap:12px">
             <sc-for list="{{ claims }}" as="c" hint-placeholder-count="5">
-              <div style="border:1px solid #e8dfce;border-radius:12px;background:#ffffff;overflow:hidden;box-shadow:0 1px 2px rgba(70,55,25,.05),0 14px 32px -18px rgba(70,55,25,.24)">
-                <div onClick="{{ c.onToggle }}" style="cursor:pointer;padding:18px 20px;display:flex;gap:20px;align-items:flex-start">
+              <div style="border:1px solid #e6e9ee;border-radius:12px;background:#ffffff;overflow:hidden;box-shadow:0 1px 2px rgba(20,32,54,.05),0 14px 32px -18px rgba(20,32,54,.20)">
+                <div onClick="{{ c.onToggle }}" class="nl-claim-head" style="cursor:pointer;padding:18px 20px;display:flex;gap:20px;align-items:flex-start">
                   <div style="flex:1;min-width:0">
-                    <p style="font-size:16.5px;line-height:1.45;color:#1c1b19;margin:0;font-weight:500;text-wrap:pretty">{{ c.text }}</p>
+                    <p style="font-size:16.5px;line-height:1.45;color:#14171c;margin:0;font-weight:500;text-wrap:pretty">{{ c.text }}</p>
                     <sc-if value="{{ c.hasNote }}" hint-placeholder-val="{{ false }}">
-                      <div style="margin-top:9px;display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8a8478">
-                        <span style="width:6px;height:6px;border-radius:50%;background:#0f6d63;display:inline-block"></span>Human-review note attached
+                      <div style="margin-top:9px;display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7b818c">
+                        <span style="width:6px;height:6px;border-radius:50%;background:#16467e;display:inline-block"></span>Human-review note attached
                       </div>
                     </sc-if>
                   </div>
-                  <div style="flex-shrink:0;width:168px">
+                  <div class="nl-claim-meta" style="flex-shrink:0;width:168px">
                     <div style="display:flex;align-items:baseline;justify-content:flex-end;gap:5px;margin-bottom:9px">
-                      <span style="font-family:'IBM Plex Mono',monospace;font-size:23px;font-weight:600;line-height:1;color:#1c1b19">{{ c.countN }}</span>
-                      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8a8478">of {{ c.countTotal }} outlets</span>
+                      <span style="font-family:'IBM Plex Mono',monospace;font-size:23px;font-weight:600;line-height:1;color:#14171c">{{ c.countN }}</span>
+                      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7b818c">of {{ c.countTotal }} outlets</span>
                     </div>
                     <sc-if value="{{ c.showPips }}" hint-placeholder-val="{{ true }}">
                       <div style="display:flex;gap:4px;justify-content:flex-end">
                         <sc-for list="{{ c.pips }}" as="p" hint-placeholder-count="6">
                           <sc-if value="{{ p.on }}" hint-placeholder-val="{{ true }}">
-                            <span style="width:13px;height:13px;border-radius:3px;background:#1c1b19;display:block"></span>
+                            <span style="width:13px;height:13px;border-radius:3px;background:#14171c;display:block"></span>
                           </sc-if>
                           <sc-if value="{{ p.off }}" hint-placeholder-val="{{ false }}">
-                            <span style="width:13px;height:13px;border-radius:3px;border:1.5px solid #cfc9bd;display:block"></span>
+                            <span style="width:13px;height:13px;border-radius:3px;border:1.5px solid #ccd1d9;display:block"></span>
                           </sc-if>
                         </sc-for>
                       </div>
                     </sc-if>
-                    <div style="margin-top:11px;display:flex;align-items:center;justify-content:flex-end;gap:5px;font-size:12px;color:#0f6d63;font-weight:500">
+                    <div style="margin-top:11px;display:flex;align-items:center;justify-content:flex-end;gap:5px;font-size:12px;color:#16467e;font-weight:500">
                       <span>{{ c.toggleLabel }}</span>
                       <span style="font-size:9px">{{ c.chevron }}</span>
                     </div>
@@ -438,15 +384,15 @@
 
                 <!-- SOURCE PANEL (staged: closed until opened) -->
                 <sc-if value="{{ c.open }}" hint-placeholder-val="{{ false }}">
-                  <div style="border-top:1px solid #eee7db;background:#fbfaf6;padding:18px 20px;animation:nlFade 0.18s ease">
-                    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a8478;margin-bottom:14px">Reported by: {{ c.reportedNames }}</div>
+                  <div style="border-top:1px solid #eceef2;background:#fafbfd;padding:18px 20px;animation:nlFade 0.18s ease">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7b818c;margin-bottom:14px">Reported by: {{ c.reportedNames }}</div>
                     <div style="display:flex;flex-direction:column;gap:14px">
                       <sc-for list="{{ c.sources }}" as="src" hint-placeholder-count="2">
-                        <div style="display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:start">
-                          <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#0f6d63;padding-top:2px">{{ src.outlet }}</span>
-                          <div style="border-left:2px solid #d8d3ca;padding-left:14px">
-                            <span style="font-family:'Source Serif 4',serif;font-size:16px;line-height:1.5;color:#33302a">“{{ src.sentence }}”</span>
-                            <a onClick="{{ onSourceLink }}" style="display:inline-block;margin-top:6px;font-family:'IBM Plex Sans';font-size:12px;color:#0f6d63;cursor:pointer" style-hover="text-decoration:underline">Read the original at {{ src.outlet }} ↗</a>
+                        <div class="nl-stack-sm" style="display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:start">
+                          <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#16467e;padding-top:2px">{{ src.outlet }}</span>
+                          <div style="border-left:2px solid #d5d9df;padding-left:14px">
+                            <span style="font-family:'Source Serif 4',serif;font-size:16px;line-height:1.5;color:#2b2f36">“{{ src.sentence }}”</span>
+                            <a onClick="{{ onSourceLink }}" style="display:inline-block;margin-top:6px;font-family:'IBM Plex Sans';font-size:12px;color:#16467e;cursor:pointer" style-hover="text-decoration:underline">Read the original at {{ src.outlet }} ↗</a>
                           </div>
                         </div>
                       </sc-for>
@@ -455,53 +401,53 @@
                       <div style="margin-top:12px;padding:10px 13px;background:#fdf3f2;border:1px solid #f0d3ce;border-radius:6px;font-size:12.5px;line-height:1.5;color:#8a3b30">The original article links are illustrative sample data in this prototype, so they do not open a live page. In a deployed version each source would link to the outlet's published article.</div>
                     </sc-if>
                     <sc-if value="{{ c.hasNote }}" hint-placeholder-val="{{ false }}">
-                      <div style="margin-top:16px;padding:11px 14px;background:#eef4f2;border:1px solid #d3e3df;border-radius:6px;font-size:13.5px;line-height:1.5;color:#2a4742">
-                        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0a544c;display:block;margin-bottom:4px">Human-review note</span>{{ c.note }}
+                      <div style="margin-top:16px;padding:11px 14px;background:#eef3f9;border:1px solid #d9e4f1;border-radius:6px;font-size:13.5px;line-height:1.5;color:#1c3350">
+                        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0f3560;display:block;margin-bottom:4px">Human-review note</span>{{ c.note }}
                       </div>
                     </sc-if>
 
                     <!-- CONTEST -->
-                    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed #ddd6ca">
+                    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed #dadee4">
                       <sc-if value="{{ c.contestClosed }}" hint-placeholder-val="{{ true }}">
-                        <button onClick="{{ c.onContest }}" style="font-family:'IBM Plex Sans';font-size:13px;font-weight:500;color:#4a463f;background:#fff;border:1px solid #d6d1c6;border-radius:7px;padding:8px 14px;cursor:pointer" style-hover="border-color:#0f6d63;color:#0f6d63">Contest this claim</button>
-                        <span style="margin-left:12px;font-size:12.5px;color:#6b655d">Disagree with the grouping or attribution? Flag it for a human reviewer.</span>
+                        <button onClick="{{ c.onContest }}" style="font-family:'IBM Plex Sans';font-size:13px;font-weight:500;color:#424751;background:#fff;border:1px solid #d3d7de;border-radius:7px;padding:8px 14px;cursor:pointer" style-hover="border-color:#16467e;color:#16467e">Contest this claim</button>
+                        <span style="margin-left:12px;font-size:12.5px;color:#60646c">Disagree with the grouping or attribution? Flag it for a human reviewer.</span>
                       </sc-if>
 
                       <sc-if value="{{ c.contestOpen }}" hint-placeholder-val="{{ false }}">
                         <div style="animation:nlFade 0.18s ease">
-                          <div style="margin-bottom:16px;padding:14px 16px;background:#fff;border:1px solid #d3e3df;border-radius:8px">
-                            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0f6d63;margin-bottom:8px">Before you flag it, here is how this grouping was made</div>
-                            <p style="font-size:13.5px;line-height:1.55;color:#33413e;margin:0 0 10px">{{ c.groupingExplanation }}</p>
+                          <div style="margin-bottom:16px;padding:14px 16px;background:#fff;border:1px solid #d9e4f1;border-radius:8px">
+                            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#16467e;margin-bottom:8px">Before you flag it, here is how this grouping was made</div>
+                            <p style="font-size:13.5px;line-height:1.55;color:#26374d;margin:0 0 10px">{{ c.groupingExplanation }}</p>
                             <div style="display:flex;flex-direction:column;gap:7px">
                               <sc-for list="{{ c.groupingSteps }}" as="g" hint-placeholder-count="3">
                                 <div style="display:flex;gap:10px;align-items:baseline">
-                                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0f6d63;flex-shrink:0">{{ g.n }}</span>
-                                  <span style="font-size:13px;line-height:1.5;color:#4a463f">{{ g.text }}</span>
+                                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#16467e;flex-shrink:0">{{ g.n }}</span>
+                                  <span style="font-size:13px;line-height:1.5;color:#424751">{{ g.text }}</span>
                                 </div>
                               </sc-for>
                             </div>
                           </div>
-                          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#1c1b19;margin-bottom:4px">Still looks wrong? Tell us what.</div>
-                          <p style="font-size:12.5px;color:#8a8478;margin:0 0 12px">Pick the closest issue. Your flag goes to a person, and it does not change the public page on its own.</p>
+                          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#14171c;margin-bottom:4px">Still looks wrong? Tell us what.</div>
+                          <p style="font-size:12.5px;color:#7b818c;margin:0 0 12px">Pick the closest issue. Your flag goes to a person, and it does not change the public page on its own.</p>
                           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
                             <sc-for list="{{ contestReasons }}" as="r" hint-placeholder-count="4">
                               <button onClick="{{ r.onClick }}" style="{{ r.style }}">{{ r.label }}</button>
                             </sc-for>
                           </div>
-                          <textarea onInput="{{ onContestText }}" placeholder="Optional: describe the problem in your own words." style="width:100%;min-height:72px;resize:vertical;font-family:'IBM Plex Sans';font-size:14px;line-height:1.5;color:#1c1b19;background:#fff;border:1px solid #d6d1c6;border-radius:7px;padding:11px 13px;outline:none"></textarea>
+                          <textarea onInput="{{ onContestText }}" placeholder="Optional: describe the problem in your own words." style="width:100%;min-height:72px;resize:vertical;font-family:'IBM Plex Sans';font-size:14px;line-height:1.5;color:#14171c;background:#fff;border:1px solid #d3d7de;border-radius:7px;padding:11px 13px;outline:none"></textarea>
                           <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
                             <button onClick="{{ onSubmitContest }}" style="{{ contestSubmitStyle }}">Route to human review</button>
-                            <button onClick="{{ onCloseContest }}" style="font-family:'IBM Plex Sans';font-size:13px;color:#8a8478;background:none;border:none;cursor:pointer">Cancel</button>
+                            <button onClick="{{ onCloseContest }}" style="font-family:'IBM Plex Sans';font-size:13px;color:#7b818c;background:none;border:none;cursor:pointer">Cancel</button>
                           </div>
                         </div>
                       </sc-if>
 
                       <sc-if value="{{ c.contestDone }}" hint-placeholder-val="{{ false }}">
-                        <div style="animation:nlFade 0.18s ease;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:#eef4f2;border:1px solid #d3e3df;border-radius:8px">
-                          <span style="width:20px;height:20px;border-radius:50%;background:#0f6d63;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px">✓</span>
+                        <div style="animation:nlFade 0.18s ease;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:#eef3f9;border:1px solid #d9e4f1;border-radius:8px">
+                          <span style="width:20px;height:20px;border-radius:50%;background:#16467e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px">✓</span>
                           <div>
-                            <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#0a544c;margin-bottom:3px">Flag received. Queued for review as {{ contestTicket }}</div>
-                            <p style="font-size:13.5px;line-height:1.5;color:#2a4742;margin:0">A human reviewer will check this claim against the fidelity checklist. Nothing on the public page changes until they act. Thanks for keeping the box honest.</p>
+                            <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#0f3560;margin-bottom:3px">Flag received. Queued for review as {{ contestTicket }}</div>
+                            <p style="font-size:13.5px;line-height:1.5;color:#1c3350;margin:0">A human reviewer will check this claim against the fidelity checklist. Nothing on the public page changes until they act. Thanks for keeping the box honest.</p>
                           </div>
                         </div>
                       </sc-if>
@@ -515,31 +461,31 @@
 
         <!-- (5) EXPLANATION PANEL -->
         <section style="padding:34px 0 8px">
-          <div style="border:1px solid #d3e3df;border-radius:10px;overflow:hidden;background:#f6faf9">
+          <div style="border:1px solid #d9e4f1;border-radius:10px;overflow:hidden;background:#f7fafd">
             <div onClick="{{ toggleExplanation }}" style="cursor:pointer;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px">
               <div>
-                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#0f6d63;margin-bottom:5px">Glass box</div>
-                <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:21px;margin:0;color:#1c1b19">How NewsLens compared these articles</h3>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#16467e;margin-bottom:5px">Glass box</div>
+                <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:21px;margin:0;color:#14171c">How NewsLens compared these articles</h3>
               </div>
-              <span style="font-size:13px;color:#0f6d63;font-weight:500;flex-shrink:0">{{ explanationToggleLabel }}</span>
+              <span style="font-size:13px;color:#16467e;font-weight:500;flex-shrink:0">{{ explanationToggleLabel }}</span>
             </div>
             <sc-if value="{{ explanationOpen }}" hint-placeholder-val="{{ false }}">
-              <div style="border-top:1px solid #d3e3df;padding:8px 22px 24px;animation:nlFade 0.18s ease">
-                <p style="font-size:13px;line-height:1.5;color:#5c7a74;margin:14px 0 20px;max-width:640px">These five sections cover how the comparison was put together, written for a reader rather than an engineer.</p>
+              <div style="border-top:1px solid #d9e4f1;padding:8px 22px 24px;animation:nlFade 0.18s ease">
+                <p style="font-size:13px;line-height:1.5;color:#5a7191;margin:14px 0 20px;max-width:640px">These five sections cover how the comparison was put together, written for a reader rather than an engineer.</p>
                 <div style="display:flex;flex-direction:column">
                   <sc-for list="{{ explanationRows }}" as="e" hint-placeholder-count="5">
-                    <div style="display:grid;grid-template-columns:180px 1fr;gap:20px;padding:15px 0;border-top:1px solid #dfe9e6">
-                      <span style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#0a544c">{{ e.label }}</span>
-                      <span style="font-size:14.5px;line-height:1.55;color:#33413e">{{ e.body }}</span>
+                    <div class="nl-stack-sm" style="display:grid;grid-template-columns:180px 1fr;gap:20px;padding:15px 0;border-top:1px solid #dfe7f2">
+                      <span style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#0f3560">{{ e.label }}</span>
+                      <span style="font-size:14.5px;line-height:1.55;color:#26374d">{{ e.body }}</span>
                     </div>
                   </sc-for>
                 </div>
-                <p style="font-size:12.5px;line-height:1.5;color:#8a8478;margin:16px 0 0;font-style:italic">This panel explains what the system did and why. It cannot answer "what would change if I gave it a different article," since NewsLens runs on a fixed, precomputed set.</p>
-                <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dfe9e6;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center">
-                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5c7a74">Full methods:</span>
-                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#0f6d63;text-decoration:underline">Claim-extraction method</a>
-                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#0f6d63;text-decoration:underline">Corroboration matching</a>
-                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#0f6d63;text-decoration:underline">Human review checklist</a>
+                <p style="font-size:12.5px;line-height:1.5;color:#7b818c;margin:16px 0 0;font-style:italic">This panel explains what the system did and why. It cannot answer "what would change if I gave it a different article," since NewsLens runs on a fixed, precomputed set.</p>
+                <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dfe7f2;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5a7191">Full methods:</span>
+                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#16467e;text-decoration:underline">Claim-extraction method</a>
+                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#16467e;text-decoration:underline">Corroboration matching</a>
+                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#16467e;text-decoration:underline">Human review checklist</a>
                 </div>
                 <sc-if value="{{ methodsLinkClicked }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-top:12px;padding:11px 14px;background:#fdf3f2;border:1px solid #f0d3ce;border-radius:6px;font-size:13px;line-height:1.5;color:#8a3b30;animation:nlFade 0.18s ease">
@@ -563,38 +509,38 @@
           <div style="display:grid;gap:14px">
 
             <!-- datasheet -->
-            <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:20px 22px">
-              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8478;margin-bottom:10px">Which outlets, and why</div>
-              <p style="font-size:14.5px;line-height:1.6;color:#33302a;margin:0 0 14px">{{ story.outletRationale }}</p>
-              <div style="padding:12px 14px;background:#f6faf9;border:1px solid #d3e3df;border-radius:7px;font-size:13.5px;line-height:1.55;color:#2a4742">
+            <div style="border:1px solid #e6e9ee;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);padding:20px 22px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#7b818c;margin-bottom:10px">Which outlets, and why</div>
+              <p style="font-size:14.5px;line-height:1.6;color:#2b2f36;margin:0 0 14px">{{ story.outletRationale }}</p>
+              <div style="padding:12px 14px;background:#f7fafd;border:1px solid #d9e4f1;border-radius:7px;font-size:13.5px;line-height:1.55;color:#1c3350">
                 <strong style="font-weight:600">Reading the counts:</strong> “{{ story.outletCount }} of {{ story.outletCount }}” means all {{ story.outletCount }} of <em>these</em> outlets. It says nothing about the rest of the press. The sample is intentionally small.
               </div>
             </div>
 
             <!-- model card -->
-            <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:20px 22px">
-              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8478;margin-bottom:12px">Model card · limitations</div>
+            <div style="border:1px solid #e6e9ee;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);padding:20px 22px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#7b818c;margin-bottom:12px">Model card · limitations</div>
               <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px">
                 <sc-for list="{{ story.limitations }}" as="l" hint-placeholder-count="4">
                   <div style="display:flex;gap:10px;align-items:baseline">
                     <span style="width:5px;height:5px;border-radius:50%;background:#b8892b;flex-shrink:0;position:relative;top:-1px"></span>
-                    <span style="font-size:14px;line-height:1.5;color:#33302a">{{ l }}</span>
+                    <span style="font-size:14px;line-height:1.5;color:#2b2f36">{{ l }}</span>
                   </div>
                 </sc-for>
               </div>
-              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8478;margin-bottom:10px">Out of scope by design</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#7b818c;margin-bottom:10px">Out of scope by design</div>
               <div style="display:flex;flex-direction:column;gap:9px">
                 <sc-for list="{{ story.outOfScope }}" as="x" hint-placeholder-count="3">
                   <div style="display:flex;gap:10px;align-items:baseline">
                     <span style="font-family:'IBM Plex Mono',monospace;color:#c0392b;font-size:13px;flex-shrink:0;line-height:1.2">✕</span>
-                    <span style="font-size:14px;line-height:1.5;color:#33302a">{{ x }}</span>
+                    <span style="font-size:14px;line-height:1.5;color:#2b2f36">{{ x }}</span>
                   </div>
                 </sc-for>
               </div>
             </div>
 
             <!-- review log -->
-            <div style="border:1px solid #ecdcb0;border-radius:9px;background:#fdfaf1;padding:18px 22px;display:flex;gap:14px;align-items:flex-start">
+            <div style="border:1px solid #ecdcb0;border-radius:9px;background:#fbfcfe;padding:18px 22px;display:flex;gap:14px;align-items:flex-start">
               <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:#b8892b;padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:2px">Pending</span>
               <div>
                 <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:14.5px;color:#7a5f1f;margin-bottom:4px">Correction log not yet published</div>
@@ -606,29 +552,29 @@
       </div>
 
       <!-- RIGHT RAIL -->
-      <aside style="position:sticky;top:84px;display:flex;flex-direction:column;gap:16px">
-        <div style="border:1px solid #e8dfce;border-radius:12px;background:#fff;padding:18px 18px 20px;box-shadow:0 1px 2px rgba(70,55,25,.05),0 14px 32px -18px rgba(70,55,25,.24)">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8478;margin-bottom:12px">On this page</div>
+      <aside class="nl-rail" style="position:sticky;top:84px;display:flex;flex-direction:column;gap:16px">
+        <div style="border:1px solid #e6e9ee;border-radius:12px;background:#fff;padding:18px 18px 20px;box-shadow:0 1px 2px rgba(20,32,54,.05),0 14px 32px -18px rgba(20,32,54,.20)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#7b818c;margin-bottom:12px">On this page</div>
           <div style="display:flex;flex-direction:column;gap:11px">
             <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
-              <span style="font-size:13.5px;color:#4a463f">Factual claims</span>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#1c1b19;font-weight:500">{{ story.claimTotal }}</span>
+              <span style="font-size:13.5px;color:#424751">Factual claims</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#14171c;font-weight:500">{{ story.claimTotal }}</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
-              <span style="font-size:13.5px;color:#4a463f">Outlets compared</span>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#1c1b19;font-weight:500">{{ story.outletCount }}</span>
+              <span style="font-size:13.5px;color:#424751">Outlets compared</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#14171c;font-weight:500">{{ story.outletCount }}</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
-              <span style="font-size:13.5px;color:#4a463f">Bias ratings</span>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0f6d63;font-weight:500">none</span>
+              <span style="font-size:13.5px;color:#424751">Bias ratings</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#16467e;font-weight:500">none</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
-              <span style="font-size:13.5px;color:#4a463f">Accuracy verdicts</span>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0f6d63;font-weight:500">none</span>
+              <span style="font-size:13.5px;color:#424751">Accuracy verdicts</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#16467e;font-weight:500">none</span>
             </div>
           </div>
-          <div style="height:1px;background:#eee7db;margin:16px 0"></div>
-          <p style="font-size:12.5px;line-height:1.5;color:#8a8478;margin:0">You are in <strong style="color:#4a463f">{{ readingModeLabel }}</strong>. {{ readingModeHint }}</p>
+          <div style="height:1px;background:#eceef2;margin:16px 0"></div>
+          <p style="font-size:12.5px;line-height:1.5;color:#7b818c;margin:0">You are in <strong style="color:#424751">{{ readingModeLabel }}</strong>. {{ readingModeHint }}</p>
         </div>
 
         <sc-if value="{{ alignmentMode }}" hint-placeholder-val="{{ false }}">
@@ -645,23 +591,23 @@
   <!-- ===================== ABOUT ===================== -->
   <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
   <main style="max-width:820px;margin:0 auto;padding:36px 28px 90px;width:100%">
-    <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#8a8478">← All stories</a>
+    <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#7b818c">← All stories</a>
 
     <div style="margin-top:26px">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#0f6d63;margin-bottom:16px">About this prototype</div>
-      <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1.12;letter-spacing:-0.02em;margin:0 0 18px">A design-based capstone, shown as a working product</h1>
-      <p style="font-size:17px;line-height:1.6;color:#4a463f;margin:0;max-width:680px">NewsLens is the artifact for an HCAI 4304 capstone on staged transparency in AI journalism. This page is the research layer. It explains what the prototype is for, how it was built and evaluated, and where it still falls short. The story pages themselves stay in product voice and keep this material out of the reader's way.</p>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#16467e;margin-bottom:16px">About this prototype</div>
+      <h1 class="nl-hero-h1-story" style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1.12;letter-spacing:-0.02em;margin:0 0 18px">A design-based capstone, shown as a working product</h1>
+      <p style="font-size:17px;line-height:1.6;color:#424751;margin:0;max-width:680px">NewsLens is the artifact for an HCAI 4304 capstone on staged transparency in AI journalism. This page is the research layer. It explains what the prototype is for, how it was built and evaluated, and where it still falls short. The story pages themselves stay in product voice and keep this material out of the reader's way.</p>
     </div>
 
     <!-- two-layer -->
     <section style="margin-top:40px">
       <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 14px;letter-spacing:-0.01em">Two layers, one artifact</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <div style="background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:9px;padding:18px 20px">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#0f6d63;margin-bottom:8px">Layer 1 · the product</div>
-          <p style="font-size:14.5px;line-height:1.55;color:#33302a;margin:0">Every story page reads like a shipping product. Plain language, no citations, no jargon. A reader never sees an academic reference.</p>
+      <div class="nl-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div style="background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);border-radius:9px;padding:18px 20px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#16467e;margin-bottom:8px">Layer 1 · the product</div>
+          <p style="font-size:14.5px;line-height:1.55;color:#2b2f36;margin:0">Every story page reads like a shipping product. Plain language, no citations, no jargon. A reader never sees an academic reference.</p>
         </div>
-        <div style="background:#fbf3df;border:1px solid #ecd7a8;border-radius:11px;padding:18px 20px;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17)">
+        <div style="background:#fbf3df;border:1px solid #ecd7a8;border-radius:11px;padding:18px 20px;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14)">
           <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a9812a;margin-bottom:8px">Layer 2 · research notes</div>
           <p style="font-size:14.5px;line-height:1.55;color:#6b5a2e;margin:0">The <strong>Research notes</strong> toggle on any story page adds margin annotations that tie each design choice back to the literature. Off by default. This is the view for reviewing the work against the paper.</p>
         </div>
@@ -671,15 +617,15 @@
     <!-- framework -->
     <section style="margin-top:36px">
       <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 8px;letter-spacing:-0.01em">The idea being tested</h2>
-      <p style="font-size:15.5px;line-height:1.6;color:#4a463f;margin:0 0 16px;max-width:680px">The research question: can staging AI transparency earn a reader's trust without overloading them? The design rests on two working principles.</p>
+      <p style="font-size:15.5px;line-height:1.6;color:#424751;margin:0 0 16px;max-width:680px">The research question: can staging AI transparency earn a reader's trust without overloading them? The design rests on two working principles.</p>
       <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:16px 20px">
-          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:5px">Path to Transparency</div>
-          <p style="font-size:14px;line-height:1.55;color:#4a463f;margin:0">Readers grant basic trust through clean design first, then transparency is revealed in stages rather than dumped at once (Kizilcec, 2016; Shin, 2021).</p>
+        <div style="border:1px solid #e6e9ee;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);padding:16px 20px">
+          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#14171c;margin-bottom:5px">Path to Transparency</div>
+          <p style="font-size:14px;line-height:1.55;color:#424751;margin:0">Readers grant basic trust through clean design first, then transparency is revealed in stages rather than dumped at once (Kizilcec, 2016; Shin, 2021).</p>
         </div>
-        <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:16px 20px">
-          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:5px">10-80-10 division of labor</div>
-          <p style="font-size:14px;line-height:1.55;color:#4a463f;margin:0">A human sets direction (first 10%), AI does the volume of extraction and code (middle 80%), and a human reviews and takes responsibility (final 10%) (Mollick, 2024).</p>
+        <div style="border:1px solid #e6e9ee;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);padding:16px 20px">
+          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#14171c;margin-bottom:5px">10-80-10 division of labor</div>
+          <p style="font-size:14px;line-height:1.55;color:#424751;margin:0">A human sets direction (first 10%), AI does the volume of extraction and code (middle 80%), and a human reviews and takes responsibility (final 10%) (Mollick, 2024).</p>
         </div>
       </div>
     </section>
@@ -687,14 +633,14 @@
     <!-- iterations -->
     <section style="margin-top:36px">
       <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 8px;letter-spacing:-0.01em">Three iterations</h2>
-      <p style="font-size:15.5px;line-height:1.6;color:#4a463f;margin:0 0 18px;max-width:680px">The build itself was the research method (research through design). The story page moved through three versions.</p>
+      <p style="font-size:15.5px;line-height:1.6;color:#424751;margin:0 0 18px;max-width:680px">The build itself was the research method (research through design). The story page moved through three versions.</p>
       <div style="display:flex;flex-direction:column">
         <sc-for list="{{ iterations }}" as="it" hint-placeholder-count="3">
-          <div style="display:grid;grid-template-columns:56px 1fr;gap:18px;padding:16px 0;border-top:1px solid #e8dfce">
-            <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:#0f6d63">{{ it.v }}</div>
+          <div style="display:grid;grid-template-columns:56px 1fr;gap:18px;padding:16px 0;border-top:1px solid #e6e9ee">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:#16467e">{{ it.v }}</div>
             <div>
-              <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:4px">{{ it.title }}</div>
-              <p style="font-size:14px;line-height:1.55;color:#4a463f;margin:0">{{ it.body }}</p>
+              <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#14171c;margin-bottom:4px">{{ it.title }}</div>
+              <p style="font-size:14px;line-height:1.55;color:#424751;margin:0">{{ it.body }}</p>
             </div>
           </div>
         </sc-for>
@@ -704,29 +650,29 @@
     <!-- evaluation -->
     <section style="margin-top:36px">
       <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 8px;letter-spacing:-0.01em">How it was evaluated</h2>
-      <p style="font-size:15.5px;line-height:1.6;color:#4a463f;margin:0 0 18px;max-width:680px">Three analytical methods, all run by the designer. No live user study was conducted, so no measured effects on real users are claimed.</p>
+      <p style="font-size:15.5px;line-height:1.6;color:#424751;margin:0 0 18px;max-width:680px">Three analytical methods, all run by the designer. No live user study was conducted, so no measured effects on real users are claimed.</p>
 
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
+      <div class="nl-grid-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
         <sc-for list="{{ evalStats }}" as="e" hint-placeholder-count="3">
-          <div style="background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:9px;padding:16px 16px">
-            <div style="font-family:'Source Serif 4',serif;font-weight:700;font-size:26px;color:#0f6d63;margin-bottom:4px">{{ e.stat }}</div>
-            <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:13px;color:#1c1b19;margin-bottom:3px">{{ e.label }}</div>
-            <p style="font-size:12.5px;line-height:1.45;color:#6b655d;margin:0">{{ e.body }}</p>
+          <div style="background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);border-radius:9px;padding:16px 16px">
+            <div style="font-family:'Source Serif 4',serif;font-weight:700;font-size:26px;color:#16467e;margin-bottom:4px">{{ e.stat }}</div>
+            <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:13px;color:#14171c;margin-bottom:3px">{{ e.label }}</div>
+            <p style="font-size:12.5px;line-height:1.45;color:#60646c;margin:0">{{ e.body }}</p>
           </div>
         </sc-for>
       </div>
 
       <!-- personas -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-        <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:16px 18px">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0f6d63;margin-bottom:7px">Persona · cognitive walkthrough</div>
-          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:5px">Skeptical partisan reader</div>
-          <p style="font-size:13.5px;line-height:1.5;color:#4a463f;margin:0">Chosen because prior trust level changes how a reader reacts to transparency cues (Shin &amp; Park, 2019). This walkthrough exposed the AllSides bias-label flaw described below.</p>
+      <div class="nl-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="border:1px solid #e6e9ee;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);padding:16px 18px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#16467e;margin-bottom:7px">Persona · cognitive walkthrough</div>
+          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#14171c;margin-bottom:5px">Skeptical partisan reader</div>
+          <p style="font-size:13.5px;line-height:1.5;color:#424751;margin:0">Chosen because prior trust level changes how a reader reacts to transparency cues (Shin &amp; Park, 2019). This walkthrough exposed the AllSides bias-label flaw described below.</p>
         </div>
-        <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:16px 18px">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0f6d63;margin-bottom:7px">Persona · cognitive walkthrough</div>
-          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:5px">News-literacy educator</div>
-          <p style="font-size:13.5px;line-height:1.5;color:#4a463f;margin:0">A teacher looking for a classroom artifact (Tully et al., 2020). This walkthrough validated the guiding questions and the always-open explanation panel.</p>
+        <div style="border:1px solid #e6e9ee;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);padding:16px 18px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#16467e;margin-bottom:7px">Persona · cognitive walkthrough</div>
+          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#14171c;margin-bottom:5px">News-literacy educator</div>
+          <p style="font-size:13.5px;line-height:1.5;color:#424751;margin:0">A teacher looking for a classroom artifact (Tully et al., 2020). This walkthrough validated the guiding questions and the always-open explanation panel.</p>
         </div>
       </div>
 
@@ -739,28 +685,28 @@
     <!-- honest gaps -->
     <section style="margin-top:36px">
       <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 8px;letter-spacing:-0.01em">Known gaps in this build</h2>
-      <p style="font-size:15.5px;line-height:1.6;color:#4a463f;margin:0 0 16px;max-width:680px">Disclosed rather than hidden, consistent with the glass-box approach.</p>
+      <p style="font-size:15.5px;line-height:1.6;color:#424751;margin:0 0 16px;max-width:680px">Disclosed rather than hidden, consistent with the glass-box approach.</p>
       <div style="display:flex;flex-direction:column;gap:9px">
         <sc-for list="{{ knownGaps }}" as="g" hint-placeholder-count="4">
           <div style="display:flex;gap:11px;align-items:baseline">
             <span style="width:6px;height:6px;border-radius:50%;background:#b8892b;flex-shrink:0;position:relative;top:-1px"></span>
-            <span style="font-size:14.5px;line-height:1.5;color:#33302a">{{ g }}</span>
+            <span style="font-size:14.5px;line-height:1.5;color:#2b2f36">{{ g }}</span>
           </div>
         </sc-for>
       </div>
     </section>
 
-    <p style="font-size:12.5px;line-height:1.6;color:#6b655d;margin:34px 0 0;max-width:680px">All figures in the story pages are illustrative sample data for the prototype, not a live extraction. Citations here refer to the accompanying paper's reference list.</p>
+    <p style="font-size:12.5px;line-height:1.6;color:#60646c;margin:34px 0 0;max-width:680px">All figures in the story pages are illustrative sample data for the prototype, not a live extraction. Citations here refer to the accompanying paper's reference list.</p>
   </main>
   </sc-if>
 
   <!-- FOOTER -->
-  <footer style="margin-top:auto;border-top:1px solid #ddd3c0;background:#e6ddcb">
+  <footer style="margin-top:auto;border-top:1px solid #d8dce3;background:#e5e8ed">
     <div style="max-width:1080px;margin:0 auto;padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6f695f">NewsLens · staged-transparency prototype · illustrative sample data</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#63676f">NewsLens · staged-transparency prototype · illustrative sample data</span>
       <div style="display:flex;align-items:center;gap:18px">
-        <a onClick="{{ goAbout }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8a8478" style-hover="color:#0f6d63">About this prototype</a>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6f695f">HCAI 4304 capstone · Milan Khanal</span>
+        <a onClick="{{ goAbout }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#7b818c" style-hover="color:#16467e">About this prototype</a>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#63676f">HCAI 4304 capstone · Milan Khanal</span>
       </div>
     </div>
   </footer>
@@ -1041,8 +987,8 @@ class Component extends DCLogic {
     const st = this.state;
     const countStyle = this.props.countStyle || 'pips';
     const btnBase = 'font-family:IBM Plex Sans;font-size:12.5px;font-weight:500;border:none;border-radius:5px;padding:5px 12px;cursor:pointer;transition:all .12s';
-    const activeBtn = btnBase + ';background:#1c1b19;color:#fff';
-    const idleBtn = btnBase + ';background:transparent;color:#77716a';
+    const activeBtn = btnBase + ';background:#14171c;color:#fff';
+    const idleBtn = btnBase + ';background:transparent;color:#6b6f79';
 
     // ----- categories (home) -----
     const catDefs = [
@@ -1056,8 +1002,8 @@ class Component extends DCLogic {
       label: c.label,
       onClick: () => this.setCategory(c.id),
       style: st.category === c.id
-        ? chipBase + ';background:#1c1b19;color:#fff;border:1px solid #1c1b19'
-        : chipBase + ';background:transparent;color:#57534c;border:1px solid #d6d1c6'
+        ? chipBase + ';background:#14171c;color:#fff;border:1px solid #14171c'
+        : chipBase + ';background:transparent;color:#4d525b;border:1px solid #d3d7de'
     }));
 
     // ----- home story rows -----
@@ -1069,14 +1015,14 @@ class Component extends DCLogic {
       .filter(matches);
     const homeStories = filtered
       .map(s => {
-        const rowBase = 'display:flex;gap:28px;align-items:flex-start;padding:26px 4px;border-bottom:1px solid #e0dbd0;cursor:pointer;transition:background .12s';
+        const rowBase = 'display:flex;gap:28px;align-items:flex-start;padding:26px 4px;border-bottom:1px solid #e0e3e9;cursor:pointer;transition:background .12s';
         return {
           categoryLabel: s.categoryLabel, date: s.date, headline: s.headline, dek: s.dek,
           outletCountLabel: outletCount(s) + ' outlets',
           statusLabel: s.published ? 'Published' : 'In queue',
           actionLabel: s.published ? 'Open comparison' : 'Why queued',
           statusStyle: s.published
-            ? 'font-family:IBM Plex Mono,monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0a544c;background:#e2efec;border:1px solid #cfe3de;padding:3px 9px;border-radius:4px'
+            ? 'font-family:IBM Plex Mono,monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0f3560;background:#e6eef7;border:1px solid #d7e3f2;padding:3px 9px;border-radius:4px'
             : 'font-family:IBM Plex Mono,monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#664d03;background:#faeecb;border:1px solid #e6d4a0;padding:3px 9px;border-radius:4px',
           rowStyle: rowBase,
           onClick: () => this.openStory(s.id)
@@ -1104,9 +1050,9 @@ class Component extends DCLogic {
       alignmentMode: st.alignment,
       stagedBtnStyle: expanded ? idleBtn : activeBtn,
       expandedBtnStyle: expanded ? activeBtn : idleBtn,
-      notesDotColor: st.alignment ? '#b8892b' : '#c9c3b8',
+      notesDotColor: st.alignment ? '#b8892b' : '#c3c8d0',
       notesBtnStyle: 'display:flex;align-items:center;gap:7px;font-family:IBM Plex Sans;font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:7px;cursor:pointer;transition:all .12s;'
-        + (st.alignment ? 'background:#fbf3df;border:1px solid #ecdcb0;color:#8a6a1e' : 'background:transparent;border:1px solid #ded9cf;color:#77716a'),
+        + (st.alignment ? 'background:#fbf3df;border:1px solid #ecdcb0;color:#8a6a1e' : 'background:transparent;border:1px solid #d9dde3;color:#6b6f79'),
       categories, homeStories,
       iterations: [
         { v: 'v1', title: 'Data dashboard', body: 'A big claims table with counts and statistics visible all at once. It failed a basic usability test: a reader arriving for a news story would see a spreadsheet and leave.' },
@@ -1208,8 +1154,8 @@ class Component extends DCLogic {
         label: r.label,
         onClick: () => this.setContestReason(r.id),
         style: curReason === r.id
-          ? rBase + ';background:#0f6d63;color:#fff;border:1px solid #0f6d63'
-          : rBase + ';background:#fff;color:#57534c;border:1px solid #d6d1c6'
+          ? rBase + ';background:#16467e;color:#fff;border:1px solid #16467e'
+          : rBase + ';background:#fff;color:#4d525b;border:1px solid #d3d7de'
       }));
       vals.onContestText = this.onContestText;
       vals.onSubmitContest = this.submitContest;
@@ -1217,7 +1163,7 @@ class Component extends DCLogic {
       vals.contestTicket = st.contest ? st.contest.ticket : '';
       const canSubmit = st.contest && st.contest.reason;
       vals.contestSubmitStyle = 'font-family:IBM Plex Sans;font-size:13px;font-weight:600;border-radius:7px;padding:9px 16px;border:none;transition:all .12s;'
-        + (canSubmit ? 'background:#0f6d63;color:#fff;cursor:pointer' : 'background:#d9d4c9;color:#fff;cursor:not-allowed');
+        + (canSubmit ? 'background:#16467e;color:#fff;cursor:pointer' : 'background:#d6dae0;color:#fff;cursor:not-allowed');
 
       // explanation
       const exp = story.explanation;

@@ -51,7 +51,10 @@ check('index.html loads ReactDOM from CDN before support.js', (() => {
 check('index.html contains data-dc-script block', html.includes('data-dc-script'));
 check('page states "illustrative sample data" (Rule 1 disclaimer)', html.includes('illustrative sample data'));
 check('portfolio strip (#pilot-suite-strip) injected', html.includes('id=\'pilot-suite-strip\'') || html.includes('id="pilot-suite-strip"') || html.includes('pilot-suite-strip'));
-check('mobile responsive @media query present', html.includes('@media (max-width: 768px)'));
+// Mobile responsive rules now live in the design source (Claude Design,
+// 2026-07-21). Pilot-suite retired its local @media block. Check that ONE
+// of the two forms is present — the design uses 767px, the strip uses 640px.
+check('mobile responsive @media query present', /@media \(max-width: (767|768|640)px\)/.test(html));
 check('portfolio strip href routes to /', /href=['"]\/["']/.test(html) || html.includes("a.href = '/'"));
 check('host-inject block wrapped with BEGIN/END markers (re-sync anchor)', html.includes('PILOT-SUITE HOST INJECT'));
 
