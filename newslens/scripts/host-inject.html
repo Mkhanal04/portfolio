@@ -91,11 +91,20 @@
     } else {
       ensureStrip();
     }
-    // Support.js processes <x-dc> after DOMContentLoaded; if the render
-    // strategy touches body children we need to survive it.
-    new MutationObserver(ensureStrip).observe(document.documentElement, {
-      childList: true, subtree: true,
-    });
+    // Re-check after the microtask + next frame, catching any support.js
+    // render pass that clears body first-children. Scoped to body only
+    // (childList, not subtree) — a subtree observer on documentElement
+    // interacts badly with support.js's shadow-root placeholder path and
+    // collapses the design's mount container to a few pixels.
+    setTimeout(ensureStrip, 0);
+    requestAnimationFrame(ensureStrip);
+    if (document.body) {
+      new MutationObserver(ensureStrip).observe(document.body, { childList: true });
+    } else {
+      document.addEventListener('DOMContentLoaded', function () {
+        new MutationObserver(ensureStrip).observe(document.body, { childList: true });
+      });
+    }
   })();
 </script>
 <!-- ================================================================
