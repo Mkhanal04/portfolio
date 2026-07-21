@@ -1,234 +1,1080 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NewsLens · One story, side by side, across the newsrooms that covered it</title>
-<style>
-  :root{
-    --ink:#182230; --body:#3f4a5a; --faint:#677284;
-    --bg:#fafbfc; --card:#ffffff; --line:#e4e8ee; --line2:#d3d9e2;
-    --accent:#0f766e; --accent-soft:#e6f2f0;
-    --warn:#9a5b13; --warn-soft:#fbf3e6;
-    --radius:14px;
-  }
-  *{box-sizing:border-box;}
-  body{margin:0; background:var(--bg); color:var(--body);
-       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
-       font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
-  a{color:var(--accent);}
-  .wrap{max-width:940px; margin:0 auto; padding:0 22px;}
-
-  .top{border-bottom:1px solid var(--line); background:var(--card);}
-  .top .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:16px; padding-bottom:16px; gap:18px; flex-wrap:wrap;}
-  .brand{font-weight:700; color:var(--ink); font-size:1.06rem; letter-spacing:-.01em;}
-  .brand span{color:var(--accent);}
-  .topnav a{margin-left:18px; font-size:.86rem; color:var(--faint); text-decoration:none; border-bottom:1px solid transparent;}
-  .topnav a:hover{color:var(--accent); border-bottom-color:var(--accent);}
-
-  .hero{padding:60px 0 34px; max-width:720px;}
-  .hero h1{color:var(--ink); font-size:2.1rem; line-height:1.22; letter-spacing:-.02em; margin:0 0 16px;}
-  .hero p{font-size:1.06rem; margin:0 0 14px;}
-  .who{margin:26px 0 0; padding:16px 18px; background:var(--accent-soft); border-left:3px solid var(--accent);
-       border-radius:0 8px 8px 0; font-size:.94rem; color:var(--ink);}
-  .who b{display:block; margin-bottom:4px; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--accent);}
-
-  .rule{border:0; border-top:1px solid var(--line); margin:44px 0 0;}
-  .sec{padding:34px 0 0;}
-  .sec h2{color:var(--ink); font-size:1.16rem; margin:0 0 6px;}
-  .sec .lede{font-size:.94rem; color:var(--faint); margin:0 0 22px;}
-
-  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:16px;}
-  .story{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 18px 16px;
-         display:flex; flex-direction:column; min-height:196px;}
-  .story .tag{font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--faint); margin-bottom:9px;}
-  .story h3{margin:0 0 8px; font-size:1.02rem; color:var(--ink); line-height:1.34;}
-  .story p{margin:0 0 14px; font-size:.88rem; color:var(--body);}
-  .story .foot{margin-top:auto; font-size:.82rem;}
-  .story.live{border-color:var(--accent); box-shadow:0 1px 3px rgba(15,118,110,.09);}
-  .story.live .tag{color:var(--accent); font-weight:600;}
-  .story.soon{background:#fcfdfe;}
-  .story.soon h3, .story.soon p{color:var(--faint);}
-  .story.soon .foot{color:var(--faint); font-style:italic;}
-  .open{display:inline-block; background:var(--accent); color:#fff; text-decoration:none;
-        padding:8px 15px; border-radius:8px; font-size:.86rem; font-weight:600;}
-  .open:hover{background:#0c5f59;}
-  .stat{display:flex; gap:14px; flex-wrap:wrap; font-size:.79rem; color:var(--faint); margin-top:10px;}
-  .stat span{background:var(--bg); border:1px solid var(--line); border-radius:99px; padding:2px 9px;}
-
-  .cols{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
-  @media(max-width:700px){ .cols{grid-template-columns:1fr;} .hero h1{font-size:1.72rem;} }
-  .cols h3{color:var(--ink); font-size:.94rem; margin:0 0 7px;}
-  .cols p{font-size:.9rem; margin:0;}
-
-  .never{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; margin-top:22px;}
-  .never ul{margin:10px 0 0; padding-left:20px; font-size:.92rem;}
-  .never li{margin-bottom:7px;}
-
-  .honest{background:var(--warn-soft); border:1px solid #f0dfc2; border-radius:var(--radius);
-          padding:18px 20px; margin-top:26px; font-size:.9rem; color:#5f3d0c;}
-  .honest b{color:var(--warn);}
-  .honest ul{margin:9px 0 0; padding-left:20px;}
-  .honest li{margin-bottom:6px;}
-
-  footer{margin-top:52px; border-top:1px solid var(--line); padding:24px 0 46px; font-size:.82rem; color:var(--faint);}
-  footer .no{color:var(--ink); font-weight:600;}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- injected for pilot-suite hosting: support.js needs window.React + window.ReactDOM -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "IBM Plex Sans", system-ui, sans-serif; background: #ebe3d5; color: #1c1b19; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  a { color: #0f6d63; text-decoration: none; }
+  a:hover { color: #0a544c; text-decoration: underline; }
+  ::selection { background: #cfe6e2; }
+  @keyframes nlFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
 
-<div class="top">
-  <div class="wrap">
-    <div class="brand">News<span>Lens</span></div>
-    <nav class="topnav">
-      <a href="stories/jobs-report-2026-06.html">The jobs report</a>
-      <a href="#panel">Why these outlets</a>
-      <a href="#how">How it works</a>
-      <a href="#honest">What is not built</a>
-    </nav>
-  </div>
-</div>
-
-<div class="wrap">
-
-  <div class="hero">
-    <h1>One story, side by side, across the newsrooms that covered it. Every claim traced back to the sentence it came from.</h1>
-    <p>Nobody has time to read every article about the same story. NewsLens reads them, breaks each one into the factual claims it makes, and shows you which outlets carried which claim. Every claim opens to the exact sentence behind it, in the original article.</p>
-    <p>There are no bias labels here. No accuracy scores. No verdict about who was right. The site counts what a set of newsrooms did with the same facts, and you decide what that means.</p>
-    <p>The panel is picked per story, not fixed across the site. A jobs report draws business and economics desks. A sports story draws sports desks, and comparing the two panels would be meaningless. Every story says who is in its panel and why.</p>
-
-    <div class="who">
-      <b>Who this is built for</b>
-      NewsLens is built for the reader who already suspects the press is spinning them. That reader will not accept another rating, so the tool does not offer one. It shows the receipts and gets out of the way. If it works for the most suspicious reader in the room, it works for everyone else too.
+  <!-- ===================== TOP BAR ===================== -->
+  <header style="position:sticky;top:0;z-index:20;background:rgba(237,230,217,0.9);backdrop-filter:blur(8px);border-bottom:1px solid #e0dbd0">
+    <div style="max-width:1080px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:20px">
+      <div onClick="{{ goHome }}" style="cursor:pointer;display:flex;align-items:baseline;gap:9px">
+        <span style="font-family:'Source Serif 4',serif;font-weight:700;font-size:22px;letter-spacing:-0.01em">NewsLens</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8478;border:1px solid #d6d1c6;padding:2px 6px;border-radius:3px">Prototype</span>
+      </div>
+      <div style="flex:1"></div>
+      <a onClick="{{ goAbout }}" style="cursor:pointer;font-family:'IBM Plex Sans';font-size:13px;font-weight:500;color:#77716a;margin-right:4px" style-hover="color:#0f6d63">About this prototype</a>
+      <sc-if value="{{ isStory }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#8a8478">Reading</span>
+            <div style="display:flex;background:#eae6dd;border:1px solid #ded9cf;border-radius:7px;padding:2px">
+              <button onClick="{{ setStaged }}" style="{{ stagedBtnStyle }}">Staged</button>
+              <button onClick="{{ setExpanded }}" style="{{ expandedBtnStyle }}">Expanded</button>
+            </div>
+          </div>
+          <button onClick="{{ toggleAlignment }}" style="{{ notesBtnStyle }}">
+            <span style="width:7px;height:7px;border-radius:50%;background:{{ notesDotColor }};display:inline-block"></span>
+            Research notes
+          </button>
+        </div>
+      </sc-if>
     </div>
-  </div>
+  </header>
 
-  <hr class="rule">
-
-  <div class="sec">
-    <h2>Stories</h2>
-    <p class="lede">Six precomputed stories, capped on purpose. Each one carries its own panel of outlets, chosen for that story and disclosed on the page. Every claim in a published story has been checked by a human against the live articles before it appears here.</p>
-
-    <div class="grid">
-
-      <div class="story live">
-        <div class="tag">Published · Economy</div>
-        <h3>The June 2026 Jobs Report</h3>
-        <p>Employers added 57,000 jobs. Six outlets read the same government release and told six different stories. All six say hiring missed expectations, and not one of them agrees on what was expected.</p>
-        <div class="stat"><span>10 claims</span><span>6 outlets</span><span>3 edited after publishing</span></div>
-        <div class="stat" style="margin-top:6px;"><span style="background:var(--accent-soft);border-color:#bfded9;">Business and economics desks, plus one policy analysis</span></div>
-        <div class="foot" style="margin-top:14px;"><a class="open" href="stories/jobs-report-2026-06.html">Open this story</a></div>
+  <!-- ===================== HOME ===================== -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <main style="max-width:1080px;margin:0 auto;padding:0 28px;width:100%">
+    <section style="padding:64px 0 36px;border-bottom:1px solid #e0dbd0">
+      <div style="max-width:730px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#0f6d63;margin-bottom:20px">Read the news elsewhere · cross-check it here</div>
+        <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-0.02em;margin:0 0 20px">Just read about it? See what the other outlets left out.</h1>
+        <p style="font-size:18px;line-height:1.6;color:#4a463f;margin:0 0 8px">NewsLens is a second stop, not a news source. Look up an event you have already read about and see how several outlets framed the same facts: which claims everyone reported, and which showed up in only one or two.</p>
+        <p style="font-size:15px;line-height:1.6;color:#77716a;margin:14px 0 0">No bias ratings. No accuracy verdicts. Just the claims, the sources, and a count you can check by hand.</p>
       </div>
 
-      <div class="story soon">
-        <div class="tag">Not built yet · Disaster</div>
-        <h3>Central Texas floods</h3>
-        <p>A disaster story, where the primary source is an emergency management briefing rather than a clean data release. Chosen to test whether the method survives when there is no single ground-truth document.</p>
-        <div class="stat"><span>Panel would be local affiliates and wire services</span></div>
-        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+      <!-- lookup bar -->
+      <div style="margin-top:30px;max-width:560px">
+        <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #d6d1c6;border-radius:10px;padding:13px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
+          <span style="width:16px;height:16px;border:2px solid #a49d92;border-radius:50%;position:relative;flex-shrink:0"><span style="position:absolute;width:6px;height:2px;background:#a49d92;bottom:-2px;right:-3px;transform:rotate(45deg);border-radius:1px"></span></span>
+          <input value="{{ lookupValue }}" onInput="{{ onLookup }}" placeholder="Find a story you've been reading about, like the jobs report or chip rules" style="flex:1;border:none;outline:none;background:none;font-family:'IBM Plex Sans';font-size:15px;color:#1c1b19" />
+        </div>
+        <p style="font-size:12.5px;line-height:1.5;color:#6b655d;margin:10px 2px 0">NewsLens only compares events it has already processed and a human has reviewed. The search looks inside that set. It will not fetch or analyze a new article on demand.</p>
       </div>
+    </section>
 
-      <div class="story soon">
-        <div class="tag">Not built yet · Policy</div>
-        <h3>The federal housing bill</h3>
-        <p>A legislative story, where outlets quote different sections of the same bill text. Chosen to test claim matching when every outlet is technically accurate and still leaves a different impression.</p>
-        <div class="stat"><span>Panel would be politics desks and trade press</span></div>
-        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+    <!-- who this is for -->
+    <section style="padding:26px 0 6px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <sc-for list="{{ audiences }}" as="a" hint-placeholder-count="3">
+          <div style="background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:9px;padding:16px 17px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#0f6d63;margin-bottom:8px">{{ a.tag }}</div>
+            <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:16.5px;color:#26241f;margin-bottom:6px">{{ a.title }}</div>
+            <p style="font-size:13px;line-height:1.5;color:#6b655d;margin:0">{{ a.body }}</p>
+          </div>
+        </sc-for>
       </div>
+    </section>
 
-      <div class="story soon">
-        <div class="tag">Not built yet · Health</div>
-        <h3>Story four</h3>
-        <p>Reserved for a health story, where the gap between what a study found and what the coverage says it found is usually widest.</p>
-        <div class="stat"><span>Panel would be health desks, not business desks</span></div>
-        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+    <section style="padding:30px 0 8px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;margin:0">Available comparisons</h2>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8a8478">{{ resultCountLabel }}</span>
       </div>
-
-      <div class="story soon">
-        <div class="tag">Not built yet · Technology</div>
-        <h3>Story five</h3>
-        <p>Reserved for a technology story, to test the method on coverage that leans heavily on company statements rather than public records.</p>
-        <div class="stat"><span>Panel would be tech trade press and general news</span></div>
-        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+          <button onClick="{{ cat.onClick }}" style="{{ cat.style }}">{{ cat.label }}</button>
+        </sc-for>
       </div>
+    </section>
 
-      <div class="story soon">
-        <div class="tag">Not built yet · Sport or culture</div>
-        <h3>Story six</h3>
-        <p>Reserved for a lower-stakes story, as a control. If the tool only feels useful on political news, that is worth knowing.</p>
-        <div class="stat"><span>Panel would share no outlets with the jobs report</span></div>
-        <div class="foot" style="margin-top:8px;">No claims extracted yet.</div>
+    <section style="padding:14px 0 80px">
+      <div style="display:grid;gap:0;border-top:1px solid #e0dbd0">
+        <sc-for list="{{ homeStories }}" as="s" hint-placeholder-count="6">
+          <article onClick="{{ s.onClick }}" style="{{ s.rowStyle }}" style-hover="background:rgba(28,27,25,0.03)">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0f6d63">{{ s.categoryLabel }}</span>
+                <span style="color:#c9c3b8">·</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#595855">{{ s.date }}</span>
+              </div>
+              <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;line-height:1.2;letter-spacing:-0.01em;margin:0 0 8px">{{ s.headline }}</h2>
+              <p style="font-size:14.5px;line-height:1.55;color:#6b655d;margin:0;max-width:640px">{{ s.dek }}</p>
+            </div>
+            <div style="width:172px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px;padding-top:2px">
+              <span style="{{ s.statusStyle }}">{{ s.statusLabel }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#595855">{{ s.outletCountLabel }}</span>
+              <span style="font-size:13px;color:#0f6d63;font-weight:600">{{ s.actionLabel }} →</span>
+            </div>
+          </article>
+        </sc-for>
       </div>
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:34px 4px;border-bottom:1px solid #e0dbd0">
+          <p style="font-size:15px;line-height:1.6;color:#6b655d;margin:0;max-width:560px">No comparison matches “<strong style="color:#1c1b19">{{ lookupValue }}</strong>”. NewsLens only covers events it has already processed and reviewed, so it can't analyze a new article on demand. Try a broader term, or clear the search to see everything available.</p>
+        </div>
+      </sc-if>
+      <p style="font-size:12.5px;line-height:1.6;color:#6b655d;margin:28px 0 0;max-width:640px">NewsLens publishes a fixed set of precomputed stories. Each one is run once, ahead of time, and passes a human review before it appears here. Stories still in the extraction queue are shown but not yet open.</p>
+    </section>
+  </main>
+  </sc-if>
 
+  <!-- ===================== STORY: QUEUED ===================== -->
+  <sc-if value="{{ isQueued }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:760px;margin:0 auto;padding:40px 28px 80px;width:100%">
+    <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#8a8478">← All stories</a>
+    <div style="margin-top:28px;padding:40px 36px;background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:10px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#b8892b;margin-bottom:14px">In extraction queue</div>
+      <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:30px;line-height:1.15;letter-spacing:-0.015em;margin:0 0 16px">{{ story.headline }}</h1>
+      <p style="font-size:16px;line-height:1.6;color:#4a463f;margin:0 0 20px">{{ story.dek }}</p>
+      <div style="height:1px;background:#e8dfce;margin:24px 0"></div>
+      <p style="font-size:14.5px;line-height:1.65;color:#6b655d;margin:0">This story has not been published yet. NewsLens only opens a comparison after the AI has extracted the claims <em>and</em> a person has checked that work against a fidelity checklist, looking for omitted context, altered meaning, and wrong attribution. Nothing reaches the public page before that review.</p>
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:#6f695f;margin:18px 0 0">Queued · {{ story.outletCountLabel }} · review pending</p>
     </div>
-  </div>
+  </main>
+  </sc-if>
 
-  <div class="sec" id="panel">
-    <h2>The part worth arguing with</h2>
-    <p class="lede">Every credibility tool has one judgment it cannot avoid making. This is ours, stated plainly rather than buried.</p>
-    <div class="never" style="border-color:#d9c9a3; background:var(--warn-soft);">
-      <h3 style="margin-bottom:2px; color:#5f3d0c;">Whoever picks the panel decides what agreement looks like</h3>
-      <p style="font-size:.92rem; margin:8px 0 0; color:#5f3d0c;">"Reported by 6 of 6" sounds like arithmetic. It is arithmetic, but only over a list somebody chose. Six outlets make unanimity easy. Thirty would make it rare. Include only business desks and a jobs story looks settled. Add a labour reporter and it may not.</p>
-      <p style="font-size:.92rem; margin:10px 0 0; color:#5f3d0c;">NewsLens refuses to rate outlets, refuses to score accuracy, and refuses to let an AI write explanations. Choosing who gets counted is the one piece of editorial power it still holds, so it is disclosed on every story page rather than treated as a footnote.</p>
-      <p style="font-size:.92rem; margin:10px 0 0; color:#5f3d0c;"><b>What would fix it properly:</b> letting you add or remove an outlet yourself and watch every count move. That is not built yet, and it is the most important thing missing from this prototype.</p>
-    </div>
-  </div>
-
-  <div class="sec" id="how">
-    <h2>How a story gets here</h2>
-    <p class="lede">Four steps. One model, one human reviewer, and a rule that the reader can always check the work.</p>
-    <div class="cols">
-      <div>
-        <h3>1. An AI reads every article</h3>
-        <p>A language model reads every article in that story's panel and lists the factual claims each one makes. It does not judge whether a claim is true.</p>
-      </div>
-      <div>
-        <h3>2. Matching claims are grouped</h3>
-        <p>Claims stating the same fact are grouped together. The corroboration count is nothing more than how many outlets landed in that group. It is arithmetic you can redo by hand.</p>
-      </div>
-      <div>
-        <h3>3. A human checks every extraction</h3>
-        <p>A reviewer checks each claim against the source article using a published checklist. The reviewer only fixes fidelity errors, and never adds, removes, or rewords a claim by preference.</p>
-      </div>
-      <div>
-        <h3>4. Sentences are dated and kept</h3>
-        <p>Outlets edit stories after publishing. Every sentence carries the date it was captured, so a claim can still be checked even after the original article changes.</p>
-      </div>
+  <!-- ===================== STORY: PUBLISHED ===================== -->
+  <sc-if value="{{ isPublished }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:1080px;margin:0 auto;padding:0 28px 96px;width:100%">
+    <div style="padding:22px 0 0">
+      <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#8a8478">← All stories</a>
     </div>
 
-    <div class="never">
-      <h3 style="margin-bottom:2px;">What NewsLens never does</h3>
-      <ul>
-        <li><b>No bias labels.</b> Third-party outlet ratings stay off by default and are never switched on by a reading mode. A political label sitting next to an omission count reads as a verdict, whoever issued it.</li>
-        <li><b>No truth verdicts.</b> The site shows who reported what. It does not tell you who was right.</li>
-        <li><b>No generated explanations.</b> Rather than have the AI write a story about why two sentences were grouped, the site shows you both sentences.</li>
-        <li><b>No accounts, no personalisation, no engagement optimisation.</b> Nothing here learns what you like and gives you more of it.</li>
-      </ul>
-    </div>
-  </div>
+    <sc-if value="{{ showGuide }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:14px;display:flex;align-items:center;gap:12px;padding:11px 16px;background:#fbf3df;border:1px solid #ecdcb0;border-radius:8px">
+        <span style="font-size:16px;flex-shrink:0">◷</span>
+        <p style="flex:1;font-size:13.5px;line-height:1.45;color:#6b5a2e;margin:0">Reviewing this alongside the paper? Turn on <strong>Research notes</strong> (top right) to see how each design choice maps to the literature, or open <a onClick="{{ goAbout }}" style="cursor:pointer;color:#8a6a1e;text-decoration:underline">About this prototype</a> for the evaluation.</p>
+        <button onClick="{{ dismissGuide }}" style="flex-shrink:0;font-family:'IBM Plex Sans';font-size:12px;font-weight:500;color:#a9812a;background:none;border:none;cursor:pointer">Dismiss</button>
+      </div>
+    </sc-if>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:44px;align-items:start;margin-top:8px">
+      <!-- MAIN COLUMN -->
+      <div style="min-width:0">
 
-  <div class="sec" id="honest">
-    <h2>What is not built</h2>
-    <p class="lede">This is a research prototype, and the gaps are part of what it is showing.</p>
-    <div class="honest">
-      <b>Known gaps in this build, disclosed rather than hidden:</b>
-      <ul>
-        <li>Five of the six stories are not built. Only the jobs report has an extracted, reviewed claim set.</li>
-        <li>The Methods page, model card, and independence statement are referenced from inside the story page but were never written. A self-audit against published human-AI design guidelines found this to be the single most damaging gap, because it is the one disclosure a reader most needs to reach.</li>
-        <li>Reader flags are recorded in the page but are not transmitted anywhere and do not survive a refresh. There is no reference number and no public log of resolved flags.</li>
-        <li>Corrections made during the first design-phase review pass were not logged as they happened. That gap is disclosed rather than backfilled with a reconstructed number.</li>
-        <li>No wire-service overlap audit has been run, so outlets sharing syndicated copy could still look like independent confirmations.</li>
-        <li>Readers cannot change the outlet panel. Since panel composition decides every count on the page, handing that control to the reader is the most significant unbuilt feature here.</li>
-        <li>No user study has been run. Nothing on this site has been tested with a reader who is not its designer.</li>
-      </ul>
-    </div>
-  </div>
+        <!-- (1) HEADER -->
+        <section style="padding:20px 0 30px;border-bottom:2px solid #1c1b19">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#0f6d63">{{ story.categoryLabel }}</span>
+            <span style="color:#c9c3b8">·</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8a8478">{{ story.date }}</span>
+          </div>
+          <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0 0 16px;text-wrap:pretty">{{ story.headline }}</h1>
+          <p style="font-size:18px;line-height:1.55;color:#4a463f;margin:0 0 22px;max-width:660px;text-wrap:pretty">{{ story.dek }}</p>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#77716a">Comparing {{ story.outletCount }} outlets:</span>
+            <sc-for list="{{ story.outlets }}" as="o" hint-placeholder-count="6">
+              <span style="font-size:12.5px;color:#39352e;background:#ffffff;border:1px solid #d9cfba;border-radius:20px;padding:4px 12px">{{ o.name }}</span>
+            </sc-for>
+          </div>
+        </section>
 
-  <footer>
-    <p><span class="no">No bias labels. No truth verdicts. You judge.</span></p>
-    <p>NewsLens is a student research prototype built for HCAI 4304 at Texas Tech University. The claim extraction runs on a commercial language model built by a third party and trained on web-scale data that itself contains media bias. The prototype was designed and built with AI assistance, human-directed, which is disclosed here because the tool holds itself to the same standard it applies to the newsrooms it compares.</p>
+        <!-- (2) HEADLINES STRIP -->
+        <section style="padding:34px 0 8px">
+          <h3 style="font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0f6d63;margin:0 0 16px">How the outlets framed it</h3>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+            <sc-for list="{{ story.frames }}" as="f" hint-placeholder-count="3">
+              <div style="background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:8px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#0f6d63">{{ f.outlet }}</span>
+                <span style="font-family:'Source Serif 4',serif;font-weight:500;font-size:16.5px;line-height:1.3;color:#26241f">“{{ f.title }}”</span>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ alignmentMode }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:14px;padding:12px 14px;background:#fbf3df;border:1px solid #ecdcb0;border-left:3px solid #b8892b;border-radius:4px;font-size:13px;line-height:1.55;color:#6b5a2e">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a9812a;display:block;margin-bottom:4px">Paper · Introduction</span>
+              Same numbers, opposite spin: Fox Business led with “steady” while ABC led with “worse than expected.” That contrast opens the paper. NewsLens shows the difference in framing but does not label either outlet, which guards against the hostile media effect (Vallone et al., 1985).
+            </div>
+          </sc-if>
+        </section>
+
+        <!-- (3) GUIDING QUESTIONS -->
+        <section style="padding:26px 0 8px">
+          <div style="background:#eef4f2;border:1px solid #d3e3df;border-radius:8px;padding:20px 22px">
+            <h3 style="font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0a544c;margin:0 0 12px">As you read, ask</h3>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ story.questions }}" as="q" hint-placeholder-count="3">
+                <div style="display:flex;gap:11px;align-items:baseline">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0f6d63;flex-shrink:0">{{ q.n }}</span>
+                  <span style="font-size:15.5px;line-height:1.5;color:#2a4742">{{ q.text }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+
+        <!-- (4) CLAIMS -->
+        <section style="padding:38px 0 8px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px">
+            <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:26px;letter-spacing:-0.01em;margin:0">The claims, side by side</h3>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8a8478">{{ story.claimCountLabel }}</span>
+          </div>
+          <p style="font-size:14px;line-height:1.55;color:#8a8478;margin:0 0 20px;max-width:620px">Each row is one factual claim and a count of how many of the {{ story.outletCount }} outlets reported it. Open a row to read the exact source sentence, or contest it if the grouping looks wrong.</p>
+
+          <sc-if value="{{ alignmentMode }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-bottom:18px;padding:12px 14px;background:#fbf3df;border:1px solid #ecdcb0;border-left:3px solid #b8892b;border-radius:4px;font-size:13px;line-height:1.55;color:#6b5a2e">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a9812a;display:block;margin-bottom:4px">Paper · Discussion</span>
+              The count is plain arithmetic you can redo from the sources, with no AI-written rationale for the grouping (Rudin, 2019). The fullest explanation appears inside the contest flow, at the point where a reader disagrees (Kizilcec, 2016). One risk to watch is the machine heuristic, where a clean “6 of 6” gets trusted too readily (Sundar, 2020).
+            </div>
+          </sc-if>
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ claims }}" as="c" hint-placeholder-count="5">
+              <div style="border:1px solid #e8dfce;border-radius:12px;background:#ffffff;overflow:hidden;box-shadow:0 1px 2px rgba(70,55,25,.05),0 14px 32px -18px rgba(70,55,25,.24)">
+                <div onClick="{{ c.onToggle }}" style="cursor:pointer;padding:18px 20px;display:flex;gap:20px;align-items:flex-start">
+                  <div style="flex:1;min-width:0">
+                    <p style="font-size:16.5px;line-height:1.45;color:#1c1b19;margin:0;font-weight:500;text-wrap:pretty">{{ c.text }}</p>
+                    <sc-if value="{{ c.hasNote }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:9px;display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8a8478">
+                        <span style="width:6px;height:6px;border-radius:50%;background:#0f6d63;display:inline-block"></span>Human-review note attached
+                      </div>
+                    </sc-if>
+                  </div>
+                  <div style="flex-shrink:0;width:168px">
+                    <div style="display:flex;align-items:baseline;justify-content:flex-end;gap:5px;margin-bottom:9px">
+                      <span style="font-family:'IBM Plex Mono',monospace;font-size:23px;font-weight:600;line-height:1;color:#1c1b19">{{ c.countN }}</span>
+                      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8a8478">of {{ c.countTotal }} outlets</span>
+                    </div>
+                    <sc-if value="{{ c.showPips }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;gap:4px;justify-content:flex-end">
+                        <sc-for list="{{ c.pips }}" as="p" hint-placeholder-count="6">
+                          <sc-if value="{{ p.on }}" hint-placeholder-val="{{ true }}">
+                            <span style="width:13px;height:13px;border-radius:3px;background:#1c1b19;display:block"></span>
+                          </sc-if>
+                          <sc-if value="{{ p.off }}" hint-placeholder-val="{{ false }}">
+                            <span style="width:13px;height:13px;border-radius:3px;border:1.5px solid #cfc9bd;display:block"></span>
+                          </sc-if>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <div style="margin-top:11px;display:flex;align-items:center;justify-content:flex-end;gap:5px;font-size:12px;color:#0f6d63;font-weight:500">
+                      <span>{{ c.toggleLabel }}</span>
+                      <span style="font-size:9px">{{ c.chevron }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SOURCE PANEL (staged: closed until opened) -->
+                <sc-if value="{{ c.open }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #eee7db;background:#fbfaf6;padding:18px 20px;animation:nlFade 0.18s ease">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8a8478;margin-bottom:14px">Reported by: {{ c.reportedNames }}</div>
+                    <div style="display:flex;flex-direction:column;gap:14px">
+                      <sc-for list="{{ c.sources }}" as="src" hint-placeholder-count="2">
+                        <div style="display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:start">
+                          <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#0f6d63;padding-top:2px">{{ src.outlet }}</span>
+                          <div style="border-left:2px solid #d8d3ca;padding-left:14px">
+                            <span style="font-family:'Source Serif 4',serif;font-size:16px;line-height:1.5;color:#33302a">“{{ src.sentence }}”</span>
+                            <a onClick="{{ onSourceLink }}" style="display:inline-block;margin-top:6px;font-family:'IBM Plex Sans';font-size:12px;color:#0f6d63;cursor:pointer" style-hover="text-decoration:underline">Read the original at {{ src.outlet }} ↗</a>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ sourceLinkClicked }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:12px;padding:10px 13px;background:#fdf3f2;border:1px solid #f0d3ce;border-radius:6px;font-size:12.5px;line-height:1.5;color:#8a3b30">The original article links are illustrative sample data in this prototype, so they do not open a live page. In a deployed version each source would link to the outlet's published article.</div>
+                    </sc-if>
+                    <sc-if value="{{ c.hasNote }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:16px;padding:11px 14px;background:#eef4f2;border:1px solid #d3e3df;border-radius:6px;font-size:13.5px;line-height:1.5;color:#2a4742">
+                        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0a544c;display:block;margin-bottom:4px">Human-review note</span>{{ c.note }}
+                      </div>
+                    </sc-if>
+
+                    <!-- CONTEST -->
+                    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed #ddd6ca">
+                      <sc-if value="{{ c.contestClosed }}" hint-placeholder-val="{{ true }}">
+                        <button onClick="{{ c.onContest }}" style="font-family:'IBM Plex Sans';font-size:13px;font-weight:500;color:#4a463f;background:#fff;border:1px solid #d6d1c6;border-radius:7px;padding:8px 14px;cursor:pointer" style-hover="border-color:#0f6d63;color:#0f6d63">Contest this claim</button>
+                        <span style="margin-left:12px;font-size:12.5px;color:#6b655d">Disagree with the grouping or attribution? Flag it for a human reviewer.</span>
+                      </sc-if>
+
+                      <sc-if value="{{ c.contestOpen }}" hint-placeholder-val="{{ false }}">
+                        <div style="animation:nlFade 0.18s ease">
+                          <div style="margin-bottom:16px;padding:14px 16px;background:#fff;border:1px solid #d3e3df;border-radius:8px">
+                            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0f6d63;margin-bottom:8px">Before you flag it, here is how this grouping was made</div>
+                            <p style="font-size:13.5px;line-height:1.55;color:#33413e;margin:0 0 10px">{{ c.groupingExplanation }}</p>
+                            <div style="display:flex;flex-direction:column;gap:7px">
+                              <sc-for list="{{ c.groupingSteps }}" as="g" hint-placeholder-count="3">
+                                <div style="display:flex;gap:10px;align-items:baseline">
+                                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0f6d63;flex-shrink:0">{{ g.n }}</span>
+                                  <span style="font-size:13px;line-height:1.5;color:#4a463f">{{ g.text }}</span>
+                                </div>
+                              </sc-for>
+                            </div>
+                          </div>
+                          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#1c1b19;margin-bottom:4px">Still looks wrong? Tell us what.</div>
+                          <p style="font-size:12.5px;color:#8a8478;margin:0 0 12px">Pick the closest issue. Your flag goes to a person, and it does not change the public page on its own.</p>
+                          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                            <sc-for list="{{ contestReasons }}" as="r" hint-placeholder-count="4">
+                              <button onClick="{{ r.onClick }}" style="{{ r.style }}">{{ r.label }}</button>
+                            </sc-for>
+                          </div>
+                          <textarea onInput="{{ onContestText }}" placeholder="Optional: describe the problem in your own words." style="width:100%;min-height:72px;resize:vertical;font-family:'IBM Plex Sans';font-size:14px;line-height:1.5;color:#1c1b19;background:#fff;border:1px solid #d6d1c6;border-radius:7px;padding:11px 13px;outline:none"></textarea>
+                          <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+                            <button onClick="{{ onSubmitContest }}" style="{{ contestSubmitStyle }}">Route to human review</button>
+                            <button onClick="{{ onCloseContest }}" style="font-family:'IBM Plex Sans';font-size:13px;color:#8a8478;background:none;border:none;cursor:pointer">Cancel</button>
+                          </div>
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ c.contestDone }}" hint-placeholder-val="{{ false }}">
+                        <div style="animation:nlFade 0.18s ease;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:#eef4f2;border:1px solid #d3e3df;border-radius:8px">
+                          <span style="width:20px;height:20px;border-radius:50%;background:#0f6d63;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px">✓</span>
+                          <div>
+                            <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#0a544c;margin-bottom:3px">Flag received. Queued for review as {{ contestTicket }}</div>
+                            <p style="font-size:13.5px;line-height:1.5;color:#2a4742;margin:0">A human reviewer will check this claim against the fidelity checklist. Nothing on the public page changes until they act. Thanks for keeping the box honest.</p>
+                          </div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <!-- (5) EXPLANATION PANEL -->
+        <section style="padding:34px 0 8px">
+          <div style="border:1px solid #d3e3df;border-radius:10px;overflow:hidden;background:#f6faf9">
+            <div onClick="{{ toggleExplanation }}" style="cursor:pointer;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+              <div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#0f6d63;margin-bottom:5px">Glass box</div>
+                <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:21px;margin:0;color:#1c1b19">How NewsLens compared these articles</h3>
+              </div>
+              <span style="font-size:13px;color:#0f6d63;font-weight:500;flex-shrink:0">{{ explanationToggleLabel }}</span>
+            </div>
+            <sc-if value="{{ explanationOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top:1px solid #d3e3df;padding:8px 22px 24px;animation:nlFade 0.18s ease">
+                <p style="font-size:13px;line-height:1.5;color:#5c7a74;margin:14px 0 20px;max-width:640px">These five sections cover how the comparison was put together, written for a reader rather than an engineer.</p>
+                <div style="display:flex;flex-direction:column">
+                  <sc-for list="{{ explanationRows }}" as="e" hint-placeholder-count="5">
+                    <div style="display:grid;grid-template-columns:180px 1fr;gap:20px;padding:15px 0;border-top:1px solid #dfe9e6">
+                      <span style="font-family:'IBM Plex Sans';font-weight:600;font-size:14px;color:#0a544c">{{ e.label }}</span>
+                      <span style="font-size:14.5px;line-height:1.55;color:#33413e">{{ e.body }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <p style="font-size:12.5px;line-height:1.5;color:#8a8478;margin:16px 0 0;font-style:italic">This panel explains what the system did and why. It cannot answer "what would change if I gave it a different article," since NewsLens runs on a fixed, precomputed set.</p>
+                <div style="margin-top:20px;padding-top:16px;border-top:1px solid #dfe9e6;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5c7a74">Full methods:</span>
+                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#0f6d63;text-decoration:underline">Claim-extraction method</a>
+                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#0f6d63;text-decoration:underline">Corroboration matching</a>
+                  <a onClick="{{ onMethodsLink }}" style="cursor:pointer;font-size:13.5px;color:#0f6d63;text-decoration:underline">Human review checklist</a>
+                </div>
+                <sc-if value="{{ methodsLinkClicked }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:12px;padding:11px 14px;background:#fdf3f2;border:1px solid #f0d3ce;border-radius:6px;font-size:13px;line-height:1.5;color:#8a3b30;animation:nlFade 0.18s ease">
+                    These method pages are not published yet, so the links do not go anywhere. This is a known gap in the current build, not a broken feature we are hiding. Turn on Research notes for the paper reference.
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+          <sc-if value="{{ alignmentMode }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:14px;padding:12px 14px;background:#fbf3df;border:1px solid #ecdcb0;border-left:3px solid #b8892b;border-radius:4px;font-size:13px;line-height:1.55;color:#6b5a2e">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a9812a;display:block;margin-bottom:4px">Paper · Methodology + Findings</span>
+              The disclosure aims for what a reader can actually act on, not only a technical account of the model (Shin, 2021). Staged mode keeps this panel closed; expanded mode opens it. Known gap: the “documented methods” links do not resolve yet, so Amershi et al. (2019) Guideline 11 is only partly met.
+            </div>
+          </sc-if>
+        </section>
+
+        <!-- (7) SOURCES & METHOD -->
+        <section style="padding:34px 0 8px">
+          <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;margin:0 0 18px;letter-spacing:-0.01em">Sources &amp; method</h3>
+          <div style="display:grid;gap:14px">
+
+            <!-- datasheet -->
+            <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:20px 22px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8478;margin-bottom:10px">Which outlets, and why</div>
+              <p style="font-size:14.5px;line-height:1.6;color:#33302a;margin:0 0 14px">{{ story.outletRationale }}</p>
+              <div style="padding:12px 14px;background:#f6faf9;border:1px solid #d3e3df;border-radius:7px;font-size:13.5px;line-height:1.55;color:#2a4742">
+                <strong style="font-weight:600">Reading the counts:</strong> “{{ story.outletCount }} of {{ story.outletCount }}” means all {{ story.outletCount }} of <em>these</em> outlets. It says nothing about the rest of the press. The sample is intentionally small.
+              </div>
+            </div>
+
+            <!-- model card -->
+            <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:20px 22px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8478;margin-bottom:12px">Model card · limitations</div>
+              <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px">
+                <sc-for list="{{ story.limitations }}" as="l" hint-placeholder-count="4">
+                  <div style="display:flex;gap:10px;align-items:baseline">
+                    <span style="width:5px;height:5px;border-radius:50%;background:#b8892b;flex-shrink:0;position:relative;top:-1px"></span>
+                    <span style="font-size:14px;line-height:1.5;color:#33302a">{{ l }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8478;margin-bottom:10px">Out of scope by design</div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ story.outOfScope }}" as="x" hint-placeholder-count="3">
+                  <div style="display:flex;gap:10px;align-items:baseline">
+                    <span style="font-family:'IBM Plex Mono',monospace;color:#c0392b;font-size:13px;flex-shrink:0;line-height:1.2">✕</span>
+                    <span style="font-size:14px;line-height:1.5;color:#33302a">{{ x }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <!-- review log -->
+            <div style="border:1px solid #ecdcb0;border-radius:9px;background:#fdfaf1;padding:18px 22px;display:flex;gap:14px;align-items:flex-start">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:#b8892b;padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:2px">Pending</span>
+              <div>
+                <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:14.5px;color:#7a5f1f;margin-bottom:4px">Correction log not yet published</div>
+                <p style="font-size:13.5px;line-height:1.55;color:#6b5a2e;margin:0">The first human review pass on this story was not logged, so there is no public error rate yet. Future stories will record every correction from the start and publish the rate here. This gap is disclosed rather than hidden.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT RAIL -->
+      <aside style="position:sticky;top:84px;display:flex;flex-direction:column;gap:16px">
+        <div style="border:1px solid #e8dfce;border-radius:12px;background:#fff;padding:18px 18px 20px;box-shadow:0 1px 2px rgba(70,55,25,.05),0 14px 32px -18px rgba(70,55,25,.24)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8478;margin-bottom:12px">On this page</div>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+              <span style="font-size:13.5px;color:#4a463f">Factual claims</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#1c1b19;font-weight:500">{{ story.claimTotal }}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+              <span style="font-size:13.5px;color:#4a463f">Outlets compared</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#1c1b19;font-weight:500">{{ story.outletCount }}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+              <span style="font-size:13.5px;color:#4a463f">Bias ratings</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0f6d63;font-weight:500">none</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+              <span style="font-size:13.5px;color:#4a463f">Accuracy verdicts</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0f6d63;font-weight:500">none</span>
+            </div>
+          </div>
+          <div style="height:1px;background:#eee7db;margin:16px 0"></div>
+          <p style="font-size:12.5px;line-height:1.5;color:#8a8478;margin:0">You are in <strong style="color:#4a463f">{{ readingModeLabel }}</strong>. {{ readingModeHint }}</p>
+        </div>
+
+        <sc-if value="{{ alignmentMode }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #ecdcb0;border-radius:10px;background:#fbf3df;padding:16px 18px;animation:nlFade 0.2s ease">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a9812a;margin-bottom:10px">Removed after evaluation</div>
+            <p style="font-size:13px;line-height:1.55;color:#6b5a2e;margin:0">An earlier build also switched on third-party AllSides bias labels in expanded mode. The cognitive walkthrough showed it broke the tool's neutrality promise, so it was cut. The reading-mode toggle now controls only the source and explanation panels. <span style="color:#a9812a">(Findings)</span></p>
+          </div>
+        </sc-if>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ===================== ABOUT ===================== -->
+  <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:820px;margin:0 auto;padding:36px 28px 90px;width:100%">
+    <a onClick="{{ goHome }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#8a8478">← All stories</a>
+
+    <div style="margin-top:26px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#0f6d63;margin-bottom:16px">About this prototype</div>
+      <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1.12;letter-spacing:-0.02em;margin:0 0 18px">A design-based capstone, shown as a working product</h1>
+      <p style="font-size:17px;line-height:1.6;color:#4a463f;margin:0;max-width:680px">NewsLens is the artifact for an HCAI 4304 capstone on staged transparency in AI journalism. This page is the research layer. It explains what the prototype is for, how it was built and evaluated, and where it still falls short. The story pages themselves stay in product voice and keep this material out of the reader's way.</p>
+    </div>
+
+    <!-- two-layer -->
+    <section style="margin-top:40px">
+      <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 14px;letter-spacing:-0.01em">Two layers, one artifact</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div style="background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:9px;padding:18px 20px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#0f6d63;margin-bottom:8px">Layer 1 · the product</div>
+          <p style="font-size:14.5px;line-height:1.55;color:#33302a;margin:0">Every story page reads like a shipping product. Plain language, no citations, no jargon. A reader never sees an academic reference.</p>
+        </div>
+        <div style="background:#fbf3df;border:1px solid #ecd7a8;border-radius:11px;padding:18px 20px;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a9812a;margin-bottom:8px">Layer 2 · research notes</div>
+          <p style="font-size:14.5px;line-height:1.55;color:#6b5a2e;margin:0">The <strong>Research notes</strong> toggle on any story page adds margin annotations that tie each design choice back to the literature. Off by default. This is the view for reviewing the work against the paper.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- framework -->
+    <section style="margin-top:36px">
+      <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 8px;letter-spacing:-0.01em">The idea being tested</h2>
+      <p style="font-size:15.5px;line-height:1.6;color:#4a463f;margin:0 0 16px;max-width:680px">The research question: can staging AI transparency earn a reader's trust without overloading them? The design rests on two working principles.</p>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:16px 20px">
+          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:5px">Path to Transparency</div>
+          <p style="font-size:14px;line-height:1.55;color:#4a463f;margin:0">Readers grant basic trust through clean design first, then transparency is revealed in stages rather than dumped at once (Kizilcec, 2016; Shin, 2021).</p>
+        </div>
+        <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:16px 20px">
+          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:5px">10-80-10 division of labor</div>
+          <p style="font-size:14px;line-height:1.55;color:#4a463f;margin:0">A human sets direction (first 10%), AI does the volume of extraction and code (middle 80%), and a human reviews and takes responsibility (final 10%) (Mollick, 2024).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- iterations -->
+    <section style="margin-top:36px">
+      <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 8px;letter-spacing:-0.01em">Three iterations</h2>
+      <p style="font-size:15.5px;line-height:1.6;color:#4a463f;margin:0 0 18px;max-width:680px">The build itself was the research method (research through design). The story page moved through three versions.</p>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ iterations }}" as="it" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:56px 1fr;gap:18px;padding:16px 0;border-top:1px solid #e8dfce">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:#0f6d63">{{ it.v }}</div>
+            <div>
+              <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:4px">{{ it.title }}</div>
+              <p style="font-size:14px;line-height:1.55;color:#4a463f;margin:0">{{ it.body }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- evaluation -->
+    <section style="margin-top:36px">
+      <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 8px;letter-spacing:-0.01em">How it was evaluated</h2>
+      <p style="font-size:15.5px;line-height:1.6;color:#4a463f;margin:0 0 18px;max-width:680px">Three analytical methods, all run by the designer. No live user study was conducted, so no measured effects on real users are claimed.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px">
+        <sc-for list="{{ evalStats }}" as="e" hint-placeholder-count="3">
+          <div style="background:#ffffff;border:1px solid #e8dfce;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);border-radius:9px;padding:16px 16px">
+            <div style="font-family:'Source Serif 4',serif;font-weight:700;font-size:26px;color:#0f6d63;margin-bottom:4px">{{ e.stat }}</div>
+            <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:13px;color:#1c1b19;margin-bottom:3px">{{ e.label }}</div>
+            <p style="font-size:12.5px;line-height:1.45;color:#6b655d;margin:0">{{ e.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- personas -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:16px 18px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0f6d63;margin-bottom:7px">Persona · cognitive walkthrough</div>
+          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:5px">Skeptical partisan reader</div>
+          <p style="font-size:13.5px;line-height:1.5;color:#4a463f;margin:0">Chosen because prior trust level changes how a reader reacts to transparency cues (Shin &amp; Park, 2019). This walkthrough exposed the AllSides bias-label flaw described below.</p>
+        </div>
+        <div style="border:1px solid #e8dfce;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(70,55,25,.04),0 10px 24px -18px rgba(70,55,25,.17);padding:16px 18px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0f6d63;margin-bottom:7px">Persona · cognitive walkthrough</div>
+          <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#1c1b19;margin-bottom:5px">News-literacy educator</div>
+          <p style="font-size:13.5px;line-height:1.5;color:#4a463f;margin:0">A teacher looking for a classroom artifact (Tully et al., 2020). This walkthrough validated the guiding questions and the always-open explanation panel.</p>
+        </div>
+      </div>
+
+      <div style="padding:16px 20px;background:#fbf3df;border:1px solid #ecdcb0;border-left:3px solid #b8892b;border-radius:6px">
+        <div style="font-family:'IBM Plex Sans';font-weight:600;font-size:15px;color:#7a5f1f;margin-bottom:6px">The finding that changed the design</div>
+        <p style="font-size:14px;line-height:1.55;color:#6b5a2e;margin:0">Expanded mode turned out to bundle three separate changes. Opening the source panels and the explanation panel both helped. But it also switched on third-party AllSides bias labels, placing a "Lean Right" tag next to a count of what an outlet left out. Walking the skeptical reader through that screen showed it broke the tool's neutrality promise and made the whole site look untrustworthy (Kizilcec, 2016). The ratings were removed from the toggle in the final version.</p>
+      </div>
+    </section>
+
+    <!-- honest gaps -->
+    <section style="margin-top:36px">
+      <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:23px;margin:0 0 8px;letter-spacing:-0.01em">Known gaps in this build</h2>
+      <p style="font-size:15.5px;line-height:1.6;color:#4a463f;margin:0 0 16px;max-width:680px">Disclosed rather than hidden, consistent with the glass-box approach.</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <sc-for list="{{ knownGaps }}" as="g" hint-placeholder-count="4">
+          <div style="display:flex;gap:11px;align-items:baseline">
+            <span style="width:6px;height:6px;border-radius:50%;background:#b8892b;flex-shrink:0;position:relative;top:-1px"></span>
+            <span style="font-size:14.5px;line-height:1.5;color:#33302a">{{ g }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <p style="font-size:12.5px;line-height:1.6;color:#6b655d;margin:34px 0 0;max-width:680px">All figures in the story pages are illustrative sample data for the prototype, not a live extraction. Citations here refer to the accompanying paper's reference list.</p>
+  </main>
+  </sc-if>
+
+  <!-- FOOTER -->
+  <footer style="margin-top:auto;border-top:1px solid #ddd3c0;background:#e6ddcb">
+    <div style="max-width:1080px;margin:0 auto;padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6f695f">NewsLens · staged-transparency prototype · illustrative sample data</span>
+      <div style="display:flex;align-items:center;gap:18px">
+        <a onClick="{{ goAbout }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8a8478" style-hover="color:#0f6d63">About this prototype</a>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6f695f">HCAI 4304 capstone · Milan Khanal</span>
+      </div>
+    </div>
   </footer>
-
 </div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1120,&quot;height&quot;:900},&quot;countStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;pips&quot;,&quot;text&quot;],&quot;default&quot;:&quot;pips&quot;,&quot;tsType&quot;:&quot;'pips' | 'text'&quot;,&quot;section&quot;:&quot;Display&quot;,&quot;default_note&quot;:&quot;How the corroboration count renders on each claim&quot;},&quot;defaultReadingMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;staged&quot;,&quot;expanded&quot;],&quot;default&quot;:&quot;staged&quot;,&quot;tsType&quot;:&quot;'staged' | 'expanded'&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;researchNotesDefault&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: 'home',
+      storyId: 'jobs',
+      category: 'all',
+      methodsLinkClicked: false,
+      sourceLinkClicked: false,
+      guideDismissed: false,
+      readingMode: (props.defaultReadingMode === 'expanded' ? 'expanded' : 'staged'),
+      alignment: !!props.researchNotesDefault,
+      openClaims: {},
+      explanationOpen: false,
+      contest: null,
+      lookup: ''
+    };
+    this.stories = this.buildStories();
+  }
+
+  buildStories() {
+    return [
+      {
+        id: 'jobs', category: 'economy', categoryLabel: 'Economy', published: true,
+        date: 'Jul 5, 2026',
+        headline: 'The June 2026 jobs report, as six outlets told it',
+        dek: 'The Bureau of Labor Statistics put out one jobs report. Some outlets called it steady hiring, others called it worse than expected. This lays out which facts all six carried and which turned up in only one or two.',
+        outlets: [
+          { id: 'reuters', name: 'Reuters' }, { id: 'ap', name: 'AP' },
+          { id: 'foxbiz', name: 'Fox Business' }, { id: 'abc', name: 'ABC News' },
+          { id: 'wsj', name: 'Wall Street Journal' }, { id: 'cap', name: 'Center for American Progress' }
+        ],
+        outletRationale: 'The six outlets are Reuters and AP (wire services), Fox Business and ABC News (business and broadcast, aimed at different audiences), the Wall Street Journal (financial), and the Center for American Progress (analysis). We list the choice openly so you can judge it for yourself. This is a small sample built for the prototype, not a stand-in for the whole press.',
+        frames: [
+          { outlet: 'Fox Business', title: 'June Jobs Report Shows Steady Hiring as the Economy Holds Firm' },
+          { outlet: 'ABC News', title: 'Jobs Report Comes in Worse Than Expected as the Labor Force Shrinks' },
+          { outlet: 'Reuters', title: 'US Job Growth Tops Forecasts in June; Jobless Rate Eases to 4.1%' }
+        ],
+        questions: [
+          'Which facts show up in every outlet, and which appear in only one or two?',
+          'When a rate “falls,” does each outlet explain why it fell?',
+          'What did the outlet that ran your usual headline choose to leave out?'
+        ],
+        claims: [
+          { id: 'c1', text: 'The U.S. economy added 147,000 nonfarm jobs in June 2026.', by: ['reuters','ap','foxbiz','abc','wsj','cap'],
+            sources: [
+              { o: 'reuters', s: "Nonfarm payrolls increased by 147,000 jobs in June, the Labor Department reported on Friday." },
+              { o: 'ap', s: "U.S. employers added 147,000 jobs in June, according to the Bureau of Labor Statistics." },
+              { o: 'foxbiz', s: "The economy added 147,000 jobs last month, a solid gain that pointed to steady hiring." },
+              { o: 'abc', s: "Employers added 147,000 jobs last month, a figure that fell short of what many economists had projected." },
+              { o: 'wsj', s: "Payrolls rose by 147,000 in June, the Labor Department said." },
+              { o: 'cap', s: "The June report showed a gain of 147,000 nonfarm jobs, extending a stretch of positive readings." }
+            ], note: null },
+          { id: 'c2', text: 'The unemployment rate was 4.1 percent.', by: ['reuters','ap','foxbiz','abc','wsj','cap'],
+            sources: [
+              { o: 'reuters', s: "The jobless rate slipped to 4.1% from 4.2% the month before." },
+              { o: 'ap', s: "The unemployment rate stood at 4.1% in June, little changed from the prior month." },
+              { o: 'foxbiz', s: "The jobless rate held at a low 4.1%, underscoring a labor market that remains firm." },
+              { o: 'abc', s: "Unemployment slipped to 4.1%, though the drop came alongside a shrinking labor force." },
+              { o: 'wsj', s: "The unemployment rate ticked down to 4.1% in June." },
+              { o: 'cap', s: "The headline unemployment rate came in at 4.1% for the month." }
+            ], note: null },
+          { id: 'c3', text: 'The unemployment rate fell partly because people left the labor force, not only because more people found work.', by: ['cap','reuters'],
+            sources: [
+              { o: 'cap', s: 'The decline in the unemployment rate was driven in part by workers exiting the labor force rather than by stronger hiring.' },
+              { o: 'reuters', s: 'A drop in labor force participation contributed to the lower jobless rate, economists noted.' }
+            ], note: 'Reviewer confirmed the CAP and Reuters sentences describe the same underlying fact and were correctly grouped. No wording was changed.' },
+          { id: 'c4', text: 'Job gains were concentrated in government and health care.', by: ['reuters','ap','wsj','abc'],
+            sources: [
+              { o: 'reuters', s: "Most of the month's gains came from state and local government and from health care." },
+              { o: 'ap', s: "Government and health care drove the bulk of June's job growth." },
+              { o: 'wsj', s: "Hiring was led by state and local government along with health care, which together accounted for most of the month's gains." },
+              { o: 'abc', s: "The bulk of hiring took place in government roles and the health sector." }
+            ], note: null },
+          { id: 'c5', text: 'The June gain came in above economists’ forecasts.', by: ['reuters','foxbiz','wsj'],
+            sources: [
+              { o: 'reuters', s: "The reading topped the median forecast in a poll of economists." },
+              { o: 'foxbiz', s: "The total beat consensus expectations, a sign the economy is holding firm." },
+              { o: 'wsj', s: "June payrolls came in above the consensus economist forecast." }
+            ], note: 'Flagged during review: ABC framed the same figure as “worse than expected.” Both framings were kept as separate claims (c5 and the headline strip) rather than reconciled, since they reflect different baselines.' },
+          { id: 'c6', text: 'Wage growth slowed compared with the previous month.', by: ['ap','wsj','cap'],
+            sources: [
+              { o: 'ap', s: "Wage gains softened compared with the previous month's pace." },
+              { o: 'wsj', s: "Average hourly earnings rose more slowly than in May, easing 0.2% on the month." },
+              { o: 'cap', s: "Wage growth cooled, with average hourly earnings decelerating from the prior reading." }
+            ], note: null },
+          { id: 'c7', text: 'The report adds pressure on the Federal Reserve over the timing of rate cuts.', by: ['foxbiz','wsj'],
+            sources: [
+              { o: 'wsj', s: 'The data complicate the Federal Reserve’s decision on when to begin lowering interest rates.' },
+              { o: 'foxbiz', s: 'Investors said the report keeps the pressure on the Fed to signal its next move.' }
+            ], note: null }
+        ],
+        explanation: {
+          humanInvolvement: 'A person chose the six outlets and the story. That person then checked the AI’s list of claims against a fidelity checklist that looks for omitted context, altered meaning, and wrong attribution. Reviewers fix errors. They never rewrite a claim to fit an opinion.',
+          data: 'Six full articles published within roughly a day of the June 2026 report. Only these six are included; nothing broader is implied. All figures shown here are illustrative sample data for the prototype.',
+          model: 'A language model reads each article, lists its factual claims, then links claims that state the same fact to produce a corroboration count. Known failure modes are in the model card below.',
+          inferencing: 'The model groups claims by whether they say the same thing, which is a judgment about similarity rather than about truth. When two outlets state the same fact in different words, it links them. The count is simple addition you can redo yourself by opening the sources.',
+          algorithmicPresence: 'NewsLens runs once per story, ahead of time. There is no account, no personalization, no ranking, and no engagement optimization. Every reader sees exactly the same page.'
+        },
+        limitations: [
+          'NewsLens compares how outlets covered a story. It does not judge whether any claim is true.',
+          '“6 of 6” means all six of these outlets. It says nothing about the rest of the press.',
+          'The AI can split or merge facts incorrectly, so contest anything that looks off.',
+          'We leave out confidence percentages and describe the limits in plain language instead.',
+          'The figures in this prototype are sample data, not a live extraction.'
+        ],
+        outOfScope: [
+          'No outlet bias ratings. We removed them after testing (see the sidebar note).',
+          'No factual-accuracy verdicts on any claim.',
+          'No AI-generated rationale for why claims were grouped.'
+        ]
+      },
+      {
+        id: 'heat', category: 'climate', categoryLabel: 'Climate', published: true,
+        date: 'Jul 9, 2026',
+        headline: 'A record-warm first half of 2026, across five outlets',
+        dek: 'Scientists reported the warmest January to June on record. The headline number showed up everywhere. Fewer outlets explained why it happened, and fewer still looked ahead.',
+        outlets: [
+          { id: 'reuters', name: 'Reuters' }, { id: 'ap', name: 'AP' },
+          { id: 'bbc', name: 'BBC' }, { id: 'guardian', name: 'The Guardian' }, { id: 'foxnews', name: 'Fox News' }
+        ],
+        outletRationale: 'The five outlets are Reuters and AP (wire services), the BBC and the Guardian (different audiences and editorial traditions), and Fox News (US cable). The number of outlets changes from one story to the next, depending on how many published real coverage.',
+        frames: [
+          { outlet: 'BBC', title: 'First Half of 2026 Was Warmest on Record, Scientists Say' },
+          { outlet: 'The Guardian', title: 'Record Heat Grips Planet as Emissions Keep Climbing, Data Shows' },
+          { outlet: 'Fox News', title: 'Agency Reports Record First-Half Temperatures for 2026' }
+        ],
+        questions: [
+          'Which outlets state the record, and which also explain the cause?',
+          'Does the framing separate the measurement from the interpretation?',
+          'Who mentions what happens next year, and who stops at the number?'
+        ],
+        claims: [
+          { id: 'h1', text: 'The first half of 2026 was the warmest January–June on record.', by: ['reuters','ap','bbc','guardian','foxnews'],
+            sources: [
+              { o: 'reuters', s: "The January to June period was the warmest first half of any year in the observational record, the agency said." },
+              { o: 'ap', s: "The first six months of 2026 were the warmest such period on record, scientists reported." },
+              { o: 'bbc', s: "The first half of 2026 was the warmest on record, according to the monitoring agency." },
+              { o: 'guardian', s: "Data showed the opening half of 2026 was the hottest ever measured." },
+              { o: 'foxnews', s: "The agency reported that the first six months of 2026 set a record for global temperature." }
+            ], note: null },
+          { id: 'h2', text: 'Scientists attribute the trend primarily to greenhouse gas emissions.', by: ['reuters','bbc','guardian'],
+            sources: [
+              { o: 'reuters', s: "Scientists attributed the record warmth chiefly to rising greenhouse gas emissions." },
+              { o: 'bbc', s: "Scientists said the long-term warming trend is driven by human-caused emissions." },
+              { o: 'guardian', s: "Researchers linked the sustained heat to continued growth in greenhouse gas emissions." }
+            ], note: 'Reviewer flagged that Fox News reported the record (h1) but did not carry the attribution sentence; grouped accordingly. No wording changed.' },
+          { id: 'h3', text: 'The record is likely to be broken again in the coming year.', by: ['guardian','bbc'],
+            sources: [
+              { o: 'bbc', s: 'Forecasters said the coming year could set another record depending on ocean conditions.' },
+              { o: 'guardian', s: 'Analysts warned that without steep emissions cuts, further records are likely.' }
+            ], note: null }
+        ],
+        explanation: {
+          humanInvolvement: 'A person selected the five outlets and reviewed the AI’s claims against the fidelity checklist, correcting only errors of omission or attribution.',
+          data: 'Five full articles published within about a day of the temperature announcement. Only these five are included. Sample data for the prototype.',
+          model: 'The model lists each article’s factual claims and links matching ones into a corroboration count. See the model card for limits.',
+          inferencing: 'Claims are grouped by whether they assert the same fact, not by whether the fact is correct. The count stays verifiable by reading the sources.',
+          algorithmicPresence: 'Precomputed once, identical for every reader, no personalization or ranking.'
+        },
+        limitations: [
+          'Compares coverage; does not verify the temperature science.',
+          '“5 of 5” means these five outlets only.',
+          'Extraction can split or merge claims; contest anything that looks wrong.',
+          'We leave out confidence numbers and state the limits in plain language.',
+          'Illustrative sample data, not a live extraction.'
+        ],
+        outOfScope: [
+          'No outlet bias ratings.',
+          'No accuracy verdicts on the claims.',
+          'No AI-generated rationale for groupings.'
+        ]
+      },
+      {
+        id: 'chips', category: 'technology', categoryLabel: 'Technology', published: true,
+        date: 'Jul 11, 2026',
+        headline: 'New AI-chip export rules, read four ways',
+        dek: 'A short rule change that drew a lot of interpretation. The basic facts line up across all four outlets. The read-through to the market does not.',
+        outlets: [
+          { id: 'reuters', name: 'Reuters' }, { id: 'ap', name: 'AP' },
+          { id: 'verge', name: 'The Verge' }, { id: 'wsj', name: 'Wall Street Journal' }
+        ],
+        outletRationale: 'The four outlets are Reuters and AP (wire services), the Verge (technology), and the Wall Street Journal (financial). NewsLens does not need a fixed number of sources. It works with whatever substantive coverage a story has.',
+        frames: [
+          { outlet: 'Reuters', title: 'US Tightens Export Rules on Advanced AI Chips' },
+          { outlet: 'The Verge', title: 'New Rules Will Restrict Sales of Cutting-Edge AI Chips Abroad' },
+          { outlet: 'Wall Street Journal', title: 'Chip Curbs Widen; Analysts Weigh the Revenue Hit' }
+        ],
+        questions: [
+          'Which facts about the rule itself are corroborated by all four?',
+          'Where does reporting shade into forecasting about revenue?',
+          'Who states the effective date, and who leaves it out?'
+        ],
+        claims: [
+          { id: 't1', text: 'The new rules restrict exports of advanced AI chips.', by: ['reuters','ap','verge','wsj'],
+            sources: [
+              { o: 'reuters', s: "The measures place new restrictions on the export of advanced artificial-intelligence chips." },
+              { o: 'ap', s: "The government tightened limits on exports of advanced AI chips." },
+              { o: 'verge', s: "The rules will limit sales of the most advanced AI chips to certain overseas buyers." },
+              { o: 'wsj', s: "New curbs restrict the export of the most advanced AI processors." }
+            ], note: null },
+          { id: 't2', text: 'The rules take effect in 90 days.', by: ['reuters','ap','wsj'],
+            sources: [
+              { o: 'reuters', s: "The rules take effect in 90 days, the agency said." },
+              { o: 'ap', s: "The restrictions are set to take effect in 90 days, officials said." },
+              { o: 'wsj', s: "Companies have a 90-day window before the curbs begin." }
+            ], note: 'Reviewer note: The Verge covered the rule (t1) but did not state the effective date; grouped accordingly.' },
+          { id: 't3', text: 'Analysts expect limited near-term revenue impact for major chipmakers.', by: ['wsj','reuters'],
+            sources: [
+              { o: 'wsj', s: 'Several analysts said the near-term hit to revenue would likely be modest.' },
+              { o: 'reuters', s: 'Industry analysts played down the immediate financial impact.' }
+            ], note: null }
+        ],
+        explanation: {
+          humanInvolvement: 'A person picked the four outlets and reviewed each extracted claim against the fidelity checklist, correcting only errors.',
+          data: 'Four full articles published shortly after the rule change. Only these four are included. Prototype sample data.',
+          model: 'The model extracts factual claims and links matching ones into a count; see the model card.',
+          inferencing: 'Grouping reflects whether two outlets assert the same fact, not whether it is true. The count is verifiable in the sources.',
+          algorithmicPresence: 'Runs once, no personalization, identical for all readers.'
+        },
+        limitations: [
+          'Compares coverage; does not judge the policy or its effects.',
+          '“4 of 4” means these four outlets only.',
+          'Extraction can mis-split forecast vs. fact; contest anything off.',
+          'We leave out confidence numbers and use plain language for the limits.',
+          'Illustrative sample data.'
+        ],
+        outOfScope: [
+          'No outlet bias ratings.',
+          'No accuracy verdicts.',
+          'No AI-generated rationale for groupings.'
+        ]
+      },
+      { id: 'election', category: 'politics', categoryLabel: 'Politics', published: false, date: 'Jul 18, 2026',
+        headline: 'Coverage of the new campaign-finance ruling',
+        dek: 'Queued for extraction. A reviewer has to sign off before this comparison goes public.',
+        outlets: [{},{},{},{},{},{}], outletCountOverride: 6 },
+      { id: 'final', category: 'sports', categoryLabel: 'Sports', published: false, date: 'Jul 17, 2026',
+        headline: 'How outlets called the championship final',
+        dek: 'Queued for extraction. A reviewer has to sign off before this comparison goes public.',
+        outlets: [{},{},{},{}], outletCountOverride: 4 },
+      { id: 'trial', category: 'health', categoryLabel: 'Health', published: false, date: 'Jul 15, 2026',
+        headline: 'Reporting on the new drug-trial results',
+        dek: 'Queued for extraction. A reviewer has to sign off before this comparison goes public.',
+        outlets: [{},{},{},{},{}], outletCountOverride: 5 }
+    ];
+  }
+
+  findStory(id) { return this.stories.find(s => s.id === id); }
+
+  // ---- handlers ----
+  goHome = () => { this.setState({ view: 'home', contest: null }); if (typeof window !== 'undefined') window.scrollTo(0, 0); };
+  goAbout = () => { this.setState({ view: 'about', contest: null }); if (typeof window !== 'undefined') window.scrollTo(0, 0); };
+  openStory = (id) => { this.setState({ view: 'story', storyId: id, openClaims: {}, explanationOpen: this.state.readingMode === 'expanded', contest: null }); if (typeof window !== 'undefined') window.scrollTo(0, 0); };
+  setStaged = () => this.setState({ readingMode: 'staged' });
+  setExpanded = () => this.setState({ readingMode: 'expanded' });
+  toggleAlignment = () => this.setState(s => ({ alignment: !s.alignment }));
+  setCategory = (cat) => this.setState({ category: cat });
+  onLookup = (e) => { const v = e.target.value; this.setState({ lookup: v }); };
+  toggleClaim = (id) => this.setState(s => ({ openClaims: { ...s.openClaims, [id]: !s.openClaims[id] } }));
+  toggleExplanation = () => this.setState(s => ({ explanationOpen: !s.explanationOpen }));
+  onMethodsLink = () => this.setState({ methodsLinkClicked: true });
+  onSourceLink = () => this.setState({ sourceLinkClicked: true });
+  dismissGuide = () => this.setState({ guideDismissed: true });
+  openContest = (claimId) => this.setState(s => ({ openClaims: { ...s.openClaims, [claimId]: true }, contest: { claimId, reason: '', text: '', submitted: false } }));
+  setContestReason = (r) => this.setState(s => ({ contest: { ...s.contest, reason: r } }));
+  onContestText = (e) => { const v = e.target.value; this.setState(s => ({ contest: { ...s.contest, text: v } })); };
+  submitContest = () => this.setState(s => ({ contest: { ...s.contest, submitted: true, ticket: 'NL-' + (1000 + Math.floor(Math.random() * 9000)) } }));
+  closeContest = () => this.setState({ contest: null });
+
+  renderVals() {
+    const st = this.state;
+    const countStyle = this.props.countStyle || 'pips';
+    const btnBase = 'font-family:IBM Plex Sans;font-size:12.5px;font-weight:500;border:none;border-radius:5px;padding:5px 12px;cursor:pointer;transition:all .12s';
+    const activeBtn = btnBase + ';background:#1c1b19;color:#fff';
+    const idleBtn = btnBase + ';background:transparent;color:#77716a';
+
+    // ----- categories (home) -----
+    const catDefs = [
+      { id: 'all', label: 'All stories' },
+      { id: 'economy', label: 'Economy' }, { id: 'politics', label: 'Politics' },
+      { id: 'climate', label: 'Climate' }, { id: 'technology', label: 'Technology' },
+      { id: 'sports', label: 'Sports' }, { id: 'health', label: 'Health' }
+    ];
+    const chipBase = 'font-family:IBM Plex Sans;font-size:13px;font-weight:500;border-radius:20px;padding:6px 15px;cursor:pointer;transition:all .12s';
+    const categories = catDefs.map(c => ({
+      label: c.label,
+      onClick: () => this.setCategory(c.id),
+      style: st.category === c.id
+        ? chipBase + ';background:#1c1b19;color:#fff;border:1px solid #1c1b19'
+        : chipBase + ';background:transparent;color:#57534c;border:1px solid #d6d1c6'
+    }));
+
+    // ----- home story rows -----
+    const outletCount = (s) => s.outletCountOverride || (s.outlets ? s.outlets.length : 0);
+    const q = (st.lookup || '').trim().toLowerCase();
+    const matches = (s) => !q || (s.headline + ' ' + s.dek + ' ' + s.categoryLabel).toLowerCase().includes(q);
+    const filtered = this.stories
+      .filter(s => st.category === 'all' || s.category === st.category)
+      .filter(matches);
+    const homeStories = filtered
+      .map(s => {
+        const rowBase = 'display:flex;gap:28px;align-items:flex-start;padding:26px 4px;border-bottom:1px solid #e0dbd0;cursor:pointer;transition:background .12s';
+        return {
+          categoryLabel: s.categoryLabel, date: s.date, headline: s.headline, dek: s.dek,
+          outletCountLabel: outletCount(s) + ' outlets',
+          statusLabel: s.published ? 'Published' : 'In queue',
+          actionLabel: s.published ? 'Open comparison' : 'Why queued',
+          statusStyle: s.published
+            ? 'font-family:IBM Plex Mono,monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#0a544c;background:#e2efec;border:1px solid #cfe3de;padding:3px 9px;border-radius:4px'
+            : 'font-family:IBM Plex Mono,monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#664d03;background:#faeecb;border:1px solid #e6d4a0;padding:3px 9px;border-radius:4px',
+          rowStyle: rowBase,
+          onClick: () => this.openStory(s.id)
+        };
+      });
+
+    // ----- story view -----
+    const story = this.findStory(st.storyId);
+    const isStory = st.view === 'story';
+    const published = !!(story && story.published);
+    const expanded = st.readingMode === 'expanded';
+
+    let vals = {
+      isHome: st.view === 'home',
+      isAbout: st.view === 'about',
+      goAbout: this.goAbout,
+      isStory,
+      isQueued: isStory && !published,
+      isPublished: isStory && published,
+      showGuide: isStory && published && !st.guideDismissed,
+      dismissGuide: this.dismissGuide,
+      goHome: this.goHome,
+      setStaged: this.setStaged, setExpanded: this.setExpanded,
+      toggleAlignment: this.toggleAlignment,
+      alignmentMode: st.alignment,
+      stagedBtnStyle: expanded ? idleBtn : activeBtn,
+      expandedBtnStyle: expanded ? activeBtn : idleBtn,
+      notesDotColor: st.alignment ? '#b8892b' : '#c9c3b8',
+      notesBtnStyle: 'display:flex;align-items:center;gap:7px;font-family:IBM Plex Sans;font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:7px;cursor:pointer;transition:all .12s;'
+        + (st.alignment ? 'background:#fbf3df;border:1px solid #ecdcb0;color:#8a6a1e' : 'background:transparent;border:1px solid #ded9cf;color:#77716a'),
+      categories, homeStories,
+      iterations: [
+        { v: 'v1', title: 'Data dashboard', body: 'A big claims table with counts and statistics visible all at once. It failed a basic usability test: a reader arriving for a news story would see a spreadsheet and leave.' },
+        { v: 'v2', title: 'Narrative structure', body: 'Real headlines first, then guiding questions, with the claim table moved to the bottom. This put the human-readable framing before the machinery.' },
+        { v: 'v3', title: 'Glass box', body: 'Added the explanation panel showing how the AI made its comparisons, plus a contest feature that lets a reader flag a claim and see the grouping logic at the point of disagreement.' }
+      ],
+      evalStats: [
+        { stat: '0', label: 'Heuristic violations', body: 'Zero direct violations against the 18 Amershi et al. (2019) guidelines, with designer bias acknowledged. Guideline 11 only partially met (dead methods links).' },
+        { stat: '2 / 5 / 3', label: 'Liao 10-question scorecard', body: 'Two fully answered, five partial, three missed. Strong on backward-looking "what did it do," weak on forward-looking "what if I changed the input."' },
+        { stat: '15 · 7', label: 'Walkthrough issues', body: 'Fifteen design issues surfaced across two personas, seven marked high severity. The most important reshaped the reading-mode toggle.' }
+      ],
+      knownGaps: [
+        'The "documented methods" links do not resolve yet, so Amershi et al. (2019) Guideline 11 is only partially met.',
+        'Forward-looking, "what if I changed the input" questions are unanswered, a limit of a static prototype (Liao et al., 2020).',
+        'The correction log was not recorded on the first review pass, so no public error rate exists yet.',
+        'The corpus covers a small set of outlets on a few story types, and no live user study was run, so no measured effects on real readers are claimed.'
+      ],
+      lookupValue: st.lookup,
+      onLookup: this.onLookup,
+      noResults: st.view === 'home' && filtered.length === 0,
+      resultCountLabel: filtered.length + (filtered.length === 1 ? ' comparison' : ' comparisons'),
+      audiences: [
+        { tag: 'For readers', title: 'Cross-check what you read', body: 'You saw one outlet\u2019s version. See which facts every outlet reported and which only one or two carried.' },
+        { tag: 'For educators', title: 'A news-literacy artifact', body: 'A worked, annotated example of how framing works, built for the classroom, with guiding questions on every story.' },
+        { tag: 'For auditors', title: 'A glass box, on purpose', body: 'Every count is checkable by hand, every AI step is disclosed, and the tool refuses to rate bias or verdict accuracy.' }
+      ]
+    };
+
+    if (!story) return vals;
+
+    vals.story = {
+      categoryLabel: story.categoryLabel, date: story.date,
+      headline: story.headline, dek: story.dek,
+      outletCount: outletCount(story),
+      outletCountLabel: outletCount(story) + ' outlets',
+      outlets: story.outlets || [],
+      outletRationale: story.outletRationale,
+      limitations: story.limitations, outOfScope: story.outOfScope,
+      frames: story.frames,
+      questions: (story.questions || []).map((t, i) => ({ n: '0' + (i + 1), text: t })),
+      claimTotal: story.claims ? story.claims.length : 0,
+      claimCountLabel: (story.claims ? story.claims.length : 0) + ' claims extracted',
+    };
+
+    if (published) {
+      const nameMap = {};
+      (story.outlets || []).forEach(o => { nameMap[o.id] = o.name; });
+      const total = outletCount(story);
+
+      vals.claims = story.claims.map(c => {
+        const cnt = c.by.length;
+        const open = expanded || !!st.openClaims[c.id];
+        const contestActive = st.contest && st.contest.claimId === c.id;
+        const pips = [];
+        for (let i = 0; i < total; i++) pips.push({ on: i < cnt, off: i >= cnt });
+        const reportedList = c.by.map(id => nameMap[id] || id);
+        const notReported = (story.outlets || []).filter(o => c.by.indexOf(o.id) === -1).map(o => o.name);
+        const groupingExplanation = cnt === total
+          ? 'All ' + total + ' outlets stated this fact, so the count is ' + cnt + ' of ' + total + '. The model read each article, pulled out this claim, and matched the ' + cnt + ' versions because they assert the same thing in different words.'
+          : 'Of the ' + total + ' outlets, ' + cnt + ' stated this fact and ' + (total - cnt) + ' did not, so the count is ' + cnt + ' of ' + total + '. The model matched the ' + cnt + ' versions because they assert the same thing in different words. The others were not counted here because they did not carry this claim.';
+        const groupingSteps = [
+          { n: '1', text: 'Read each article on its own and listed its factual claims.' },
+          { n: '2', text: 'Linked claims from different outlets when they state the same fact, even when the wording differs.' },
+          { n: '3', text: 'Counted the linked outlets. Reported by ' + reportedList.join(', ') + (notReported.length ? '. Not carried by ' + notReported.join(', ') + '.' : '.') },
+          { n: '4', text: 'A human reviewer checked this grouping against the fidelity checklist for omitted context, altered meaning, and wrong attribution.' }
+        ];
+        return {
+          text: c.text,
+          countLabel: cnt + ' of ' + total,
+          countN: cnt,
+          countTotal: total,
+          chevron: open ? '▲' : '▼',
+          showPips: countStyle === 'pips',
+          pips,
+          open,
+          onToggle: () => this.toggleClaim(c.id),
+          toggleLabel: open ? 'Hide sources' : 'Show sources',
+          reportedNames: reportedList.join(', '),
+          sources: c.sources.map(s => ({ outlet: nameMap[s.o] || s.o, sentence: s.s })),
+          hasNote: !!c.note, note: c.note,
+          groupingExplanation, groupingSteps,
+          contestClosed: !contestActive,
+          contestOpen: !!(contestActive && !st.contest.submitted),
+          contestDone: !!(contestActive && st.contest.submitted),
+          onContest: () => this.openContest(c.id)
+        };
+      });
+
+      // shared contest controls (bound to whichever claim is active)
+      const reasonDefs = [
+        { id: 'context', label: 'Missing context' },
+        { id: 'meaning', label: 'Altered meaning' },
+        { id: 'attribution', label: 'Wrong outlet attribution' },
+        { id: 'other', label: 'Something else' }
+      ];
+      const rBase = 'font-family:IBM Plex Sans;font-size:13px;border-radius:20px;padding:6px 14px;cursor:pointer;transition:all .12s';
+      const curReason = st.contest ? st.contest.reason : '';
+      vals.contestReasons = reasonDefs.map(r => ({
+        label: r.label,
+        onClick: () => this.setContestReason(r.id),
+        style: curReason === r.id
+          ? rBase + ';background:#0f6d63;color:#fff;border:1px solid #0f6d63'
+          : rBase + ';background:#fff;color:#57534c;border:1px solid #d6d1c6'
+      }));
+      vals.onContestText = this.onContestText;
+      vals.onSubmitContest = this.submitContest;
+      vals.onCloseContest = this.closeContest;
+      vals.contestTicket = st.contest ? st.contest.ticket : '';
+      const canSubmit = st.contest && st.contest.reason;
+      vals.contestSubmitStyle = 'font-family:IBM Plex Sans;font-size:13px;font-weight:600;border-radius:7px;padding:9px 16px;border:none;transition:all .12s;'
+        + (canSubmit ? 'background:#0f6d63;color:#fff;cursor:pointer' : 'background:#d9d4c9;color:#fff;cursor:not-allowed');
+
+      // explanation
+      const exp = story.explanation;
+      vals.explanationOpen = expanded || st.explanationOpen;
+      vals.toggleExplanation = this.toggleExplanation;
+      vals.onMethodsLink = this.onMethodsLink;
+      vals.methodsLinkClicked = st.methodsLinkClicked;
+      vals.onSourceLink = this.onSourceLink;
+      vals.sourceLinkClicked = st.sourceLinkClicked;
+      vals.explanationToggleLabel = (expanded || st.explanationOpen) ? 'Hide' : 'Open panel';
+      vals.explanationRows = [
+        { label: 'Human involvement', body: exp.humanInvolvement },
+        { label: 'Data', body: exp.data },
+        { label: 'The model', body: exp.model },
+        { label: 'Inferencing', body: exp.inferencing },
+        { label: 'Algorithmic presence', body: exp.algorithmicPresence }
+      ];
+
+      vals.readingModeLabel = expanded ? 'expanded mode' : 'staged mode';
+      vals.readingModeHint = expanded
+        ? 'Every source and the explanation panel are open at once.'
+        : 'Sources and the explanation stay closed until you open them.';
+    }
+
+    return vals;
+  }
+}
+</script>
 </body>
 </html>
+

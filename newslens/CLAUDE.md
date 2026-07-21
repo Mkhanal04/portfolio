@@ -2,98 +2,156 @@
 
 Read this before changing anything. These are hard rules, not preferences.
 
-## What this is
+## What this is (as of Session 13, 2026-07-21)
 
-NewsLens is a coverage-comparison prototype. It takes one news story, shows how a
-panel of newsrooms covered it, breaks each article into factual claims, and links
-every claim back to the exact sentence it came from. It issues no bias labels, no
+NewsLens is a **design mock** of a coverage-comparison prototype, shipped so
+Milan's professor can click through it from his portfolio. It shows how a panel
+of newsrooms covered one story, breaks each article into factual claims, and
+links every claim back to a source sentence. It issues no bias labels, no
 accuracy verdicts, and no AI-generated explanations.
 
-It is a static site. No build step, no framework, no dependencies at runtime.
+**It is not a live extraction pipeline.** The current build displays
+illustrative sample data — real outlet names and real excerpts where possible,
+but the corroboration counts, matching, and data structure are pre-computed for
+a UX demo. The page states this in three places (footer, Model Card
+limitations, and the About-page copy). Those disclaimers protect the entire
+argument this repo makes. Do not remove them.
 
-## Rule 1: never invent evidence
+The site is a Claude Design Composer artifact rendered client-side by
+`support.js` on top of React 18 from CDN. There is no bundler, no framework in
+the pilot-suite sense, and no server-side render. Two files at the repo root
+(`index.html`, `support.js`) plus React + ReactDOM from cdnjs.
 
-This is the one that matters. The entire product argument is that a reader can
-check the work.
+## Rule 1: don't quietly make it look like a live extraction
 
-- **Every sentence shown to a reader must be copied verbatim from the real
-  article.** Not paraphrased, not summarised, not reconstructed from memory.
-- **Never write a plausible-sounding quote to fill a gap.** If a fact is not in an
-  article, the correct value is "not mentioned". A gap is a finding, not a failure.
-- **Never invent a URL, byline, date, or headline.** Fetch it or leave it out.
-- If you cannot retrieve a source, say so and stop. Do not substitute a different
-  outlet and do not quote from a search-engine summary.
+This replaces the "never invent evidence" rule from the pre-Session-13
+build (which shipped a corpus-driven page). That rule bound reader-facing
+sentences to a verified corpus. The design mock has no corpus — the data lives
+inline in `index.html`'s `data-dc-script`, authored by Milan in
+claude.ai/design as illustrative sample data.
 
-Quotes keep their original punctuation, including em dashes. The no-em-dash rule
-in Milan's writing does **not** apply to quoted source material. Editing a quote to
-satisfy a style rule corrupts the evidence.
+The current honesty contract:
 
-## Rule 2: `data/corpus/*.json` is the single source of truth
+- **The "illustrative sample data" disclaimer must remain visible** in the
+  footer AND in the Model Card limitations panel AND (in slightly different
+  words) on the About page. If any of the three disappears, the page starts
+  reading like real live output and the whole point collapses. Removing the
+  disclaimer without Milan explicitly asking is a violation of intent, not a
+  style choice.
+- **Real excerpts stay real.** Where the design uses actual outlet quotes
+  (Fox Business, ABC News, Center for American Progress on the June 2026 BLS
+  jobs report), those quotes must be verbatim from the real articles. Editing
+  them to "clean up" wording corrupts the honest-quote part of the mock.
+- **Fabricated pipeline claims are not okay.** Do not add copy that implies
+  the counts came from a live model, that new stories are being extracted, or
+  that reader flags reach a real reviewer. Everything in the mock is
+  precomputed and the copy already acknowledges it.
+- **Never invent a byline, headline, URL, or date to fill a design gap.**
+  If a slot needs data and there is none, leave it blank or write a "sample"
+  label.
 
-The HTML is generated from the corpus, not hand-edited.
+## Rule 2: the data lives in `index.html`, not in a corpus
 
-- Change a claim, count, sentence or outlet **in the JSON first**, then regenerate.
-- Never hand-edit a claim row, a dot pattern, or a corroboration count in the HTML.
-  They will drift from the data and the verifier will catch it.
-- `scripts/verify.js` checks that every count matches its dots, its corpus entry,
-  and the number of provenance sentences shown. Run it after any change.
+Old rule (`data/corpus/*.json` is source of truth) no longer applies. There is
+no `data/` directory. The story data, guiding questions, outlet framing,
+claims, source sentences, and model-card copy all live inside the
+`data-dc-script` block at the bottom of `index.html`.
 
-## Rule 3: the outlet panel is chosen per story
+To change what the mock shows, do it in claude.ai/design (project id
+`1bf55bc3-36f5-48e5-96ce-d1cf7ffedb0c`, file `NewsLens.dc.html`), then re-sync:
+`DesignSync.get_file`, extract with `jq -r .content`, re-inject the React CDN
+scripts, and write to `newslens/index.html`. There is no hand-edit path — the
+inline `data-dc-script` is machine-generated by the Design Composer editor.
 
-Panel composition is the most consequential editorial judgment this tool makes,
-and it is not made by the AI.
+## Rule 3: the outlet panel is chosen per story (still applies)
 
-- Panels differ by story. A jobs report draws business desks. A sports story draws
-  sports desks. Do not build anything that assumes a fixed global panel.
-- Do not hard-code the number six anywhere in product-level copy or logic. Six is
-  the panel size of one story, not a property of the product.
-- Corroboration counts are always relative to that story's panel. Copy must never
+Panel composition is the most consequential editorial judgment this tool
+depicts, and it is not made by the AI even in the mock.
+
+- Panels differ by story. Never build anything that assumes a fixed global
+  panel.
+- Do not hard-code the number six anywhere. Six is the panel size shown for
+  one story.
+- Corroboration counts are relative to that story's panel. Copy must never
   imply they represent the press as a whole.
-- Every story page states who is in its panel and why.
 
-## Rule 4: claim counts are not a quality score
+## Rule 4: claim counts are not a quality score (still applies)
 
 An outlet that did not carry a claim is not being accused of anything. A three
 minute radio transcript carries fewer claims than a 900 word business report
-because it is a different assignment. Always show the article type next to any
-omission count.
+because it is a different assignment.
 
-## Rule 5: things that are deliberately broken
+## Rule 5: things that are deliberately broken (still applies, but different)
 
-Some links in the story page point at `href="#"` on purpose: Methods, Model card,
-How it works, Independence, Accessibility, and the outlet panel link inside the
-glass box.
-
-The submitted capstone paper reports, in present tense, that these are broken, and
-names it as the most damaging gap found in a self-audit. **Do not silently fix
-them.** If Milan asks for the Methods page to be built, that is a deliberate
-decision to supersede the paper's finding, and the change should be called out.
+The design's Glass Box explanation panel has "Methods" / "Corroboration
+matching" / "Human review checklist" links that do not go anywhere. Clicking
+them surfaces an inline warning ("These method pages are not published yet, so
+the links do not go anywhere. This is a known gap in the current build, not a
+broken feature we are hiding.") that is part of the design's honesty layer.
+Do not "fix" the links by wiring them to real pages without Milan asking.
 
 ## Layout
 
 ```
-public/                 web root, exactly what Vercel serves
-  index.html            story index, panel rationale, what is not built
-  stories/*.html        one file per story
-data/corpus/*.json      verified corpus, one file per story. Source of truth.
-docs/
-  BUILD-FLAGS.md        open defects. Log ambiguities here, do not resolve silently.
-  BUILD-LOG.md          what happened in each build session
-  specs/                build specs
-scripts/
-  verify.js             functional + data-integrity harness. Run before every push.
+newslens/
+  index.html               NewsLens.dc.html (as-synced from claude.ai/design)
+                           with React 18 + ReactDOM 18 CDN <script> tags
+                           injected before <script src="./support.js">
+  support.js               compiled dc-runtime that parses <x-dc> and renders
+                           via React. Ship as-is. Do not edit.
+  docs/
+    BUILD-FLAGS.md         history of ambiguities and decisions.
+    BUILD-LOG.md           what happened per session.
+    HANDOFF-TO-CODE.md     original build handoff (Session 11-12 era).
+    BUILD-SPEC-v1.md       spec for the pre-Session-13 corpus-driven build.
+    PRD.md                 record of rejected NotebookLM PRDs.
+    specs/                 old build specs.
+  scripts/
+    render-check.cjs       static smoke test. Confirms shipped bundle has React
+                           scripts, x-dc template, data-dc-script, disclaimer.
+                           Does NOT run the design end-to-end (that needs a
+                           browser). Manual browser spot-check before push.
+  CLAUDE.md                this file
+  README.md
 ```
 
 ## Before you push
 
-1. `node scripts/verify.js` and confirm it passes.
-2. Confirm zero external requests: the page must work offline from a `file://`
-   double-click. No CDN links, no web fonts, no analytics.
-3. Confirm no PDF, .docx, or draft has crept into the tree. `.gitignore` blocks
-   them but check anyway.
+1. `node newslens/scripts/render-check.cjs` — must print 10/10 passed.
+2. **Manually spot-check in a real browser.** Boot `python3 -m http.server`
+   at pilot-suite root, load `http://127.0.0.1:PORT/newslens/`, confirm the
+   Home view renders (see "Available comparisons"), click through to a story
+   (see "The claims, side by side"), toggle Staged/Expanded and Research
+   notes, confirm no console errors. render-check.cjs cannot substitute for
+   this.
+3. Confirm no PDF, .docx, or draft has crept into the tree.
+4. Confirm no changes to `tradepilot/` or `talentpilot/` (the maintenance
+   freeze from `~/.claude/CLAUDE.md` applies).
+
+## How this file gets updated
+
+The design lives at claude.ai/design (project id
+`1bf55bc3-36f5-48e5-96ce-d1cf7ffedb0c`). When Milan iterates on the design,
+the shipped `newslens/index.html` and `newslens/support.js` must be re-synced:
+
+```
+# from an environment with DesignSync MCP loaded:
+# 1. Pull the two files fresh
+# 2. Write NewsLens.dc.html as newslens/index.html WITH the React CDN scripts
+#    injected right before <script src="./support.js">
+# 3. Write support.js verbatim to newslens/support.js
+# 4. Re-run render-check.cjs + browser spot-check
+# 5. Commit + push
+```
+
+The injected React script tags are the only local modification to the design
+file. Every re-sync must re-inject them (they are not in the claude.ai/design
+authoring environment because that environment provides React itself).
 
 ## What lives outside this repo, and stays outside
 
-`../Capstone/` holds the research archive: paywalled journal PDFs, book chapters,
-report drafts, and the submitted paper. **None of it may be copied into this
-repo.** Publishing those PDFs would be redistributing paywalled material.
+`../Capstone/` and Milan's paper PDFs (both in claude.ai/design uploads/ and
+locally under HCAI-4304/Capstone/) hold the research archive: paywalled
+journal PDFs, book chapters, report drafts, and the submitted paper.
+**None of it may be copied into this repo.** Publishing those PDFs would be
+redistributing paywalled material.

@@ -13,6 +13,22 @@ All four P0 defects are fixed in `newslens/public/stories/jobs-report-2026-06.ht
 
 **New flag raised by the fix pass, NOT resolved (design copy, not a defect):** the page contains 17 em dashes, all inherited from the v3 comp as typographic separators (title, pill labels, "same 57,000", step headers). Milan's no-em-dash rule governs his prose, and the report itself has zero. Whether the rule extends to frozen design copy that will appear inside the report's figures is a call for Milan, not the builder. Flagged, not changed, because Section 2 forbids altering v3 copy without authorization.
 
+## Session 13 (Opus, 2026-07-21) — replaced corpus-driven build with the finalized design mock
+
+_Requested by Milan: professor needs to click through the prototype from milankhanal.com/newslens/ before evaluation. Design was approved and finalized in claude.ai/design; only pending was hosting._
+
+**What changed on disk.** The Session 11-12 corpus-driven story page was replaced with the finalized Claude Design Composer artifact. Deleted: `stories/jobs-report-2026-06.html`, `data/corpus/jobs-report-2026-06.json`, `scripts/verify.cjs`. Added: `index.html` (NewsLens.dc.html re-synced from claude.ai/design with React 18 + ReactDOM 18 CDN scripts injected before support.js), `support.js` (dc-runtime, ships verbatim), `scripts/render-check.cjs` (static smoke test, 10 checks). Kept unchanged: `docs/` (history), `README.md`, portfolio card on pilot-suite homepage.
+
+**The Rule 1 shift, made deliberately and disclosed here.** The Session 11-12 build was a real corpus-verified prototype. The Session 13 build is an illustrative design mock. Milan confirmed on 2026-07-21: real outlet excerpts (Fox Business, ABC News, Center for American Progress on the June 2026 BLS jobs report) are genuine quotes; the corroboration counts, matching structure, and extraction pipeline are pre-computed for UX demo. The mock states this explicitly in three places (footer disclaimer "illustrative sample data · not a live extraction", Model Card limitations panel, and the About-page copy). CLAUDE.md Rule 1 was rewritten to "don't quietly make it look like a live extraction" to reflect the new honesty contract. All three disclaimers must stay visible.
+
+**Rule 2 no longer applies.** There is no `data/corpus/*.json`. Story data lives inline in `index.html`'s `data-dc-script` block, authored in claude.ai/design. To change what the mock shows: edit in Design Composer, re-sync via `DesignSync.get_file`, re-inject the two React CDN script tags, write to `newslens/index.html`. Hand-editing the inline data-dc-script is out of scope.
+
+**verify.cjs is gone; render-check.cjs is a shipping check, not a rendering check.** The 16 Session-11 checks bound to specific DOM structure (`.claim[data-claimtext]`, `#glassDetails`, `window.setMode`) that no longer exists. Its replacement, `render-check.cjs`, is 10 static checks confirming the shipped bundle has: React CDN scripts, `<x-dc>` template, `<script src="./support.js">`, `data-dc-script` block, and the "illustrative sample data" disclaimer. Actually running the design end-to-end requires a real browser. Every push must include a manual browser spot-check (documented in CLAUDE.md "Before you push").
+
+**Broken links, still on purpose.** The design has a Glass Box panel with Methods / Corroboration matching / Human review checklist links that do not go anywhere. Clicking them surfaces an inline warning ("These method pages are not published yet, so the links do not go anywhere. This is a known gap in the current build, not a broken feature we are hiding.") — this is part of the design's honesty layer and must not be "fixed" by wiring the links to real pages.
+
+**External dependencies (new).** React 18 and ReactDOM 18 load from cdnjs.cloudflare.com. Google Fonts loads Source Serif 4, IBM Plex Sans, and IBM Plex Mono. The old Session 11-12 build worked offline from a `file://` double-click; the Session 13 build does not, because it needs the CDN scripts. This is the Design Composer's requirement, not a choice.
+
 ## Plumbing notes — Session 12 (Opus, 2026-07-20, pilot-suite integration)
 
 _Not defects in NewsLens. Facts about pilot-suite that shaped how NewsLens was dropped in. Flagged so a future session doesn't re-litigate them or "fix" them silently. All numbered items were left alone._
