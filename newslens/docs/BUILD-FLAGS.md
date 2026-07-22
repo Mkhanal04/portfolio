@@ -13,6 +13,17 @@ All four P0 defects are fixed in `newslens/public/stories/jobs-report-2026-06.ht
 
 **New flag raised by the fix pass, NOT resolved (design copy, not a defect):** the page contains 17 em dashes, all inherited from the v3 comp as typographic separators (title, pill labels, "same 57,000", step headers). Milan's no-em-dash rule governs his prose, and the report itself has zero. Whether the rule extends to frozen design copy that will appear inside the report's figures is a call for Milan, not the builder. Flagged, not changed, because Section 2 forbids altering v3 copy without authorization.
 
+## Session 14b (Opus, 2026-07-21) — added Figure 1 Sections 2 and 3 (Agreements + Splits)
+
+_A second NotebookLM pass confirmed the omissions work but correctly flagged that Figure 1's Sections 2 ("What did everyone agree on?") and 3 ("Where did they split?") were still missing. Milan chose to build them rather than explain the drift in the email._
+
+Added to the story template + vals, in Figure 1 order (agree → split → omissions → claims):
+
+- **Section 2 "What did everyone agree on?"** — lists the claims every outlet carried (`by.length === total`), each with a "6 of 6" badge. For the jobs story that's c1, c2, c3. Derived, not hard-coded.
+- **Section 3 "Where did they split?"** — features one cleanly-split claim as a dot-notation teaching key. Selection prefers a claim with no partial states so filled/empty reads unambiguously; for the jobs story that resolves to c6 (Labor force participation, 3 of 6: Fox/CNN/CNBC reported, ABC/CAP/NPR did not). Shows the pips + a filled/empty legend.
+
+The live story page now matches Figure 1's full seven-section structure. render-check 15/15; verified render + counts + mobile at 375. NotebookLM's suggested "consolidated to reduce cognitive overload" email line was NOT used — it claimed an intent that wasn't reasoned through; building the sections made it moot.
+
 ## Session 14 (Opus, 2026-07-21) — reconciled the mock with the submitted paper (real corpus + omissions section)
 
 _Prompted by a NotebookLM review that (correctly) flagged the mock diverged from the submitted paper's Figure 1. Verified every claim against the paper text, its Figure 1 image, and the verified corpus before acting._

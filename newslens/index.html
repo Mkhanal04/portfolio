@@ -340,6 +340,47 @@
           </div>
         </section>
 
+        <!-- (2b) WHAT DID EVERYONE AGREE ON -->
+        <section style="padding:30px 0 8px">
+          <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;margin:0 0 6px">What did everyone agree on?</h3>
+          <p style="font-size:14px;line-height:1.55;color:#7b818c;margin:0 0 16px;max-width:620px">Claims carried by all {{ story.outletCount }} outlets, listed first. Counted, not judged.</p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ story.agreements }}" as="a" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:14px;background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04);border-radius:8px;padding:14px 18px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:#1f7a4d;background:#eefaf2;border:1px solid #cdecd9;border-radius:20px;padding:3px 10px;flex-shrink:0;white-space:nowrap">{{ a.countLabel }}</span>
+                <span style="font-size:15.5px;line-height:1.4;color:#1f2329">{{ a.text }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <!-- (2c) WHERE DID THEY SPLIT -->
+        <section style="padding:30px 0 8px">
+          <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;margin:0 0 6px">Where did they split?</h3>
+          <p style="font-size:14px;line-height:1.55;color:#7b818c;margin:0 0 16px;max-width:620px">One claim up close. Each square is one outlet: filled means it reported the claim, empty means it did not.</p>
+          <div style="background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);border-radius:9px;padding:20px 22px">
+            <div style="font-size:17px;line-height:1.45;color:#1f2329;font-weight:500;margin-bottom:14px">{{ story.split.text }}</div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <div style="display:flex;gap:5px">
+                <sc-for list="{{ story.split.pips }}" as="p" hint-placeholder-count="6">
+                  <sc-if value="{{ p.on }}" hint-placeholder-val="{{ true }}">
+                    <span style="width:15px;height:15px;border-radius:3px;background:#1c1b19;display:block"></span>
+                  </sc-if>
+                  <sc-if value="{{ p.off }}" hint-placeholder-val="{{ false }}">
+                    <span style="width:15px;height:15px;border-radius:3px;border:1.5px solid #c7ccd4;display:block"></span>
+                  </sc-if>
+                </sc-for>
+              </div>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:#1f2329">{{ story.split.countLabel }}</span>
+            </div>
+            <div style="font-size:13.5px;line-height:1.55;color:#4d525b">Reported by {{ story.split.reported }}. Not carried by {{ story.split.notReported }}.</div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid #eef0f3;display:flex;gap:18px;flex-wrap:wrap">
+              <span style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#6b6f79"><span style="width:13px;height:13px;border-radius:3px;background:#1c1b19;display:inline-block"></span> reported the claim</span>
+              <span style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#6b6f79"><span style="width:13px;height:13px;border-radius:3px;border:1.5px solid #c7ccd4;display:inline-block"></span> did not</span>
+            </div>
+          </div>
+        </section>
+
         <!-- (3b) WHO LEFT WHAT OUT -->
         <section style="padding:30px 0 8px">
           <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;margin:0 0 6px">Who left what out?</h3>
@@ -1177,6 +1218,30 @@ class Component extends DCLogic {
           countLabel: 'did not mention ' + missed + ' of ' + claimTotal
         };
       });
+
+      // Section 2 (Figure 1): claims every outlet carried, listed first.
+      vals.story.agreements = story.claims
+        .filter(c => c.by.length === total)
+        .map(c => ({ text: c.text, countLabel: c.by.length + ' of ' + total }));
+
+      // Section 3 (Figure 1): one cleanly-split claim as a dot-notation key.
+      // Prefer a claim with no partial states so filled/empty reads unambiguously.
+      const splitClaim = story.claims.find(c => c.id === 'c6')
+        || story.claims.filter(c => c.by.length > 0 && c.by.length < total && (!c.partial || c.partial.length === 0))
+             .sort((a, b) => Math.abs(a.by.length - total / 2) - Math.abs(b.by.length - total / 2))[0]
+        || story.claims.find(c => c.by.length > 0 && c.by.length < total);
+      if (splitClaim) {
+        const scnt = splitClaim.by.length;
+        const spips = [];
+        for (let i = 0; i < total; i++) spips.push({ on: i < scnt, off: i >= scnt });
+        vals.story.split = {
+          text: splitClaim.text,
+          countLabel: scnt + ' of ' + total,
+          pips: spips,
+          reported: splitClaim.by.map(id => nameMap[id] || id).join(', '),
+          notReported: (story.outlets || []).filter(o => splitClaim.by.indexOf(o.id) === -1).map(o => nameMap[o.id] || o.name).join(', ')
+        };
+      }
 
       vals.claims = story.claims.map(c => {
         const cnt = c.by.length;
