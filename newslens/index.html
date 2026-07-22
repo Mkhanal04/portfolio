@@ -185,16 +185,29 @@
     <section style="padding:64px 0 36px;border-bottom:1px solid #e0e3e9">
       <div style="max-width:730px">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#16467e;margin-bottom:20px">Read the news elsewhere · cross-check it here</div>
-        <h1 class="nl-hero-h1" style="font-family:'Source Serif 4',serif;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-0.02em;margin:0 0 20px">Just read about it? See what the other outlets left out.</h1>
+        <h1 class="nl-hero-h1" style="font-family:'Source Serif 4',serif;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-0.02em;margin:0 0 20px">Just read about it?<br><span style="color:#16467e">See what the other outlets left out.</span></h1>
         <p style="font-size:18px;line-height:1.6;color:#424751;margin:0 0 8px">NewsLens is a second stop, not a news source. Look up an event you have already read about and see how several outlets framed the same facts: which claims everyone reported, and which showed up in only one or two.</p>
-        <p style="font-size:15px;line-height:1.6;color:#6b6f79;margin:14px 0 0">No bias ratings. No accuracy verdicts. Just the claims, the sources, and a count you can check by hand.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0">
+          <span style="display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Sans';font-size:13px;font-weight:500;color:#41474f;background:#fff;border:1px solid #d3d7de;border-radius:20px;padding:6px 13px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16467e" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/></svg>
+            No bias ratings
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Sans';font-size:13px;font-weight:500;color:#41474f;background:#fff;border:1px solid #d3d7de;border-radius:20px;padding:6px 13px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16467e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/></svg>
+            No accuracy verdicts
+          </span>
+        </div>
+        <p style="font-size:14px;line-height:1.6;color:#6b6f79;margin:12px 0 0">Just the claims, the sources, and a count you can check by hand.</p>
       </div>
 
       <!-- lookup bar -->
       <div style="margin-top:30px;max-width:560px">
-        <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #d3d7de;border-radius:10px;padding:13px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
-          <span style="width:16px;height:16px;border:2px solid #9aa0aa;border-radius:50%;position:relative;flex-shrink:0"><span style="position:absolute;width:6px;height:2px;background:#9aa0aa;bottom:-2px;right:-3px;transform:rotate(45deg);border-radius:1px"></span></span>
-          <input value="{{ lookupValue }}" onInput="{{ onLookup }}" placeholder="Find a story you've been reading about, like the jobs report or chip rules" style="flex:1;border:none;outline:none;background:none;font-family:'IBM Plex Sans';font-size:15px;color:#14171c" />
+        <div style="background:#eef1f6;border:1px solid #dbe0e8;border-radius:12px;padding:16px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#4a5566;margin-bottom:10px">Research lookup</div>
+          <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #d3d7de;border-radius:10px;padding:13px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.03)">
+            <span style="width:16px;height:16px;border:2px solid #9aa0aa;border-radius:50%;position:relative;flex-shrink:0"><span style="position:absolute;width:6px;height:2px;background:#9aa0aa;bottom:-2px;right:-3px;transform:rotate(45deg);border-radius:1px"></span></span>
+            <input value="{{ lookupValue }}" onInput="{{ onLookup }}" placeholder="Find a story you've been reading about, like the jobs report or chip rules" style="flex:1;border:none;outline:none;background:none;font-family:'IBM Plex Sans';font-size:15px;color:#14171c" />
+          </div>
         </div>
         <p style="font-size:12.5px;line-height:1.5;color:#60646c;margin:10px 2px 0">NewsLens only compares events it has already processed and a human has reviewed. The search looks inside that set. It will not fetch or analyze a new article on demand.</p>
       </div>
