@@ -215,8 +215,8 @@
 
     <!-- who this is for -->
     <section style="padding:26px 0 6px">
-      <div class="nl-grid-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
-        <sc-for list="{{ audiences }}" as="a" hint-placeholder-count="3">
+      <div class="nl-grid-3" style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:730px">
+        <sc-for list="{{ audiences }}" as="a" hint-placeholder-count="2">
           <div style="background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);border-radius:9px;padding:16px 17px">
             <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#16467e;margin-bottom:8px">{{ a.tag }}</div>
             <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:16.5px;color:#1f2329;margin-bottom:6px">{{ a.title }}</div>
@@ -1190,7 +1190,6 @@ class Component extends DCLogic {
       resultCountLabel: filtered.length + (filtered.length === 1 ? ' comparison' : ' comparisons'),
       audiences: [
         { tag: 'For readers', title: 'Cross-check what you read', body: 'You saw one outlet\u2019s version. See which facts every outlet reported and which only one or two carried.' },
-        { tag: 'For educators', title: 'A news-literacy artifact', body: 'A worked, annotated example of how framing works, built for the classroom, with guiding questions on every story.' },
         { tag: 'For auditors', title: 'A glass box, on purpose', body: 'Every count is checkable by hand, every AI step is disclosed, and the tool refuses to rate bias or verdict accuracy.' }
       ]
     };
