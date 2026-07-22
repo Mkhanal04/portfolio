@@ -13,6 +13,27 @@ All four P0 defects are fixed in `newslens/public/stories/jobs-report-2026-06.ht
 
 **New flag raised by the fix pass, NOT resolved (design copy, not a defect):** the page contains 17 em dashes, all inherited from the v3 comp as typographic separators (title, pill labels, "same 57,000", step headers). Milan's no-em-dash rule governs his prose, and the report itself has zero. Whether the rule extends to frozen design copy that will appear inside the report's figures is a call for Milan, not the builder. Flagged, not changed, because Section 2 forbids altering v3 copy without authorization.
 
+## Session 14 (Opus, 2026-07-21) — reconciled the mock with the submitted paper (real corpus + omissions section)
+
+_Prompted by a NotebookLM review that (correctly) flagged the mock diverged from the submitted paper's Figure 1. Verified every claim against the paper text, its Figure 1 image, and the verified corpus before acting._
+
+**What changed, hand-edited directly in `index.html` (no Claude Design round-trip, at Milan's request):**
+
+1. **Jobs/Economy story swapped to the verified 10-claim corpus.** Replaced the 7 illustrative sample claims (Reuters/AP/WSJ, 147,000 jobs) with the 10 real claims from `HCAI-4304/newslens/public/data/corpus/jobs-report-2026-06.json`: real outlets (Fox Business, ABC News, CAP, CNN, CNBC, NPR), real corroboration counts (6/6/6/4/4/3/4/3/1/1), and verbatim per-outlet source sentences. Verified: all 38 full-state sentences are byte-identical to the corpus.
+2. **Added the "Who left what out?" omissions section** (the paper's Findings centerpiece). Per-outlet omission counts derived from the claim data (ABC 6, Fox 3, CAP/CNN/CNBC/NPR 2 of 10), each shown with article type (paper Rule 4). Includes the inline note that third-party AllSides bias ratings were placed here in an earlier version and removed after the persona walkthrough.
+3. **Added an About-page disclosure line** framing the live build as a post-July-19-paper iteration under the research-through-design method.
+4. Corrected the jobs story's self-description (it had called its own data "illustrative sample data," now inaccurate since it's the verified corpus).
+
+**Modeling decision (documented for defensibility):** `by` = full-state outlets only (matches the corpus corroboration counts exactly). `partial` = partial-state outlets (used only to exclude them from omission counts). Omission = neither full nor partial = corpus state "none." Partial-state sentences are not shown in sources, so count = sources = `by` stay aligned.
+
+**Rejected:** NotebookLM's earlier suggestion to "generate 7 fabricated claim rows to hit 14." Violates Rule 1 and the paper's own ethics. Not done.
+
+**Known accepted drifts from the paper (pre-existing, not introduced here):**
+- Paper Figure 1 says "14 claims"; the verified corpus has 10; the mock now shows 10 (closest honest number). The paper is on Canvas and unchangeable.
+- Paper prose singles out the labor-force claim (c4) as reported by "only two of the six" outlets; the corpus records it at 4/6, so the mock shows 4/6. Covered by the About disclosure.
+
+**Divergence flag:** `index.html` is now hand-maintained and ahead of the Claude Design source. See CLAUDE.md "SOURCE OF TRUTH" — do not blind-re-sync.
+
 ## Session 13 (Opus, 2026-07-21) — replaced corpus-driven build with the finalized design mock
 
 _Requested by Milan: professor needs to click through the prototype from milankhanal.com/newslens/ before evaluation. Design was approved and finalized in claude.ai/design; only pending was hosting._

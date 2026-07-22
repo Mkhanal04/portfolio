@@ -340,6 +340,30 @@
           </div>
         </section>
 
+        <!-- (3b) WHO LEFT WHAT OUT -->
+        <section style="padding:30px 0 8px">
+          <h3 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;margin:0 0 6px">Who left what out?</h3>
+          <p style="font-size:14px;line-height:1.55;color:#7b818c;margin:0 0 18px;max-width:620px">One card per outlet, showing how many of the {{ story.claimTotal }} claims it did not mention. A lower count is not a better outlet: a three-minute radio segment carries fewer claims than a nine-hundred-word report by format, so the article type sits next to every count.</p>
+          <div class="nl-grid-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+            <sc-for list="{{ story.omissions }}" as="om" hint-placeholder-count="6">
+              <div style="background:#ffffff;border:1px solid #e6e9ee;box-shadow:0 1px 2px rgba(20,32,54,.04),0 10px 24px -18px rgba(20,32,54,.14);border-radius:8px;padding:16px 18px">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#16467e;margin-bottom:8px">{{ om.name }}</div>
+                <div style="font-family:'Source Serif 4',serif;font-weight:600;font-size:22px;color:#1f2329;margin-bottom:3px">{{ om.countLabel }}</div>
+                <div style="font-size:12.5px;color:#7b818c">{{ om.type }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:14px;padding:12px 14px;background:#f6f8fb;border:1px solid #dde3ec;border-left:3px solid #16467e;border-radius:4px;font-size:13px;line-height:1.55;color:#41474f">
+            An earlier version showed third-party outlet bias ratings here. A persona walkthrough found that placing a “Lean Right” label next to an omission count broke the tool’s neutrality, so the ratings were removed. NewsLens shows the count, not a verdict.
+          </div>
+          <sc-if value="{{ alignmentMode }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:14px;padding:12px 14px;background:#fbf3df;border:1px solid #ecdcb0;border-left:3px solid #b8892b;border-radius:4px;font-size:13px;line-height:1.55;color:#6b5a2e">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a9812a;display:block;margin-bottom:4px">Paper · Findings</span>
+              This is the section where the cognitive walkthrough found the design’s biggest flaw: a third-party “Lean Right” label sat next to a count of what an outlet left out, which broke the tool’s neutrality promise. Removing the ratings from the expanded toggle is the central finding of the paper (Kizilcec, 2016).
+            </div>
+          </sc-if>
+        </section>
+
         <!-- (4) CLAIMS -->
         <section style="padding:38px 0 8px">
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px">
@@ -606,6 +630,9 @@
       <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#16467e;margin-bottom:16px">About this prototype</div>
       <h1 class="nl-hero-h1-story" style="font-family:'Source Serif 4',serif;font-weight:600;font-size:38px;line-height:1.12;letter-spacing:-0.02em;margin:0 0 18px">A design-based capstone, shown as a working product</h1>
       <p style="font-size:17px;line-height:1.6;color:#424751;margin:0;max-width:680px">NewsLens is the artifact for an HCAI 4304 capstone on staged transparency in AI journalism. This page is the research layer. It explains what the prototype is for, how it was built and evaluated, and where it still falls short. The story pages themselves stay in product voice and keep this material out of the reader's way.</p>
+      <div style="margin-top:22px;padding:14px 18px;background:#f6f8fb;border:1px solid #dde3ec;border-left:3px solid #16467e;border-radius:5px;max-width:680px;font-size:14.5px;line-height:1.6;color:#41474f">
+        This live build is a design iteration completed after the July 19, 2026 paper. The artifact evaluated in the paper is the prior build; the visual system and story set here evolved under the same research-through-design method. The core findings, staged disclosure and the removal of third-party bias ratings from the expanded toggle, are preserved. The jobs-report story uses the verified corpus with verbatim source sentences; the other sample stories are illustrative.
+      </div>
     </div>
 
     <!-- two-layer -->
@@ -746,19 +773,22 @@ class Component extends DCLogic {
     return [
       {
         id: 'jobs', category: 'economy', categoryLabel: 'Economy', published: true,
-        date: 'Jul 5, 2026',
+        date: 'Jul 2, 2026',
         headline: 'The June 2026 jobs report, as six outlets told it',
-        dek: 'The Bureau of Labor Statistics put out one jobs report. Some outlets called it steady hiring, others called it worse than expected. This lays out which facts all six carried and which turned up in only one or two.',
+        dek: 'The Bureau of Labor Statistics put out one jobs report. Fox Business called the hiring steady, ABC News called it worse than expected. This lays out which facts all six carried and which turned up in only one or two.',
         outlets: [
-          { id: 'reuters', name: 'Reuters' }, { id: 'ap', name: 'AP' },
-          { id: 'foxbiz', name: 'Fox Business' }, { id: 'abc', name: 'ABC News' },
-          { id: 'wsj', name: 'Wall Street Journal' }, { id: 'cap', name: 'Center for American Progress' }
+          { id: 'fox', name: 'Fox Business', type: 'Business desk report' },
+          { id: 'abc', name: 'ABC News', type: 'General news report' },
+          { id: 'cap', name: 'Center for American Progress', type: 'Policy analysis' },
+          { id: 'cnn', name: 'CNN', type: 'Business desk report' },
+          { id: 'cnbc', name: 'CNBC', type: 'Markets desk report' },
+          { id: 'npr', name: 'NPR', type: 'Radio transcript' }
         ],
-        outletRationale: 'The six outlets are Reuters and AP (wire services), Fox Business and ABC News (business and broadcast, aimed at different audiences), the Wall Street Journal (financial), and the Center for American Progress (analysis). We list the choice openly so you can judge it for yourself. This is a small sample built for the prototype, not a stand-in for the whole press.',
+        outletRationale: 'The six outlets ran original coverage of the BLS release within about a day of it: Fox Business and CNBC (business and markets desks), CNN (general and business), ABC News (broadcast), NPR (a roughly three-minute radio segment), and the Center for American Progress (policy analysis). The panel was chosen by the designer, not the AI. Reuters, the Associated Press, and The New York Times were attempted but blocked automated retrieval, so they were left out rather than quoted secondhand. Every count on this page is relative to these six and nothing wider.',
         frames: [
-          { outlet: 'Fox Business', title: 'June Jobs Report Shows Steady Hiring as the Economy Holds Firm' },
-          { outlet: 'ABC News', title: 'Jobs Report Comes in Worse Than Expected as the Labor Force Shrinks' },
-          { outlet: 'Reuters', title: 'US Job Growth Tops Forecasts in June; Jobless Rate Eases to 4.1%' }
+          { outlet: 'Fox Business', title: 'June 2026 jobs report: US economy added jobs at a steady pace' },
+          { outlet: 'ABC News', title: "Hiring worse than expected in June, but White House says labor market on 'upward trajectory'" },
+          { outlet: 'CNN', title: 'Steady but not strong: US job growth slowed in June' }
         ],
         questions: [
           'Which facts show up in every outlet, and which appear in only one or two?',
@@ -766,57 +796,78 @@ class Component extends DCLogic {
           'What did the outlet that ran your usual headline choose to leave out?'
         ],
         claims: [
-          { id: 'c1', text: 'The U.S. economy added 147,000 nonfarm jobs in June 2026.', by: ['reuters','ap','foxbiz','abc','wsj','cap'],
+          { id: 'c1', text: 'Employers added 57,000 jobs in June', by: ['fox','abc','cap','cnn','cnbc','npr'], partial: [],
             sources: [
-              { o: 'reuters', s: "Nonfarm payrolls increased by 147,000 jobs in June, the Labor Department reported on Friday." },
-              { o: 'ap', s: "U.S. employers added 147,000 jobs in June, according to the Bureau of Labor Statistics." },
-              { o: 'foxbiz', s: "The economy added 147,000 jobs last month, a solid gain that pointed to steady hiring." },
-              { o: 'abc', s: "Employers added 147,000 jobs last month, a figure that fell short of what many economists had projected." },
-              { o: 'wsj', s: "Payrolls rose by 147,000 in June, the Labor Department said." },
-              { o: 'cap', s: "The June report showed a gain of 147,000 nonfarm jobs, extending a stretch of positive readings." }
+              { o: 'fox', s: "The Bureau of Labor Statistics on Thursday reported that employers added 57,000 jobs in June." },
+              { o: 'abc', s: "The U.S. added 57,000 jobs in June, according to the federal government's monthly jobs report, which marked a decline from 129,000 jobs added in May." },
+              { o: 'cap', s: "The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000." },
+              { o: 'cnn', s: "US job growth settled down after a spring surge, as employers added a lower-than-expected 57,000 positions last month, according to Bureau of Labor Statistics data released Thursday." },
+              { o: 'cnbc', s: "Nonfarm payrolls for June increased by a seasonally adjusted 57,000 for the month, slower than the downwardly revised 129,000 added in May and worse than the 115,000 Dow Jones consensus forecast." },
+              { o: 'npr', s: "U.S. employers added only 57,000 jobs in June." }
             ], note: null },
-          { id: 'c2', text: 'The unemployment rate was 4.1 percent.', by: ['reuters','ap','foxbiz','abc','wsj','cap'],
+          { id: 'c2', text: 'The unemployment rate fell to 4.2 percent', by: ['fox','abc','cap','cnn','cnbc','npr'], partial: [],
             sources: [
-              { o: 'reuters', s: "The jobless rate slipped to 4.1% from 4.2% the month before." },
-              { o: 'ap', s: "The unemployment rate stood at 4.1% in June, little changed from the prior month." },
-              { o: 'foxbiz', s: "The jobless rate held at a low 4.1%, underscoring a labor market that remains firm." },
-              { o: 'abc', s: "Unemployment slipped to 4.1%, though the drop came alongside a shrinking labor force." },
-              { o: 'wsj', s: "The unemployment rate ticked down to 4.1% in June." },
-              { o: 'cap', s: "The headline unemployment rate came in at 4.1% for the month." }
+              { o: 'fox', s: "The unemployment rate dipped to 4.2%, which was also below the estimate of 4.3%." },
+              { o: 'abc', s: "The unemployment rate fell slightly from 4.3% in May to 4.2% in June, the Bureau of Labor Statistics (BLS) said." },
+              { o: 'cap', s: "The unemployment rate dropped slightly to 4.2 percent, but this was entirely driven by people leaving the labor force rather than moving into employment." },
+              { o: 'cnn', s: "Thursday's data also showed that the unemployment rate dropped to 4.2% from 4.3% as more people left the labor force." },
+              { o: 'cnbc', s: "The unemployment rate, however, dropped to 4.2%, slightly ahead of the 4.1% where it was a year ago." },
+              { o: 'npr', s: "People who are not looking for work don't count as unemployed, and that's why the jobless rate inched down to 4.2%." }
             ], note: null },
-          { id: 'c3', text: 'The unemployment rate fell partly because people left the labor force, not only because more people found work.', by: ['cap','reuters'],
+          { id: 'c3', text: 'Hiring came in below what economists expected', by: ['fox','abc','cap','cnn','cnbc','npr'], partial: [],
             sources: [
-              { o: 'cap', s: 'The decline in the unemployment rate was driven in part by workers exiting the labor force rather than by stronger hiring.' },
-              { o: 'reuters', s: 'A drop in labor force participation contributed to the lower jobless rate, economists noted.' }
-            ], note: 'Reviewer confirmed the CAP and Reuters sentences describe the same underlying fact and were correctly grouped. No wording was changed.' },
-          { id: 'c4', text: 'Job gains were concentrated in government and health care.', by: ['reuters','ap','wsj','abc'],
+              { o: 'fox', s: "That figure was below the estimate of economists polled by LSEG, who estimated 110,000 jobs added." },
+              { o: 'abc', s: "Hiring slowed markedly in June, falling short of economists' expectations and displaying a wobbly labor market amid elevated inflation set off by the Iran war." },
+              { o: 'cap', s: "The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000." },
+              { o: 'cnn', s: "Economists, by consensus, had expected a total of 100,000 jobs added in June and a jobless rate remaining at 4.3% for the fourth consecutive month." },
+              { o: 'cnbc', s: "Nonfarm payrolls for June increased by a seasonally adjusted 57,000 for the month, slower than the downwardly revised 129,000 added in May and worse than the 115,000 Dow Jones consensus forecast." },
+              { o: 'npr', s: "U.S. employers added fewer jobs than expected last month." }
+            ], note: 'All six say the number missed expectations. They do not agree on what was expected. CNBC cites 115,000 from Dow Jones, Fox Business cites 110,000 from an LSEG poll, CNN cites 100,000 without naming a provider, and ABC, CAP and NPR give no figure at all.' },
+          { id: 'c4', text: 'The unemployment rate fell because people left the labor force, not because more people found work', by: ['cap','cnn','cnbc','npr'], partial: ['fox'],
             sources: [
-              { o: 'reuters', s: "Most of the month's gains came from state and local government and from health care." },
-              { o: 'ap', s: "Government and health care drove the bulk of June's job growth." },
-              { o: 'wsj', s: "Hiring was led by state and local government along with health care, which together accounted for most of the month's gains." },
-              { o: 'abc', s: "The bulk of hiring took place in government roles and the health sector." }
+              { o: 'cap', s: "The unemployment rate dropped slightly to 4.2 percent, but this was entirely driven by people leaving the labor force rather than moving into employment." },
+              { o: 'cnn', s: "Not only were employment gains softer in June, but the unemployment rate dropped as fewer people were in the labor market." },
+              { o: 'cnbc', s: "The unemployment rate, however, dropped to 4.2%, largely due to a slump in the labor force participation rate, which fell 0.3 percentage point to 61.5%, the lowest since March 2021." },
+              { o: 'npr', s: "The unemployment rate fell, but only because a large number of people stopped looking for work." }
+            ], note: 'Fox Business reported the participation decline as a separate fact and never connected it to the falling unemployment rate, so it is not counted here.' },
+          { id: 'c5', text: 'Payrolls for April and May were revised down by a combined 74,000', by: ['fox','cap','cnn','npr'], partial: ['cnbc'],
+            sources: [
+              { o: 'fox', s: "Taken together, employment in April and May was 74,000 jobs lower than previously reported." },
+              { o: 'cap', s: "The labor market added 57,000 jobs, coming in well below expectations, and job growth over the prior two months was revised down by 74,000." },
+              { o: 'cnn', s: "Monthly totals for April and May were revised down by a combined 74,000 jobs, to 148,000 and 129,000, respectively." },
+              { o: 'npr', s: "And what's more, the jobs numbers for April and May were revised down, wiping out a total of 74,000 jobs we thought were added during the two previous months." }
+            ], note: 'CNBC gave the two components, 43,000 for May and 31,000 for April, but never stated the combined 74,000 total, so it is not counted here.' },
+          { id: 'c6', text: 'Labor force participation fell to 61.5 percent', by: ['fox','cnn','cnbc'], partial: [],
+            sources: [
+              { o: 'fox', s: "The labor force participation rate decreased by 0.3 percentage points to 61.5% in June, while the employment-population ratio edged down by 0.2 percentage points to 59%." },
+              { o: 'cnn', s: "Labor force participation dropped to a five-year low of 61.5% last month, falling from 61.8% in May." },
+              { o: 'cnbc', s: "The move lower was largely due to a slump in the labor force participation rate, which dropped 0.3 percentage point to 61.5%, the lowest since March 2021." }
             ], note: null },
-          { id: 'c5', text: 'The June gain came in above economists’ forecasts.', by: ['reuters','foxbiz','wsj'],
+          { id: 'c7', text: 'Average hourly earnings rose 3.5 percent from a year earlier', by: ['cap','cnn','cnbc','npr'], partial: [],
             sources: [
-              { o: 'reuters', s: "The reading topped the median forecast in a poll of economists." },
-              { o: 'foxbiz', s: "The total beat consensus expectations, a sign the economy is holding firm." },
-              { o: 'wsj', s: "June payrolls came in above the consensus economist forecast." }
-            ], note: 'Flagged during review: ABC framed the same figure as “worse than expected.” Both framings were kept as separate claims (c5 and the headline strip) rather than reconciled, since they reflect different baselines.' },
-          { id: 'c6', text: 'Wage growth slowed compared with the previous month.', by: ['ap','wsj','cap'],
-            sources: [
-              { o: 'ap', s: "Wage gains softened compared with the previous month's pace." },
-              { o: 'wsj', s: "Average hourly earnings rose more slowly than in May, easing 0.2% on the month." },
-              { o: 'cap', s: "Wage growth cooled, with average hourly earnings decelerating from the prior reading." }
+              { o: 'cap', s: "In comparison, the June jobs report shows that nominal wages grew 3.5 percent from the prior year." },
+              { o: 'cnn', s: "Workers' annual pay gains, which registered at 3.5% in June, are being entirely eaten away, and then some, by inflation, which rose at a 4.2% clip in May." },
+              { o: 'cnbc', s: "Average hourly earnings rose 0.3% for the month and 3.5% from a year ago, both in line with the consensus forecasts." },
+              { o: 'npr', s: "Average wages in June were up 3.5% from a year ago." }
             ], note: null },
-          { id: 'c7', text: 'The report adds pressure on the Federal Reserve over the timing of rate cuts.', by: ['foxbiz','wsj'],
+          { id: 'c8', text: 'Leisure and hospitality lost 61,000 jobs', by: ['fox','cnn','cnbc'], partial: ['cap','npr'],
             sources: [
-              { o: 'wsj', s: 'The data complicate the Federal Reserve’s decision on when to begin lowering interest rates.' },
-              { o: 'foxbiz', s: 'Investors said the report keeps the pressure on the Fed to signal its next move.' }
-            ], note: null }
+              { o: 'fox', s: "Leisure and hospitality employment declined by 61,000 in June, which reflected weaker than usual seasonal hiring." },
+              { o: 'cnn', s: "Thursday's report showed that leisure and hospitality businesses shed 61,000 jobs last month, a reflection of weaker-than-usual seasonal hiring, the BLS noted in the report." },
+              { o: 'cnbc', s: "However, leisure and hospitality reported a loss of 61,000 jobs, which the BLS said reflected slower-than-usual seasonal hiring." }
+            ], note: null },
+          { id: 'c9', text: 'Job growth over the past year was concentrated in low-wage industries', by: ['cap'], partial: ['npr'],
+            sources: [
+              { o: 'cap', s: "The data also showed that job growth over the past year was concentrated in low-wage industries." }
+            ], note: null },
+          { id: 'c10', text: 'Professional and business services led job gains, adding 36,000', by: ['abc'], partial: [],
+            sources: [
+              { o: 'abc', s: "The professional and business services sector led job gains in June, adding 36,000 positions." }
+            ], note: 'Recorded as 1 of 6 because only the ABC sentence was verified verbatim. Other outlets may cover this; it was not confirmed and is therefore not counted.' }
         ],
         explanation: {
           humanInvolvement: 'A person chose the six outlets and the story. That person then checked the AI’s list of claims against a fidelity checklist that looks for omitted context, altered meaning, and wrong attribution. Reviewers fix errors. They never rewrite a claim to fit an opinion.',
-          data: 'Six full articles published within roughly a day of the June 2026 report. Only these six are included; nothing broader is implied. All figures shown here are illustrative sample data for the prototype.',
+          data: 'Six full articles published within roughly a day of the June 2026 report. Only these six are included; nothing broader is implied. Every source sentence shown is copied verbatim from the outlet’s published coverage; this story uses the project’s verified corpus, not a live extraction.',
           model: 'A language model reads each article, lists its factual claims, then links claims that state the same fact to produce a corroboration count. Known failure modes are in the model card below.',
           inferencing: 'The model groups claims by whether they say the same thing, which is a judgment about similarity rather than about truth. When two outlets state the same fact in different words, it links them. The count is simple addition you can redo yourself by opening the sources.',
           algorithmicPresence: 'NewsLens runs once per story, ahead of time. There is no account, no personalization, no ranking, and no engagement optimization. Every reader sees exactly the same page.'
@@ -826,7 +877,7 @@ class Component extends DCLogic {
           '“6 of 6” means all six of these outlets. It says nothing about the rest of the press.',
           'The AI can split or merge facts incorrectly, so contest anything that looks off.',
           'We leave out confidence percentages and describe the limits in plain language instead.',
-          'The figures in this prototype are sample data, not a live extraction.'
+          'This story’s claims come from a verified corpus of real coverage. NewsLens does not extract from live articles on demand.'
         ],
         outOfScope: [
           'No outlet bias ratings. We removed them after testing (see the sidebar note).',
@@ -1110,6 +1161,22 @@ class Component extends DCLogic {
       const nameMap = {};
       (story.outlets || []).forEach(o => { nameMap[o.id] = o.name; });
       const total = outletCount(story);
+
+      // Omissions: an outlet "left out" a claim only when it neither fully nor
+      // partially carried it (state === none in the corpus). Derived from the
+      // claim data so the counts can never drift from the rows below.
+      const claimTotal = story.claims.length;
+      vals.story.omissions = (story.outlets || []).map(o => {
+        const missed = story.claims.filter(c =>
+          c.by.indexOf(o.id) === -1 && (!c.partial || c.partial.indexOf(o.id) === -1)
+        ).length;
+        return {
+          name: o.name,
+          type: o.type || 'News report',
+          count: missed,
+          countLabel: 'did not mention ' + missed + ' of ' + claimTotal
+        };
+      });
 
       vals.claims = story.claims.map(c => {
         const cnt = c.by.length;

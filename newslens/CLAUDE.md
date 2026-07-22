@@ -2,6 +2,22 @@
 
 Read this before changing anything. These are hard rules, not preferences.
 
+## ⚠️ SOURCE OF TRUTH (as of Session 14, 2026-07-21)
+
+**`newslens/index.html` is now hand-maintained in this repo and has DIVERGED
+from the Claude Design source (`NewsLens.dc.html`).** Session 14 edited the
+`data-dc-script` and template directly here: swapped the jobs story to the
+verified 10-claim corpus, added the "Who left what out?" omissions section, and
+added the About-page disclosure. The Claude Design project still holds the older
+7-sample-claim version.
+
+**Do NOT run a blind re-sync from Claude Design** (the old "get_file → re-inject
+host-inject → overwrite index.html" flow). It would clobber the Session 14 work.
+If the design ever needs re-pulling, diff first and re-apply these edits by hand,
+or treat this repo's index.html as canonical and forward-port only the specific
+design change you want. The `host-inject.html` block still applies (React CDN +
+portfolio strip + overflow clip).
+
 ## What this is (as of Session 13, 2026-07-21)
 
 NewsLens is a **design mock** of a coverage-comparison prototype, shipped so
