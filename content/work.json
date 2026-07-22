@@ -325,9 +325,9 @@
       "status": "live",
       "date": "2026-08",
       "appUrl": "/newslens/",
-      "summary": "One story, side by side, across the newsrooms that covered it. Every claim traced back to the sentence it came from. No bias labels, no verdicts.",
+      "summary": "A design prototype for staged AI transparency in journalism. Illustrative sample data, not a live extraction.",
       "tags": ["Glass Box", "Staged Disclosure", "10-80-10 Workflow"],
-      "stats": { "metricLabel": "6 newsrooms · 10 claims" },
+      "stats": { "metricLabel": "Design prototype" },
       "hideDetails": true
     },
     {
