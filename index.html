@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Milan Khanal · Senior Product & Delivery · AI-Enabled Prototyping</title>
+<title>Milan Khanal | AI Product Manager & Delivery Lead</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="description" content="10 years of enterprise delivery across supply chain, healthcare, and finance. Using AI to cut the time from 'let's figure this out' to 'here's the working version' from months down to weeks.">
 <meta property="og:title" content="Milan Khanal · Working prototype in weeks. Not quarters.">
@@ -325,7 +325,7 @@ function Portfolio() {
   };
 
   const statusBadge = (status) => {
-    const map = { live: { c: t.green, bg: t.greenS, b: t.greenB, l: "Live", dot: true }, building: { c: t.teal, bg: t.tealS, b: t.tealB, l: "Building", dot: true }, completed: { c: t.blue, bg: t.blueS, b: t.blueB, l: "Completed", dot: false }, coming: { c: t.t3, bg: t.bg2, b: t.border, l: "Coming", dot: false } };
+    const map = { live: { c: t.green, bg: t.greenS, b: t.greenB, l: "Live", dot: true }, active: { c: t.green, bg: t.greenS, b: t.greenB, l: "Active", dot: true }, building: { c: t.teal, bg: t.tealS, b: t.tealB, l: "Building", dot: true }, completed: { c: t.blue, bg: t.blueS, b: t.blueB, l: "Completed", dot: false }, coming: { c: t.t3, bg: t.bg2, b: t.border, l: "Coming", dot: false } };
     const v = map[status] || map.coming;
     return <span style={{ fontFamily: mono, fontSize: 10, color: v.c, background: v.bg, border: `1px solid ${v.b}`, padding: "3px 10px", borderRadius: 12, display: "flex", alignItems: "center", gap: 4 }}>{v.dot && <span style={{ width: 5, height: 5, borderRadius: "50%", background: v.c }} />}{v.l}</span>;
   };
@@ -502,7 +502,7 @@ function Portfolio() {
   const HomePage = () => {
     const buckets = [
       { l: "Work", href: "/work", body: "Ten years of enterprise delivery across supply chain, healthcare, finance, automotive, and ESG." },
-      { l: "Lab", href: "/lab", body: "Things I've built, mostly on the side. One is a live commercial product. The rest are prototypes that proved an idea." },
+      { l: "Lab", href: "/lab", body: "Things I've built, mostly on the side. Prototypes that proved an idea." },
       { l: "Writing", href: "/writing", body: "Notes from the field. How discovery, prototyping, and AI delivery actually go in the wild." },
     ];
     const ctaLines = [
@@ -516,7 +516,7 @@ function Portfolio() {
       <section style={{ padding: isMobile ? "96px 20px 40px" : "120px 24px 56px" }}>
         <div style={s.container}>
           <div style={{ ...s.narrow, textAlign: "left" }}>
-            <R delay={0.00}><span style={s.tLabel}>AI Delivery Lead & Prototype Designer</span></R>
+            <R delay={0.00}><span style={s.tLabel}>AI Product Manager & Delivery Lead</span></R>
             <R delay={0.05}><h1 style={{ ...s.tHero, marginBottom: 20 }}>Working Software in Weeks, Not Quarters.</h1></R>
             <R delay={0.15}><p style={{ ...s.tBody, fontSize: 18, maxWidth: 720, marginBottom: 28 }}>I bridge the gap between executive strategy and technical execution. After 10 years of leading platform delivery at Toyota, Dell, CRC Group, and World Kinect, I now use AI-assisted development to compress the discovery-to-prototype cycle from months to weeks.</p></R>
             <R delay={0.22}>
@@ -537,26 +537,6 @@ function Portfolio() {
       </section>
       <div style={s.divider} />
 
-      {/* ── HCAI METHODOLOGY VALIDATION ── */}
-      <section style={s.section}>
-        <div style={s.container}>
-          <div style={s.narrow}>
-            <R><span style={s.tLabel}>HCAI Methodology Validation</span></R>
-            <R delay={0.05}>
-              <blockquote style={{ borderLeft: `3px solid ${t.blue}`, padding: "6px 0 6px 24px", margin: 0 }}>
-                <p style={{ fontFamily: font, fontStyle: "italic", fontSize: "clamp(20px, 2.6vw, 26px)", lineHeight: 1.4, color: t.t0, marginBottom: 16, letterSpacing: "-0.01em" }}>
-                  {"\u201C"}An outstanding project... demonstrating an intentional focus on trust, transparency, and traceability that truly reflects human-centered leadership.{"\u201D"}
-                </p>
-                <footer style={{ fontSize: 14, color: t.t2, lineHeight: 1.5 }}>
-                  {"\u2014"} <strong style={{ color: t.t1, fontWeight: 500 }}>Dr. Melanie Schmitt, Texas Tech University</strong> <span style={{ color: t.t1 }}>(Validating the TradePilot AI Architecture)</span>
-                </footer>
-              </blockquote>
-            </R>
-          </div>
-        </div>
-      </section>
-      <div style={s.divider} />
-
       {/* ── TWO-BUCKET WORK PREVIEW ── */}
       <section style={s.section}>
         <div style={s.container}>
@@ -564,7 +544,7 @@ function Portfolio() {
           <div style={{ marginBottom: 56 }}>
             <R>
               <div style={{ marginBottom: 24 }}>
-                <span style={s.tLabel}>Bucket 1 {"\u00b7"} Enterprise Delivery</span>
+                <span style={s.tLabel}>Enterprise Delivery</span>
                 <h2 style={{ ...s.tSection, marginBottom: 6 }}>Operator Track Record</h2>
                 <p style={{ ...s.tBody, maxWidth: 640, color: t.t2 }}>Ten years shipping platforms at CRC Group, World Kinect, Dell, and Toyota.</p>
               </div>
@@ -580,7 +560,7 @@ function Portfolio() {
           <div>
             <R>
               <div style={{ marginBottom: 24 }}>
-                <span style={s.tLabel}>Bucket 2 {"\u00b7"} Prototype Lab</span>
+                <span style={s.tLabel}>Prototype Lab</span>
                 <h2 style={{ ...s.tSection, marginBottom: 6 }}>Applied AI & HCAI</h2>
                 <p style={{ ...s.tBody, maxWidth: 640, color: t.t2 }}>Live prototypes that validate architecture patterns across industries.</p>
               </div>
@@ -706,7 +686,7 @@ function Portfolio() {
         {engagements.length > 0 && (
           <div style={{ marginBottom: 56 }}>
             <div style={{ marginBottom: 20 }}>
-              <span style={s.tLabel}>Bucket 1 {"\u00b7"} Enterprise Delivery</span>
+              <span style={s.tLabel}>Enterprise Delivery</span>
               <h2 style={{ ...s.tSection, marginBottom: 4, fontSize: "clamp(22px, 2.6vw, 28px)" }}>Operator Track Record</h2>
             </div>
             <div style={gridStyle}>
@@ -719,7 +699,7 @@ function Portfolio() {
         {products.length > 0 && (
           <div>
             <div style={{ marginBottom: 20 }}>
-              <span style={s.tLabel}>Bucket 2 {"\u00b7"} Prototype Lab</span>
+              <span style={s.tLabel}>Prototype Lab</span>
               <h2 style={{ ...s.tSection, marginBottom: 4, fontSize: "clamp(22px, 2.6vw, 28px)" }}>Applied AI & HCAI</h2>
             </div>
             <div style={gridStyle}>
