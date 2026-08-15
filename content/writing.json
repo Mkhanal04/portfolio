@@ -13,16 +13,6 @@
       "category": "Field notes",
       "featured": true,
       "status": "live"
-    },
-    {
-      "slug": "cutting-three-months-from-discovery",
-      "title": "Cutting Three Months from Discovery",
-      "deck": "How prototype-driven discovery compressed a healthcare billing build by a quarter, and what I\u2019d do differently next time.",
-      "date": "2026-04",
-      "readMinutes": 7,
-      "category": "Case study",
-      "featured": false,
-      "status": "coming"
     }
   ]
 }
