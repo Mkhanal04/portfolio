@@ -117,6 +117,8 @@ a{color:inherit}
 
 /* rows */
 .rowlist{display:flex;flex-direction:column;gap:8px}
+.grid-sec{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.kbd{font-family:'JetBrains Mono',monospace;font-size:9.5px;background:rgba(255,255,255,.09);border:1px solid var(--rail-border);border-radius:4px;padding:1px 5px;color:var(--rail-muted)}
 .rowitem{display:flex;align-items:flex-start;gap:11px;padding:11px 13px;border-radius:8px;background:var(--bg-2);border:1px solid var(--border-light)}
 .rowitem-bar{width:3px;align-self:stretch;min-height:26px;border-radius:2px;background:var(--text-3);flex:none}
 .bar-green{background:var(--green)}.bar-amber{background:var(--amber)}.bar-red{background:var(--red)}.bar-teal{background:var(--teal)}
@@ -249,7 +251,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       </div>
     </div>
     <div class="rail-foot">
-      <div class="rail-thread">Every view reads the same record.<br><b id="railApp">Loading</b></div>
+      <div class="rail-thread">Every view reads the same record.<br><b id="railApp">Loading</b><br><span style="display:inline-block;margin-top:8px">Press <span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> to move between moments</span></div>
       <button class="theme-btn" id="themeBtn"><span id="themeIcon">&#9788;</span><span id="themeLabel">Light mode</span></button>
     </div>
   </nav>
@@ -327,11 +329,11 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       + '<h1 class="moment-title">What the candidate saw</h1>'
       + '<p class="moment-lede">The candidate checks how the parser actually read their resume <b>before</b> submitting, and a person sets the weighting before any model runs.</p></div>'
 
-      + '<div class="grid g-wide"><div class="stack">'
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Resume intake</div><div class="panel-tag">Parse status</div></div>'
-        + '<div class="panel-note">' + esc(r.narrative) + '</div>'
-        + '<div class="rowlist">' + secs + '</div></div>'
+      + '<div class="panel" style="margin-bottom:16px"><div class="panel-head"><div class="panel-title">Resume intake</div><div class="panel-tag">Parse status</div></div>'
+      + '<div class="panel-note">' + esc(r.narrative) + '</div>'
+      + '<div class="grid-sec">' + secs + '</div></div>'
 
+      + '<div class="grid g-wide"><div class="stack">'
         + '<div class="panel"><div class="panel-head"><div class="panel-title">Identified skills</div><div class="panel-tag">Editable</div></div>'
         + '<div class="panel-note">What the parser found on its own.</div>'
         + '<div class="rowlist">' + found + '</div>'
@@ -486,12 +488,27 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
     window.scrollTo({top:0,behavior:'smooth'});
   }
 
-  document.querySelectorAll('.rail-item').forEach(function(it){
-    it.addEventListener('click', function(){
-      var m = it.getAttribute('data-moment');
-      document.querySelectorAll('.rail-item').forEach(function(x){ x.classList.toggle('active', x===it); });
-      show(m);
+  function goto(m){
+    if(!views[m] || !D) return;
+    document.querySelectorAll('.rail-item').forEach(function(x){
+      x.classList.toggle('active', x.getAttribute('data-moment') === m);
     });
+    show(m);
+  }
+
+  document.querySelectorAll('.rail-item').forEach(function(it){
+    it.addEventListener('click', function(){ goto(it.getAttribute('data-moment')); });
+  });
+
+  // keyboard nav, useful when recording a walkthrough
+  document.addEventListener('keydown', function(e){
+    if(e.target.tagName === 'INPUT') return;
+    if(e.key === '1' || e.key === '2' || e.key === '3'){ goto(e.key); return; }
+    var cur = document.querySelector('.rail-item.active');
+    if(!cur) return;
+    var n = parseInt(cur.getAttribute('data-moment'),10);
+    if(e.key === 'ArrowRight' && n < 3) goto(String(n+1));
+    if(e.key === 'ArrowLeft'  && n > 1) goto(String(n-1));
   });
 
   var btn = document.getElementById('themeBtn'), icon = document.getElementById('themeIcon'), label = document.getElementById('themeLabel');
