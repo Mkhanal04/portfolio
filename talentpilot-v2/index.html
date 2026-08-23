@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TalentPilot V2 | Milan Khanal</title>
+<meta name="description" content="A human-centered companion workspace for recruiting decisions. Interactive prototype with mock data.">
+<link rel="icon" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══ THEMES (tokens lifted verbatim from talentpilot V1) ═══ */
+[data-theme="light"]{
+  --bg-0:#FAFAF9;--bg-1:#FFFFFF;--bg-2:#F5F5F4;--bg-3:#E7E5E4;
+  --text-0:#1C1917;--text-1:#44403C;--text-2:#78716C;--text-3:#A8A29E;
+  --border:#E7E5E4;--border-light:#F5F5F4;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.06);--shadow-lg:0 12px 32px rgba(0,0,0,.08);
+  --card:#FFFFFF;--sidebar-bg:#FFFFFF;--sidebar-active-bg:#1C1917;--sidebar-active-text:#FFFFFF;
+  --code-bg:#F5F5F4;--code-text:#44403C;
+  --rail-bg:linear-gradient(180deg,#0F1729 0%,#1B2A4A 100%);
+  --rail-text:#F0F0F2;--rail-muted:rgba(255,255,255,.55);
+  --rail-item-hover:rgba(255,255,255,.07);--rail-item-active:rgba(255,255,255,.12);
+  --rail-border:rgba(255,255,255,.1);
+}
+[data-theme="dark"]{
+  --bg-0:#0C0C0E;--bg-1:#141416;--bg-2:#1C1C1F;--bg-3:#27272A;
+  --text-0:#F0F0F2;--text-1:#C8C8CE;--text-2:#8A8A95;--text-3:#5A5A66;
+  --border:#27272A;--border-light:#1E1E22;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow-md:0 4px 12px rgba(0,0,0,.3);--shadow-lg:0 12px 32px rgba(0,0,0,.4);
+  --card:#141416;--sidebar-bg:#141416;--sidebar-active-bg:#2563EB;--sidebar-active-text:#FFFFFF;
+  --code-bg:#1C1C1F;--code-text:#C8C8CE;
+  --rail-bg:linear-gradient(180deg,#0A1628 0%,#152238 100%);
+  --rail-text:#F0F0F2;--rail-muted:rgba(255,255,255,.5);
+  --rail-item-hover:rgba(255,255,255,.06);--rail-item-active:rgba(255,255,255,.1);
+  --rail-border:rgba(255,255,255,.08);
+}
+:root{
+  --red:#DC2626;--red-bg:#FEF2F2;--red-border:#FECACA;
+  --amber:#D97706;--amber-bg:#FFFBEB;--amber-border:#FDE68A;
+  --green:#059669;--green-bg:#ECFDF5;--green-border:#A7F3D0;
+  --blue:#2563EB;--blue-bg:#EFF6FF;
+  --purple:#7C3AED;--purple-bg:#F5F3FF;
+  --teal:#0D9488;--teal-bg:#F0FDFA;
+  --accent:#0D9488;--accent-bg:#F0FDFA;--accent-border:rgba(13,148,136,.25);
+}
+[data-theme="dark"]{
+  --red-bg:rgba(220,38,38,.12);--red-border:rgba(220,38,38,.25);
+  --amber-bg:rgba(217,119,6,.12);--amber-border:rgba(217,119,6,.25);
+  --green-bg:rgba(5,150,105,.12);--green-border:rgba(5,150,105,.25);
+  --blue-bg:rgba(37,99,235,.12);
+  --purple-bg:rgba(124,58,237,.12);
+  --teal-bg:rgba(13,148,136,.12);--accent-bg:rgba(13,148,136,.12);
+}
+
+/* ═══ BASE ═══ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg-0);color:var(--text-0);
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+  overflow-x:hidden;
+}
+a{color:inherit}
+.mono{font-family:'JetBrains Mono',monospace}
+.serif{font-family:'DM Serif Display',serif}
+
+/* ═══ SHELL ═══ */
+.shell{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
+
+/* ═══ RAIL ═══ */
+.rail{
+  background:var(--rail-bg);color:var(--rail-text);
+  display:flex;flex-direction:column;
+  border-right:1px solid var(--rail-border);
+  position:sticky;top:0;height:100vh;
+}
+.rail-head{padding:22px 20px 18px;border-bottom:1px solid var(--rail-border)}
+.rail-brand{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.rail-mark{
+  width:26px;height:26px;border-radius:7px;flex:none;
+  background:linear-gradient(135deg,var(--teal),#22B8A6);
+  display:grid;place-items:center;font-size:12px;font-weight:700;color:#04201C;
+}
+.rail-name{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.rail-name span{color:var(--teal)}
+.rail-sub{font-size:11.5px;color:var(--rail-muted);line-height:1.45}
+
+.rail-section{padding:16px 12px 6px}
+.rail-label{
+  font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--rail-muted);padding:0 8px 8px;
+}
+.rail-item{
+  display:flex;gap:11px;align-items:flex-start;
+  padding:11px 10px;border-radius:8px;cursor:pointer;
+  border:1px solid transparent;margin-bottom:3px;
+  transition:background .13s ease,border-color .13s ease;
+}
+.rail-item:hover{background:var(--rail-item-hover)}
+.rail-item.active{background:var(--rail-item-active);border-color:var(--rail-border)}
+.rail-step{
+  width:21px;height:21px;border-radius:6px;flex:none;margin-top:1px;
+  display:grid;place-items:center;font-size:10.5px;font-weight:600;
+  background:rgba(255,255,255,.09);color:var(--rail-muted);
+  font-family:'JetBrains Mono',monospace;
+}
+.rail-item.active .rail-step{background:var(--teal);color:#04201C}
+.rail-item-body{min-width:0}
+.rail-item-title{font-size:13px;font-weight:500;letter-spacing:-.005em;margin-bottom:2px}
+.rail-item.active .rail-item-title{font-weight:600}
+.rail-item-meta{font-size:10.5px;color:var(--rail-muted);line-height:1.4}
+
+.rail-foot{margin-top:auto;padding:14px 20px 18px;border-top:1px solid var(--rail-border)}
+.rail-thread{font-size:10.5px;color:var(--rail-muted);line-height:1.5;margin-bottom:12px}
+.rail-thread b{color:var(--rail-text);font-weight:500}
+.theme-btn{
+  width:100%;padding:8px;border-radius:8px;cursor:pointer;
+  background:rgba(255,255,255,.07);border:1px solid var(--rail-border);
+  color:var(--rail-text);font-family:inherit;font-size:11.5px;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.theme-btn:hover{background:rgba(255,255,255,.12)}
+
+/* ═══ MAIN ═══ */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:13px 30px;border-bottom:1px solid var(--border);
+  background:var(--bg-1);position:sticky;top:0;z-index:5;flex-wrap:wrap;
+}
+.crumb{font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:7px}
+.crumb b{color:var(--text-0);font-weight:500}
+.crumb i{font-style:normal;color:var(--text-3)}
+.topbar-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:6px;
+  font-size:11px;font-weight:500;letter-spacing:.01em;
+  border:1px solid transparent;white-space:nowrap;
+}
+.badge-proto{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+.badge-teal{background:var(--accent-bg);color:var(--teal);border-color:var(--accent-border)}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+
+.canvas{padding:30px;max-width:1240px;width:100%}
+
+/* ═══ NOTICE ═══ */
+.notice{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:13px 15px;border-radius:10px;margin-bottom:26px;
+  background:var(--amber-bg);border:1px solid var(--amber-border);
+}
+.notice-icon{color:var(--amber);flex:none;margin-top:1px}
+.notice-text{font-size:12.5px;color:var(--text-1);line-height:1.55}
+.notice-text b{color:var(--text-0);font-weight:600}
+
+/* ═══ MOMENT HEADER ═══ */
+.moment-head{margin-bottom:24px;max-width:760px}
+.moment-eyebrow{
+  display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap;
+}
+.moment-step{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:500;
+  color:var(--teal);background:var(--accent-bg);
+  border:1px solid var(--accent-border);border-radius:5px;padding:3px 8px;
+}
+.moment-lens{font-size:11px;color:var(--text-3);letter-spacing:.02em}
+.moment-title{
+  font-family:'DM Serif Display',serif;font-size:32px;line-height:1.15;
+  letter-spacing:-.015em;margin-bottom:11px;
+}
+.moment-lede{font-size:14.5px;color:var(--text-1);line-height:1.65}
+.moment-lede b{color:var(--text-0);font-weight:600}
+
+/* ═══ GRID + PANELS ═══ */
+.grid{display:grid;gap:16px;margin-bottom:16px}
+.g-2{grid-template-columns:1fr 1fr}
+.g-3{grid-template-columns:repeat(3,1fr)}
+.g-wide{grid-template-columns:1.55fr 1fr}
+
+.panel{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:19px;box-shadow:var(--shadow-sm);
+  min-width:0;
+}
+.panel-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:5px;
+}
+.panel-title{font-size:13.5px;font-weight:600;letter-spacing:-.005em}
+.panel-note{font-size:11.5px;color:var(--text-2);line-height:1.5;margin-bottom:15px}
+.panel-tag{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;
+  color:var(--text-3);letter-spacing:.04em;text-transform:uppercase;
+  white-space:nowrap;
+}
+
+/* placeholder blocks for the wireframe pass */
+.ph{
+  border:1px dashed var(--border);border-radius:8px;
+  background:var(--bg-2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;padding:18px 14px;text-align:center;
+}
+.ph-label{font-size:11.5px;font-weight:500;color:var(--text-1)}
+.ph-hint{font-size:10.5px;color:var(--text-3);line-height:1.45;max-width:250px}
+.ph-sm{min-height:74px}
+.ph-md{min-height:132px}
+.ph-lg{min-height:188px}
+.ph-xl{min-height:250px}
+
+.ph-accent{border-color:var(--accent-border);background:var(--accent-bg)}
+.ph-accent .ph-label{color:var(--teal)}
+
+.rowlist{display:flex;flex-direction:column;gap:8px}
+.rowitem{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 13px;border-radius:8px;
+  background:var(--bg-2);border:1px solid var(--border-light);
+}
+.rowitem-bar{width:3px;height:26px;border-radius:2px;background:var(--text-3);flex:none}
+.rowitem-body{min-width:0;flex:1}
+.rowitem-title{font-size:12.5px;font-weight:500;margin-bottom:2px}
+.rowitem-meta{font-size:10.5px;color:var(--text-3)}
+
+.stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+/* ═══ FOOT ═══ */
+.foot{
+  border-top:1px solid var(--border);margin-top:34px;padding:20px 30px 40px;
+  font-size:11.5px;color:var(--text-3);line-height:1.6;max-width:1240px;
+}
+.foot a{color:var(--text-2)}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width:1080px){
+  .g-3{grid-template-columns:1fr 1fr}
+  .g-wide{grid-template-columns:1fr}
+}
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:static;height:auto}
+  .rail-item{margin-bottom:4px}
+  .canvas{padding:22px 18px}
+  .topbar{padding:12px 18px}
+  .g-2,.g-3{grid-template-columns:1fr}
+  .moment-title{font-size:26px}
+  .foot{padding:20px 18px 36px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ══ RAIL ══ -->
+  <nav class="rail">
+    <div class="rail-head">
+      <div class="rail-brand">
+        <div class="rail-mark">TP</div>
+        <div class="rail-name">TalentPilot <span>V2</span></div>
+      </div>
+      <div class="rail-sub">A companion workspace for recruiting decisions. Assumes an applicant tracking system upstream.</div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-label">One application, three moments</div>
+
+      <div class="rail-item active" data-moment="1">
+        <div class="rail-step">01</div>
+        <div class="rail-item-body">
+          <div class="rail-item-title">Candidate Pre-Submit Sandbox</div>
+          <div class="rail-item-meta">Before submit &middot; candidate</div>
+        </div>
+      </div>
+
+      <div class="rail-item" data-moment="2">
+        <div class="rail-step">02</div>
+        <div class="rail-item-body">
+          <div class="rail-item-title">Recruiter Decision Support</div>
+          <div class="rail-item-meta">At decision &middot; recruiter</div>
+        </div>
+      </div>
+
+      <div class="rail-item" data-moment="3">
+        <div class="rail-step">03</div>
+        <div class="rail-item-body">
+          <div class="rail-item-title">Oversight &amp; Compliance</div>
+          <div class="rail-item-meta">After the fact &middot; reviewer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-foot">
+      <div class="rail-thread">
+        Every view reads the same record.<br>
+        <b>Application #A-4471</b> &middot; Senior Data Analyst
+      </div>
+      <button class="theme-btn" id="themeBtn">
+        <span id="themeIcon">&#9788;</span><span id="themeLabel">Light mode</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <b>TalentPilot V2</b><i>&rsaquo;</i><span id="crumbMoment">Candidate Pre-Submit Sandbox</span>
+      </div>
+      <div class="topbar-right">
+        <span class="badge badge-teal"><span class="dot"></span>Chain of custody</span>
+        <span class="badge badge-proto"><span class="dot"></span>Interactive prototype, mock data</span>
+      </div>
+    </div>
+
+    <div class="canvas">
+
+      <div class="notice">
+        <div class="notice-icon">&#9432;</div>
+        <div class="notice-text">
+          <b>Wireframe pass.</b> Layout and design tokens only. Dashed regions mark where interactive components will go once the structure is approved. Nothing here is wired up yet, and all content is illustrative.
+        </div>
+      </div>
+
+      <!-- ── MOMENT 1 ── -->
+      <section class="moment" data-view="1">
+        <div class="moment-head">
+          <div class="moment-eyebrow">
+            <span class="moment-step">MOMENT 01</span>
+            <span class="moment-lens">Before submit &middot; technical lens</span>
+          </div>
+          <h1 class="moment-title">What the candidate saw</h1>
+          <p class="moment-lede">A candidate can check how the parser actually read their resume <b>before</b> they submit it, and a human sets the weighting before any model runs.</p>
+        </div>
+
+        <div class="grid g-wide">
+          <div class="stack">
+            <div class="panel">
+              <div class="panel-head"><div class="panel-title">Resume intake</div><div class="panel-tag">Upload</div></div>
+              <div class="panel-note">Drop zone plus a formatting checklist showing what parses cleanly and what does not.</div>
+              <div class="ph ph-lg">
+                <div class="ph-label">Upload and formatting checklist</div>
+                <div class="ph-hint">File drop target, parse status per section, plain-language fixes</div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><div class="panel-title">Identified skills</div><div class="panel-tag">Editable</div></div>
+              <div class="panel-note">What the parser extracted, and the candidate's chance to correct it in their own words.</div>
+              <div class="rowlist">
+                <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Extracted skill row</div><div class="rowitem-meta">Confidence, source line, confirm or correct</div></div></div>
+                <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Extracted skill row</div><div class="rowitem-meta">Confidence, source line, confirm or correct</div></div></div>
+                <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Missed or ambiguous term</div><div class="rowitem-meta">Candidate can add what the parser did not catch</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="panel">
+              <div class="panel-head"><div class="panel-title">Weight calibration</div><div class="panel-tag">Human above the loop</div></div>
+              <div class="panel-note">Factor weights are set by a person before the model runs. No autonomous evaluation.</div>
+              <div class="ph ph-md">
+                <div class="ph-label">Technical, Growth, Stability sliders</div>
+                <div class="ph-hint">Locked until a human sets them; shows who set them and when</div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><div class="panel-title">Proxy warning</div><div class="panel-tag">Simulated</div></div>
+              <div class="panel-note">Flags when a weighted factor may stand in for a protected characteristic.</div>
+              <div class="ph ph-md ph-accent">
+                <div class="ph-label">Proxy correlation alert</div>
+                <div class="ph-hint">Triggered by the simulated ledger, labeled as simulated on screen</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── MOMENT 2 ── -->
+      <section class="moment" data-view="2" hidden>
+        <div class="moment-head">
+          <div class="moment-eyebrow">
+            <span class="moment-step">MOMENT 02</span>
+            <span class="moment-lens">At decision &middot; interpretive lens</span>
+          </div>
+          <h1 class="moment-title">What the recruiter saw</h1>
+          <p class="moment-lede">One alignment indicator first, detail on demand. Every AI-assisted judgment carries <b>the prompt that produced it</b>, on hover.</p>
+        </div>
+
+        <div class="grid g-wide">
+          <div class="stack">
+            <div class="panel">
+              <div class="panel-head"><div class="panel-title">Alignment overview</div><div class="panel-tag">Overview first</div></div>
+              <div class="panel-note">The high-level read. Deliberately sparse to protect attention.</div>
+              <div class="ph ph-md">
+                <div class="ph-label">Single alignment indicator</div>
+                <div class="ph-hint">One number and one sentence, not a wall of sub-scores</div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><div class="panel-title">Evidence chain</div><div class="panel-tag">Details on demand</div></div>
+              <div class="panel-note">Expands into plain-English reasoning traced to lines in the application.</div>
+              <div class="ph ph-xl">
+                <div class="ph-label">Expandable evidence panel</div>
+                <div class="ph-hint">Collapsed by default; each claim links to the source line that supports it</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="panel">
+              <div class="panel-head"><div class="panel-title">Prompt provenance</div><div class="panel-tag">On hover</div></div>
+              <div class="panel-note">The prompt that ran, the data it saw, who wrote it, and when. Attached to the judgment, not hidden in an admin screen.</div>
+              <div class="ph ph-lg ph-accent">
+                <div class="ph-label">Hover provenance card</div>
+                <div class="ph-hint">Appears over any AI-assisted value; the pattern shipped on FinOva</div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><div class="panel-title">Calibrators</div><div class="panel-tag">Human in the loop</div></div>
+              <div class="panel-note">Adjusting criteria visibly recalculates against the ledger, so reading stays active.</div>
+              <div class="ph ph-md">
+                <div class="ph-label">Live criteria sliders</div>
+                <div class="ph-hint">Every adjustment writes an entry the reviewer will later see</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── MOMENT 3 ── -->
+      <section class="moment" data-view="3" hidden>
+        <div class="moment-head">
+          <div class="moment-eyebrow">
+            <span class="moment-step">MOMENT 03</span>
+            <span class="moment-lens">After the fact &middot; transformative lens</span>
+          </div>
+          <h1 class="moment-title">What a reviewer can reconstruct</h1>
+          <p class="moment-lede">No rejection leaves the system without a human signature, and <b>every decision above is replayable here</b> in the order it happened.</p>
+        </div>
+
+        <div class="grid g-2">
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Escalation queue</div><div class="panel-tag">Human on the loop</div></div>
+            <div class="panel-note">Automated screen-outs route to a person for review and sign-off before anything is sent.</div>
+            <div class="rowlist">
+              <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Queued for human review</div><div class="rowitem-meta">Reason, who it is waiting on, how long</div></div></div>
+              <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Reviewed and signed off</div><div class="rowitem-meta">Reviewer name, decision, timestamp</div></div></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><div class="panel-title">Adverse impact</div><div class="panel-tag">Four-fifths rule</div></div>
+            <div class="panel-note">Selection rates watched for drift across the pipeline.</div>
+            <div class="ph ph-lg">
+              <div class="ph-label">Impact ratio pane</div>
+              <div class="ph-hint">Rate comparison against the four-fifths threshold, with drift over time</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Decision ledger</div><div class="panel-tag">Read only</div></div>
+          <div class="panel-note">The same record, replayed end to end. Weight changes, model runs, overrides, and sign-offs, in order, with the actor on each.</div>
+          <div class="ph ph-xl ph-accent">
+            <div class="ph-label">Event timeline for application #A-4471</div>
+            <div class="ph-hint">Append-only, traceable for an external auditor, exportable</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="foot">
+      TalentPilot V2 is an interactive prototype built to explore human-centered design in recruiting workflows. All candidate records, scores, and events shown are fabricated for demonstration and do not represent any real person or hiring process. It assumes an applicant tracking system upstream; no integration is implied.
+      <br><a href="../">Back to milankhanal.com</a>
+    </footer>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var titles = {
+    '1':'Candidate Pre-Submit Sandbox',
+    '2':'Recruiter Decision Support',
+    '3':'Oversight &amp; Compliance'
+  };
+
+  // moment switching
+  var items = document.querySelectorAll('.rail-item');
+  var views = document.querySelectorAll('.moment');
+  var crumb = document.getElementById('crumbMoment');
+  items.forEach(function(it){
+    it.addEventListener('click', function(){
+      var m = it.getAttribute('data-moment');
+      items.forEach(function(x){ x.classList.toggle('active', x === it); });
+      views.forEach(function(v){ v.hidden = v.getAttribute('data-view') !== m; });
+      crumb.innerHTML = titles[m];
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+
+  // theme
+  var btn = document.getElementById('themeBtn');
+  var icon = document.getElementById('themeIcon');
+  var label = document.getElementById('themeLabel');
+  function paint(){
+    var dark = root.getAttribute('data-theme') === 'dark';
+    icon.innerHTML = dark ? '&#9788;' : '&#9789;';
+    label.textContent = dark ? 'Light mode' : 'Dark mode';
+  }
+  btn.addEventListener('click', function(){
+    var dark = root.getAttribute('data-theme') === 'dark';
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+    paint();
+  });
+  paint();
+})();
+</script>
+</body>
+</html>
