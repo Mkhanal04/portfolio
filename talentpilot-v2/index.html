@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TalentPilot V2 | Milan Khanal</title>
-<meta name="description" content="A human-centered companion workspace for recruiting decisions. Interactive prototype with mock data.">
+<meta name="description" content="A design case study: one recruiting decision walked through three times, with the reasoning behind each choice on the record.">
 <link rel="icon" href="../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -264,7 +264,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
         <div class="rail-mark">TP</div>
         <div class="rail-name">TalentPilot <span>V2</span></div>
       </div>
-      <div class="rail-sub">A companion workspace for recruiting decisions. Assumes an applicant tracking system upstream.</div>
+      <div class="rail-sub">A design case study. One recruiting decision, walked through three times, with the reasoning behind each choice on the record.</div>
     </div>
     <div class="rail-section">
       <div class="rail-label">One application, three moments</div>
@@ -292,8 +292,8 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       <div class="crumb"><b>TalentPilot V2</b><i>&rsaquo;</i><span id="crumbMoment">Candidate Pre-Submit Sandbox</span></div>
       <div class="topbar-right">
         <span class="badge badge-teal"><span class="dot"></span>Chain of custody</span>
-        <span class="badge badge-proto"><span class="dot"></span>Interactive prototype, mock data</span>
-        <button class="guide-btn" id="guideBtn" aria-pressed="false" title="Show how each design choice maps to the literature (g)"><span class="guide-dot"></span>Research notes <span class="guide-state" id="guideState">off</span></button>
+        <span class="badge badge-proto"><span class="dot"></span>Interactive case study, illustrative record</span>
+        <button class="guide-btn on" id="guideBtn" aria-pressed="true" title="Show how each design choice maps to the literature (g)"><span class="guide-dot"></span>Research notes <span class="guide-state" id="guideState">on</span></button>
       </div>
     </div>
     <div class="canvas" id="canvas"><div class="loading">Loading the record...</div></div>
@@ -303,7 +303,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 
 <script>
 (function(){
-  var D=null, root=document.documentElement, W=null, GUIDE=false, CUR='1';
+  var D=null, root=document.documentElement, W=null, GUIDE=true, CUR='1';
   var titles={'1':'Candidate Pre-Submit Sandbox','2':'Recruiter Decision Support','3':'Oversight &amp; Compliance'};
   var esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
   var time=function(iso){var d=new Date(iso);return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});};
@@ -616,7 +616,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       D=j; W={technical:D.weights.final.technical,growth:D.weights.final.growth,stability:D.weights.final.stability};
       document.getElementById('railApp').innerHTML='Application #'+esc(D.application.id)+'</b> &middot; '+esc(D.application.role);
       document.getElementById('foot').innerHTML=esc(D._disclaimer)
-        +' It assumes an applicant tracking system upstream; no integration is implied. Scoring method: '+esc(D.scoring.method)
+        +' This is a design case study rather than working software: the record is illustrative and the point is the reasoning, not the tool. Scoring method: '+esc(D.scoring.method)
         +'<br><a href="../">Back to milankhanal.com</a>';
       show('1');
     })
