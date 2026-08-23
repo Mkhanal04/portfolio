@@ -10,23 +10,53 @@
       "note": "Name withheld in this view by design. The candidate's identity is not needed to evaluate the work, and hiding it here is itself a design choice."
     }
   },
-
   "resume": {
     "sections": [
-      { "label": "Contact", "parsed": "clean" },
-      { "label": "Experience", "parsed": "clean" },
-      { "label": "Skills", "parsed": "partial", "issue": "Listed inside prose rather than as a bulleted list. Two skills were not extracted." },
-      { "label": "Education", "parsed": "clean" },
-      { "label": "Certifications", "parsed": "failed", "issue": "Stored in a two-column table. The parser read the columns as one run-on line." }
+      {
+        "label": "Contact",
+        "parsed": "clean"
+      },
+      {
+        "label": "Experience",
+        "parsed": "clean"
+      },
+      {
+        "label": "Skills",
+        "parsed": "partial",
+        "issue": "Listed inside prose rather than as a bulleted list. Two skills were not extracted."
+      },
+      {
+        "label": "Education",
+        "parsed": "clean"
+      },
+      {
+        "label": "Certifications",
+        "parsed": "failed",
+        "issue": "Stored in a two-column table. The parser read the columns as one run-on line."
+      }
     ],
     "narrative": "Six years coordinating logistics for a regional distributor, then two years out of the workforce as a full-time caregiver, then eighteen months back in an operations role where they rebuilt the month-end reporting process. Community college associate degree, no four-year degree. Self-taught in SQL and Power BI."
   },
-
   "skills": {
     "extracted": [
-      { "term": "Excel", "confidence": 0.96, "source": "Skills paragraph, line 31", "status": "confirmed" },
-      { "term": "Logistics coordination", "confidence": 0.93, "source": "Experience, line 12", "status": "confirmed" },
-      { "term": "Process improvement", "confidence": 0.71, "source": "Experience, line 19", "status": "confirmed" }
+      {
+        "term": "Excel",
+        "confidence": 0.96,
+        "source": "Skills paragraph, line 31",
+        "status": "confirmed"
+      },
+      {
+        "term": "Logistics coordination",
+        "confidence": 0.93,
+        "source": "Experience, line 12",
+        "status": "confirmed"
+      },
+      {
+        "term": "Process improvement",
+        "confidence": 0.71,
+        "source": "Experience, line 19",
+        "status": "confirmed"
+      }
     ],
     "missed": [
       {
@@ -44,14 +74,20 @@
     ],
     "ambiguity_note": "The strongest evidence of analytical skill in this application is a sentence about cutting month-end close from five days to one. It contains no skill keyword at all."
   },
-
   "weights": {
-    "initial": { "technical": 40, "growth": 25, "stability": 35 },
-    "final": { "technical": 45, "growth": 30, "stability": 15 },
+    "initial": {
+      "technical": 40,
+      "growth": 25,
+      "stability": 35
+    },
+    "final": {
+      "technical": 45,
+      "growth": 30,
+      "stability": 15
+    },
     "set_by": "R. Okafor",
     "note": "Weights are locked until a person sets them. No model runs before this step."
   },
-
   "proxy_alert": {
     "factor": "Stability",
     "threshold": 30,
@@ -60,7 +96,6 @@
     "basis": "Simulated within this prototype. Not derived from a real workforce dataset.",
     "outcome": "Recruiter reduced Stability from 35 to 15 before running the model."
   },
-
   "assessment": {
     "alignment": 71,
     "band": "Worth a conversation",
@@ -86,7 +121,6 @@
       }
     ]
   },
-
   "provenance": [
     {
       "target": "alignment",
@@ -109,22 +143,92 @@
       "note": "Authored by a different recruiter than the alignment prompt. Both are visible to the whole team."
     }
   ],
-
   "events": [
-    { "seq": 1,  "at": "2026-08-11T14:22:00Z", "actor": "Candidate",  "kind": "submit",   "text": "Application submitted through the sandbox." },
-    { "seq": 2,  "at": "2026-08-11T14:22:06Z", "actor": "System",     "kind": "parse",    "text": "Resume parsed. Three skills extracted, two sections flagged, certifications table failed to read." },
-    { "seq": 3,  "at": "2026-08-11T14:29:41Z", "actor": "Candidate",  "kind": "correct",  "text": "Added SQL and Dashboard development, both missed by the parser. Corrections carried forward, marked as candidate-supplied." },
-    { "seq": 4,  "at": "2026-08-12T09:03:15Z", "actor": "R. Okafor",  "kind": "weights",  "text": "Set weights: Technical 40, Growth 25, Stability 35." },
-    { "seq": 5,  "at": "2026-08-12T09:03:16Z", "actor": "System",     "kind": "alert",    "text": "Proxy warning raised on Stability at 35, above the review threshold of 30." },
-    { "seq": 6,  "at": "2026-08-12T09:07:52Z", "actor": "R. Okafor",  "kind": "weights",  "text": "Reduced Stability to 15, raised Technical to 45 and Growth to 30. Reason given: gap is caregiving, not performance." },
-    { "seq": 7,  "at": "2026-08-12T09:08:01Z", "actor": "System",     "kind": "assess",   "text": "Alignment scored 71 using prompt role-alignment-v4." },
-    { "seq": 8,  "at": "2026-08-12T09:14:33Z", "actor": "R. Okafor",  "kind": "review",   "text": "Expanded the evidence chain and opened provenance on the alignment score." },
-    { "seq": 9,  "at": "2026-08-12T09:21:10Z", "actor": "System",     "kind": "knockout", "text": "Screening rule matched: fewer than three years in an analytics-titled role. Automated rejection prepared." },
-    { "seq": 10, "at": "2026-08-12T09:21:10Z", "actor": "System",     "kind": "block",    "text": "Automated rejection blocked. Routed to human escalation queue. No message sent to the candidate." },
-    { "seq": 11, "at": "2026-08-12T15:44:27Z", "actor": "D. Halvorsen","kind": "override", "text": "Overrode the screening rule. Reason: the title heuristic measures job titles, not the work described. Advanced to first-round interview." },
-    { "seq": 12, "at": "2026-08-12T15:44:27Z", "actor": "System",     "kind": "seal",     "text": "Decision sealed and written to the audit record. Chain complete." }
+    {
+      "seq": 1,
+      "at": "2026-08-11T14:22:00Z",
+      "actor": "Candidate",
+      "kind": "submit",
+      "text": "Application submitted through the sandbox."
+    },
+    {
+      "seq": 2,
+      "at": "2026-08-11T14:22:06Z",
+      "actor": "System",
+      "kind": "parse",
+      "text": "Resume parsed. Three skills extracted, two sections flagged, certifications table failed to read."
+    },
+    {
+      "seq": 3,
+      "at": "2026-08-11T14:29:41Z",
+      "actor": "Candidate",
+      "kind": "correct",
+      "text": "Added SQL and Dashboard development, both missed by the parser. Corrections carried forward, marked as candidate-supplied."
+    },
+    {
+      "seq": 4,
+      "at": "2026-08-12T09:03:15Z",
+      "actor": "R. Okafor",
+      "kind": "weights",
+      "text": "Set weights: Technical 40, Growth 25, Stability 35."
+    },
+    {
+      "seq": 5,
+      "at": "2026-08-12T09:03:16Z",
+      "actor": "System",
+      "kind": "alert",
+      "text": "Proxy warning raised on Stability at 35, above the review threshold of 30."
+    },
+    {
+      "seq": 6,
+      "at": "2026-08-12T09:07:52Z",
+      "actor": "R. Okafor",
+      "kind": "weights",
+      "text": "Reduced Stability to 15, raised Technical to 45 and Growth to 30. Reason given: gap is caregiving, not performance."
+    },
+    {
+      "seq": 7,
+      "at": "2026-08-12T09:08:01Z",
+      "actor": "System",
+      "kind": "assess",
+      "text": "Alignment scored 71 using prompt role-alignment-v4."
+    },
+    {
+      "seq": 8,
+      "at": "2026-08-12T09:14:33Z",
+      "actor": "R. Okafor",
+      "kind": "review",
+      "text": "Expanded the evidence chain and opened provenance on the alignment score."
+    },
+    {
+      "seq": 9,
+      "at": "2026-08-12T09:21:10Z",
+      "actor": "System",
+      "kind": "knockout",
+      "text": "Screening rule matched: fewer than three years in an analytics-titled role. Automated rejection prepared."
+    },
+    {
+      "seq": 10,
+      "at": "2026-08-12T09:21:10Z",
+      "actor": "System",
+      "kind": "block",
+      "text": "Automated rejection blocked. Routed to human escalation queue. No message sent to the candidate."
+    },
+    {
+      "seq": 11,
+      "at": "2026-08-12T15:44:27Z",
+      "actor": "D. Halvorsen",
+      "kind": "override",
+      "text": "Overrode the screening rule. Reason: the title heuristic measures job titles, not the work described. Advanced to first-round interview."
+    },
+    {
+      "seq": 12,
+      "at": "2026-08-12T15:44:27Z",
+      "actor": "System",
+      "kind": "seal",
+      "text": "Decision sealed and written to the audit record. Chain complete."
+    }
   ],
-
   "escalations": [
     {
       "reason": "Fewer than three years in an analytics-titled role",
@@ -136,17 +240,79 @@
       "note": "The rule fired correctly. The rule itself was the problem."
     }
   ],
-
   "adverse_impact": {
     "rule": "Four-fifths rule, EEOC Uniform Guidelines",
     "window": "Trailing 90 days, Revenue Operations pipeline",
     "basis": "Fabricated figures for demonstration.",
     "groups": [
-      { "label": "Reference group",    "selection_rate": 0.42, "ratio": 1.00, "state": "reference" },
-      { "label": "Comparison group A", "selection_rate": 0.36, "ratio": 0.86, "state": "pass" },
-      { "label": "Comparison group B", "selection_rate": 0.31, "ratio": 0.74, "state": "below" },
-      { "label": "Comparison group C", "selection_rate": 0.38, "ratio": 0.90, "state": "pass" }
+      {
+        "label": "Reference group",
+        "selection_rate": 0.42,
+        "ratio": 1.0,
+        "state": "reference"
+      },
+      {
+        "label": "Comparison group A",
+        "selection_rate": 0.36,
+        "ratio": 0.86,
+        "state": "pass"
+      },
+      {
+        "label": "Comparison group B",
+        "selection_rate": 0.31,
+        "ratio": 0.74,
+        "state": "below"
+      },
+      {
+        "label": "Comparison group C",
+        "selection_rate": 0.38,
+        "ratio": 0.9,
+        "state": "pass"
+      }
     ],
     "note": "One group sits below the four-fifths threshold. In this prototype the drift began the week the Stability weighting was introduced across the pipeline, which is the point of tracking it."
+  },
+  "factors": {
+    "technical": {
+      "score": 75,
+      "label": "Technical",
+      "basis": "Ran queries directly against the warehouse and rebuilt reporting a finance team depends on. Tooling is self-taught and unevenly named, so evidence is strong but vocabulary is thin."
+    },
+    "growth": {
+      "score": 85,
+      "label": "Growth",
+      "basis": "Taught themselves SQL and reporting while changing function, then shipped a measurable process improvement within eighteen months of returning."
+    },
+    "stability": {
+      "score": 30,
+      "label": "Stability",
+      "basis": "Driven almost entirely by continuous-employment months. A two-year caregiving gap reads as instability to this factor regardless of cause, which is exactly why it is the proxy risk."
+    }
+  },
+  "scoring": {
+    "method": "Weighted mean of per-factor scores. alignment = sum(weight * factor_score) / sum(weight), rounded.",
+    "bands": [
+      {
+        "min": 80,
+        "label": "Strong match",
+        "tone": "green"
+      },
+      {
+        "min": 65,
+        "label": "Worth a conversation",
+        "tone": "teal"
+      },
+      {
+        "min": 50,
+        "label": "Borderline",
+        "tone": "amber"
+      },
+      {
+        "min": 0,
+        "label": "Below the bar",
+        "tone": "red"
+      }
+    ],
+    "note": "Deliberately simple and shown on screen. A real system would be more complex; the point here is that the weighting is visible, human-set, and changes the outcome."
   }
 }

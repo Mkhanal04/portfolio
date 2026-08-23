@@ -211,6 +211,37 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 .foot a{color:var(--text-2)}
 .loading{padding:60px 30px;color:var(--text-2);font-size:13px}
 
+/* ═══ RESEARCH NOTES (guide mode) ═══ */
+.guide-btn{display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border-radius:6px;cursor:pointer;
+  font-family:inherit;font-size:11px;font-weight:500;white-space:nowrap;
+  background:var(--bg-2);color:var(--text-2);border:1px solid var(--border)}
+.guide-btn:hover{background:var(--bg-3);color:var(--text-1)}
+.guide-btn.on{background:var(--accent-bg);color:var(--teal);border-color:var(--accent-border)}
+.guide-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex:none;opacity:.45}
+.guide-btn.on .guide-dot{opacity:1}
+.guide-state{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.7}
+
+.gnote{margin-top:15px;padding:14px 15px;border-radius:9px;
+  background:var(--accent-bg);border:1px solid var(--accent-border);border-left-width:3px}
+.gnote-lens{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--teal);margin-bottom:6px}
+.gnote-title{font-size:13.5px;font-weight:600;margin-bottom:6px;color:var(--text-0)}
+.gnote-body{font-size:13px;line-height:1.65;color:var(--text-1)}
+.gnote-cite{font-size:12px;color:var(--text-2);margin-top:9px;font-style:italic}
+
+/* ═══ LIVE SCORING ═══ */
+.slider-basis{font-size:12px;color:var(--text-2);line-height:1.5;margin-top:7px}
+.echo{margin:4px 0 12px;font-size:13px;color:var(--text-1)}
+.echo b{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--teal)}
+.echo-band{color:var(--text-2)}
+.align-why{margin-top:14px;padding-top:13px;border-top:1px solid var(--border);
+  font-size:13px;line-height:1.6;color:var(--text-1)}
+.align-flag{margin-top:11px;padding:10px 12px;border-radius:8px;font-size:12.5px;line-height:1.55;
+  background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--text-1)}
+.tl-node.pending{background:var(--amber)}
+.tl-pending .tl-actor{color:var(--amber)}
+.tl-pending{opacity:.95}
+
 @media (max-width:1080px){.g-wide{grid-template-columns:1fr}}
 @media (max-width:860px){
   .shell{grid-template-columns:1fr}
@@ -262,6 +293,7 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
       <div class="topbar-right">
         <span class="badge badge-teal"><span class="dot"></span>Chain of custody</span>
         <span class="badge badge-proto"><span class="dot"></span>Interactive prototype, mock data</span>
+        <button class="guide-btn" id="guideBtn" aria-pressed="false" title="Show how each design choice maps to the literature (g)"><span class="guide-dot"></span>Research notes <span class="guide-state" id="guideState">off</span></button>
       </div>
     </div>
     <div class="canvas" id="canvas"><div class="loading">Loading the record...</div></div>
@@ -271,269 +303,325 @@ input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;bac
 
 <script>
 (function(){
-  var D = null, root = document.documentElement;
-  var titles = {'1':'Candidate Pre-Submit Sandbox','2':'Recruiter Decision Support','3':'Oversight &amp; Compliance'};
-  var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
-  var time = function(iso){
-    var d = new Date(iso);
-    return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});
+  var D=null, root=document.documentElement, W=null, GUIDE=false, CUR='1';
+  var titles={'1':'Candidate Pre-Submit Sandbox','2':'Recruiter Decision Support','3':'Oversight &amp; Compliance'};
+  var esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  var time=function(iso){var d=new Date(iso);return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});};
+
+  /* ── scoring: the weights genuinely drive the number ── */
+  function compute(w){
+    var f=D.factors, tot=w.technical+w.growth+w.stability;
+    if(tot===0) return {score:0,band:'No weighting set',tone:'amber',share:{technical:0,growth:0,stability:0}};
+    var s=Math.round((w.technical*f.technical.score + w.growth*f.growth.score + w.stability*f.stability.score)/tot);
+    var band=D.scoring.bands.filter(function(b){return s>=b.min;})[0];
+    return {score:s, band:band.label, tone:band.tone, total:tot,
+      share:{technical:w.technical/tot, growth:w.growth/tot, stability:w.stability/tot}};
+  }
+  function driverLine(r){
+    var f=D.factors, sh=r.share;
+    var recorded=compute(D.weights.final).score, delta=r.score-recorded;
+    var out=[];
+    if(sh.stability>0.30){
+      out.push('Stability carries '+Math.round(sh.stability*100)+'% of the weighting. '+f.stability.basis);
+    } else {
+      out.push('Technical and Growth carry '+Math.round((sh.technical+sh.growth)*100)+'% of the weighting, so demonstrated outcomes dominate over continuous employment.');
+    }
+    if(delta!==0){
+      out.push('That is '+(delta>0?'+':'')+delta+' against the '+recorded+' recorded by R. Okafor.');
+    } else {
+      out.push('These are the weights R. Okafor recorded.');
+    }
+    return out.join(' ');
+  }
+  function changed(){
+    var f=D.weights.final;
+    return W.technical!==f.technical||W.growth!==f.growth||W.stability!==f.stability;
+  }
+
+  /* ── guide mode annotations ── */
+  var NOTES={
+    parse:{lens:'Technical lens',title:'Symbol manipulation is not understanding',
+      body:'The parser scored "wrote my own queries against the warehouse" as generic operations language because it matches tokens, not meaning. Searle’s Chinese Room argument, discussed in Coeckelbergh chapter 3, is the reason the correction step exists: the machine can process the symbols without grasping what they describe, so a person has to be able to say what it missed.',
+      cite:'Coeckelbergh, AI Ethics, ch. 3'},
+    weights:{lens:'Technical lens',title:'Human above the loop',
+      body:'Weights are locked until a person sets them, so no model runs on defaults nobody chose. Shneiderman’s control framework puts this above the loop: the human is not approving individual outputs, they are setting the policy the automation operates inside.',
+      cite:'Shneiderman, Human-Centered AI'},
+    proxy:{lens:'Technical lens',title:'Proxy variables',
+      body:'Stability here is driven by continuous-employment months, so weighting it heavily screens out career gaps regardless of cause. The warning fires before the model runs rather than after a rejection, which is the only point where it can still change the outcome.',
+      cite:'Simulated within this prototype'},
+    alignment:{lens:'Interpretive lens',title:'Overview first, detail on demand',
+      body:'One number and one sentence, with everything else a click away. Kizilcec’s randomised experiment found medium transparency repaired trust after a disappointing outcome while high transparency destroyed that repair, and self-reported comprehension was higher under medium than high. More disclosure is not automatically better.',
+      cite:'Kizilcec 2016, N=103, interaction F(2,97)=3.48, p=.035'},
+    provenance:{lens:'Interpretive lens',title:'Prompts belong to the team',
+      body:'Every AI-assisted judgment carries the prompt that produced it, who wrote it and when it last changed. The two prompts here were written by different recruiters weeks apart. Without this, neither would know the other existed and a hiring manager could not tell which reasoning produced the number they are acting on.',
+      cite:'Pattern previously shipped on the FinOva POC'},
+    escalation:{lens:'Transformative lens',title:'Machines have no moral agency',
+      body:'The knockout rule fired correctly and was still wrong: it measured job titles rather than the work described. Coeckelbergh’s argument is that accountability cannot be delegated to a system that cannot hold it, so the automated rejection is blocked and a named person signs off instead.',
+      cite:'Coeckelbergh, AI Ethics, ch. 4, Just Machines?'},
+    ledger:{lens:'Transformative lens',title:'Reconstructable after the fact',
+      body:'Weight changes, model runs, overrides and sign-offs are appended in order with the actor on each. This is what makes an external audit possible under regimes like NYC Local Law 144 and the EU AI Act, and it is why the recruiter’s reason for lowering Stability is recorded rather than remembered.',
+      cite:'NYC LL 144; EU AI Act'},
+    impact:{lens:'Transformative lens',title:'Watching the aggregate, not just the case',
+      body:'Individual decisions can each look defensible while the pipeline still drifts. Selection rates are tracked against the EEOC four-fifths threshold so the pattern is visible, and in this record the drift begins the week the Stability weighting was introduced.',
+      cite:'EEOC Uniform Guidelines, four-fifths rule'}
   };
+  function note(key){
+    if(!GUIDE) return '';
+    var n=NOTES[key]; if(!n) return '';
+    return '<div class="gnote"><div class="gnote-lens">'+esc(n.lens)+'</div>'
+      +'<div class="gnote-title">'+esc(n.title)+'</div>'
+      +'<div class="gnote-body">'+n.body+'</div>'
+      +'<div class="gnote-cite">'+esc(n.cite)+'</div></div>';
+  }
 
   function provCard(p){
     if(!p) return '';
-    return '<span class="prov" tabindex="0"><span class="prov-mark">prompt</span>'
-      + '<span class="prov-card">'
-      + '<div class="prov-title">Prompt provenance</div>'
-      + '<div class="prov-row"><span class="prov-key">Prompt</span><span class="prov-val mono">' + esc(p.prompt_name) + '</span></div>'
-      + '<div class="prov-row"><span class="prov-key">Author</span><span class="prov-val">' + esc(p.author) + '</span></div>'
-      + '<div class="prov-row"><span class="prov-key">Written</span><span class="prov-val">' + esc(p.authored) + ', last edited ' + esc(p.last_edited) + '</span></div>'
-      + '<div class="prov-row"><span class="prov-key">Saw</span><span class="prov-val">' + esc(p.inputs) + '</span></div>'
-      + '<div class="prov-prompt">' + esc(p.prompt) + '</div>'
-      + '<div class="prov-note">' + esc(p.note) + '</div>'
-      + '</span></span>';
+    return '<span class="prov" tabindex="0"><span class="prov-mark">prompt</span><span class="prov-card">'
+      +'<div class="prov-title">Prompt provenance</div>'
+      +'<div class="prov-row"><span class="prov-key">Prompt</span><span class="prov-val mono">'+esc(p.prompt_name)+'</span></div>'
+      +'<div class="prov-row"><span class="prov-key">Author</span><span class="prov-val">'+esc(p.author)+'</span></div>'
+      +'<div class="prov-row"><span class="prov-key">Written</span><span class="prov-val">'+esc(p.authored)+', last edited '+esc(p.last_edited)+'</span></div>'
+      +'<div class="prov-row"><span class="prov-key">Saw</span><span class="prov-val">'+esc(p.inputs)+'</span></div>'
+      +'<div class="prov-prompt">'+esc(p.prompt)+'</div>'
+      +'<div class="prov-note">'+esc(p.note)+'</div></span></span>';
   }
-  function findProv(t){ return (D.provenance||[]).filter(function(p){return p.target===t;})[0]; }
+  function findProv(t){return (D.provenance||[]).filter(function(p){return p.target===t;})[0];}
+
+  function sliders(compact){
+    return ['technical','growth','stability'].map(function(k){
+      var f=D.factors[k];
+      return '<div class="slider-row"><div class="slider-top"><span class="slider-name">'+esc(f.label)+'</span>'
+        +'<span class="slider-val" id="v-'+k+'">'+W[k]+'</span></div>'
+        +'<input type="range" min="0" max="60" value="'+W[k]+'" data-w="'+k+'">'
+        +(compact?'':'<div class="slider-basis">'+esc(f.basis)+'</div>')
+        +'</div>';
+    }).join('');
+  }
 
   /* ── MOMENT 1 ── */
   function m1(){
-    var r = D.resume, s = D.skills, w = D.weights, a = D.proxy_alert;
-    var secs = r.sections.map(function(x){
-      var cls = x.parsed==='clean' ? 'bar-green' : (x.parsed==='partial' ? 'bar-amber' : 'bar-red');
-      var pill = x.parsed==='clean' ? 'pill-green' : (x.parsed==='partial' ? 'pill-amber' : 'pill-plain');
-      return '<div class="rowitem"><div class="rowitem-bar ' + cls + '"></div><div class="rowitem-body">'
-        + '<div class="rowitem-title">' + esc(x.label) + ' <span class="pill ' + pill + '">' + esc(x.parsed) + '</span></div>'
-        + (x.issue ? '<div class="rowitem-meta">' + esc(x.issue) + '</div>' : '')
-        + '</div></div>';
+    var r=D.resume,s=D.skills,w=D.weights;
+    var secs=r.sections.map(function(x){
+      var cls=x.parsed==='clean'?'bar-green':(x.parsed==='partial'?'bar-amber':'bar-red');
+      var pill=x.parsed==='clean'?'pill-green':(x.parsed==='partial'?'pill-amber':'pill-plain');
+      return '<div class="rowitem"><div class="rowitem-bar '+cls+'"></div><div class="rowitem-body">'
+        +'<div class="rowitem-title">'+esc(x.label)+' <span class="pill '+pill+'">'+esc(x.parsed)+'</span></div>'
+        +(x.issue?'<div class="rowitem-meta">'+esc(x.issue)+'</div>':'')+'</div></div>';
     }).join('');
-
-    var found = s.extracted.map(function(x){
+    var found=s.extracted.map(function(x){
       return '<div class="rowitem"><div class="rowitem-bar bar-green"></div><div class="rowitem-body">'
-        + '<div class="rowitem-title">' + esc(x.term) + ' <span class="pill pill-plain">' + Math.round(x.confidence*100) + '% confidence</span></div>'
-        + '<div class="rowitem-meta">' + esc(x.source) + '</div></div></div>';
-    }).join('');
-
-    var missed = s.missed.map(function(x){
+        +'<div class="rowitem-title">'+esc(x.term)+' <span class="pill pill-plain">'+Math.round(x.confidence*100)+'% confidence</span></div>'
+        +'<div class="rowitem-meta">'+esc(x.source)+'</div></div></div>';}).join('');
+    var missed=s.missed.map(function(x){
       return '<div class="rowitem"><div class="rowitem-bar bar-teal"></div><div class="rowitem-body">'
-        + '<div class="rowitem-title">' + esc(x.term) + ' <span class="pill pill-teal">' + esc(x.status) + '</span></div>'
-        + '<div class="rowitem-meta">' + esc(x.why) + '<br><span class="mono" style="font-size:11px">' + esc(x.source) + '</span></div></div></div>';
-    }).join('');
+        +'<div class="rowitem-title">'+esc(x.term)+' <span class="pill pill-teal">'+esc(x.status)+'</span></div>'
+        +'<div class="rowitem-meta">'+esc(x.why)+'<br><span class="mono" style="font-size:11px">'+esc(x.source)+'</span></div></div></div>';}).join('');
 
-    var sl = function(name,key,val){
-      return '<div class="slider-row"><div class="slider-top"><span class="slider-name">' + name + '</span>'
-        + '<span class="slider-val" id="v-' + key + '">' + val + '</span></div>'
-        + '<input type="range" min="0" max="60" value="' + val + '" data-w="' + key + '"></div>';
-    };
+    return '<div class="moment-head"><div class="moment-eyebrow"><span class="moment-step">MOMENT 01</span>'
+      +'<span class="moment-lens">Before submit &middot; technical lens</span></div>'
+      +'<h1 class="moment-title">What the candidate saw</h1>'
+      +'<p class="moment-lede">The candidate checks how the parser actually read their resume <b>before</b> submitting, and a person sets the weighting before any model runs.</p></div>'
 
-    return '<div class="moment-head">'
-      + '<div class="moment-eyebrow"><span class="moment-step">MOMENT 01</span><span class="moment-lens">Before submit &middot; technical lens</span></div>'
-      + '<h1 class="moment-title">What the candidate saw</h1>'
-      + '<p class="moment-lede">The candidate checks how the parser actually read their resume <b>before</b> submitting, and a person sets the weighting before any model runs.</p></div>'
+      +'<div class="panel" style="margin-bottom:16px"><div class="panel-head"><div class="panel-title">Resume intake</div><div class="panel-tag">Parse status</div></div>'
+      +'<div class="panel-note">'+esc(r.narrative)+'</div>'
+      +'<div class="grid-sec">'+secs+'</div>'+note('parse')+'</div>'
 
-      + '<div class="panel" style="margin-bottom:16px"><div class="panel-head"><div class="panel-title">Resume intake</div><div class="panel-tag">Parse status</div></div>'
-      + '<div class="panel-note">' + esc(r.narrative) + '</div>'
-      + '<div class="grid-sec">' + secs + '</div></div>'
-
-      + '<div class="grid g-wide"><div class="stack">'
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Identified skills</div><div class="panel-tag">Editable</div></div>'
-        + '<div class="panel-note">What the parser found on its own.</div>'
-        + '<div class="rowlist">' + found + '</div>'
-        + '<div class="panel-note" style="margin:16px 0 10px">What it missed, corrected by the candidate.</div>'
-        + '<div class="rowlist">' + missed + '</div>'
-        + '<div class="alert" style="margin-top:14px"><div class="alert-icon">&#9432;</div><div><div class="alert-title">The strongest evidence has no keyword in it</div>'
-        + '<div class="alert-text">' + esc(s.ambiguity_note) + '</div></div></div></div>'
-      + '</div>'
-
-      + '<div class="stack">'
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Weight calibration</div><div class="panel-tag">Human above the loop</div></div>'
-        + '<div class="panel-note">' + esc(w.note) + ' Set by ' + esc(w.set_by) + '.</div>'
-        + sl('Technical','technical',w.final.technical)
-        + sl('Growth','growth',w.final.growth)
-        + sl('Stability','stability',w.final.stability)
-        + '<div id="proxyBox"></div></div>'
-
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">What happened here</div><div class="panel-tag">Recorded</div></div>'
-        + '<div class="panel-note">Stability opened at ' + w.initial.stability + ', which raised the warning above. It was lowered to ' + w.final.stability + ' before the model ran.</div>'
-        + '<div class="alert ok"><div class="alert-icon">&#10003;</div><div><div class="alert-title">Reason recorded</div>'
-        + '<div class="alert-text">' + esc(a.outcome) + ' The reason given was that the gap is caregiving, not performance. That sentence is in the ledger a reviewer reads later.</div></div></div></div>'
-      + '</div></div>';
+      +'<div class="grid g-wide"><div class="stack">'
+        +'<div class="panel"><div class="panel-head"><div class="panel-title">Identified skills</div><div class="panel-tag">Editable</div></div>'
+        +'<div class="panel-note">What the parser found on its own.</div><div class="rowlist">'+found+'</div>'
+        +'<div class="panel-note" style="margin:16px 0 10px">What it missed, corrected by the candidate.</div><div class="rowlist">'+missed+'</div>'
+        +'<div class="alert" style="margin-top:14px"><div class="alert-icon">&#9432;</div><div>'
+        +'<div class="alert-title">The strongest evidence has no keyword in it</div>'
+        +'<div class="alert-text">'+esc(s.ambiguity_note)+'</div></div></div></div>'
+      +'</div><div class="stack">'
+        +'<div class="panel"><div class="panel-head"><div class="panel-title">Weight calibration</div><div class="panel-tag">Human above the loop</div></div>'
+        +'<div class="panel-note">'+esc(w.note)+' Recorded by '+esc(w.set_by)+'. Move these and the score in Moment 2 moves with them.</div>'
+        +sliders(false)+'<div id="scoreEcho"></div><div id="proxyBox"></div>'+note('weights')+note('proxy')+'</div>'
+      +'</div></div>';
   }
 
   /* ── MOMENT 2 ── */
   function m2(){
-    var A = D.assessment;
-    var ev = A.evidence.map(function(e,i){
-      return '<div class="ev" data-ev="' + i + '"><div class="ev-head"><span class="ev-claim">' + esc(e.claim) + '</span>'
-        + '<span class="ev-chev">&#9654;</span></div>'
-        + '<div class="ev-body">' + esc(e.support)
-        + '<span class="ev-src">' + esc(e.source) + ' &middot; weight: ' + esc(e.weight) + '</span></div></div>';
-    }).join('');
+    var A=D.assessment;
+    var ev=A.evidence.map(function(e,i){
+      return '<div class="ev" data-ev="'+i+'"><div class="ev-head"><span class="ev-claim">'+esc(e.claim)+'</span>'
+        +'<span class="ev-chev">&#9654;</span></div><div class="ev-body">'+esc(e.support)
+        +'<span class="ev-src">'+esc(e.source)+' &middot; weight: '+esc(e.weight)+'</span></div></div>';}).join('');
 
-    return '<div class="moment-head">'
-      + '<div class="moment-eyebrow"><span class="moment-step">MOMENT 02</span><span class="moment-lens">At decision &middot; interpretive lens</span></div>'
-      + '<h1 class="moment-title">What the recruiter saw</h1>'
-      + '<p class="moment-lede">One indicator first, detail on demand. Every AI-assisted judgment carries <b>the prompt that produced it</b>, on hover.</p></div>'
+    return '<div class="moment-head"><div class="moment-eyebrow"><span class="moment-step">MOMENT 02</span>'
+      +'<span class="moment-lens">At decision &middot; interpretive lens</span></div>'
+      +'<h1 class="moment-title">What the recruiter saw</h1>'
+      +'<p class="moment-lede">One indicator first, detail on demand. Every AI-assisted judgment carries <b>the prompt that produced it</b>, on hover.</p></div>'
 
-      + '<div class="grid g-wide"><div class="stack">'
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Alignment</div><div class="panel-tag">Overview first</div></div>'
-        + '<div class="panel-note">Deliberately one number and one sentence. Detail is available, not forced.</div>'
-        + '<div class="align-wrap"><div class="align-num">' + A.alignment + '</div><div class="align-side">'
-        + '<div class="align-band">' + esc(A.band) + ' ' + provCard(findProv('alignment')) + '</div>'
-        + '<div class="align-line">' + esc(A.one_line) + ' ' + provCard(findProv('one_line')) + '</div>'
-        + '</div></div><div class="meter"><div class="meter-fill" style="width:' + A.alignment + '%"></div></div></div>'
+      +'<div class="grid g-wide"><div class="stack">'
+        +'<div class="panel"><div class="panel-head"><div class="panel-title">Alignment</div><div class="panel-tag">Overview first</div></div>'
+        +'<div class="panel-note">One number and one sentence. Detail is available, not forced.</div>'
+        +'<div id="alignBox"></div>'+note('alignment')+'</div>'
 
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Evidence chain</div><div class="panel-tag">Details on demand</div></div>'
-        + '<div class="panel-note">Collapsed by default. Each claim traces to a line in the application.</div>'
-        + ev + '</div>'
-      + '</div>'
+        +'<div class="panel"><div class="panel-head"><div class="panel-title">Evidence chain</div><div class="panel-tag">Details on demand</div></div>'
+        +'<div class="panel-note">Collapsed by default. Each claim traces to a line in the application.</div>'+ev+'</div>'
+      +'</div><div class="stack">'
+        +'<div class="panel"><div class="panel-head"><div class="panel-title">Weighting</div><div class="panel-tag">Human in the loop</div></div>'
+        +'<div class="panel-note">The same weights from Moment 1. Adjust and watch the score recompute.</div>'
+        +sliders(true)+'<div id="proxyBox2"></div></div>'
 
-      + '<div class="stack">'
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Prompt provenance</div><div class="panel-tag">On hover</div></div>'
-        + '<div class="panel-note">Hover any <span class="prov-mark">prompt</span> marker to see what ran, what it saw, who wrote it, and when. Prompts belong to the team, not to whoever typed them.</div>'
-        + '<div class="rowlist">' + (D.provenance||[]).map(function(p){
+        +'<div class="panel"><div class="panel-head"><div class="panel-title">Prompt provenance</div><div class="panel-tag">On hover</div></div>'
+        +'<div class="panel-note">Hover any <span class="prov-mark">prompt</span> marker to see what ran, what it saw, who wrote it, and when.</div>'
+        +'<div class="rowlist">'+(D.provenance||[]).map(function(p){
             return '<div class="rowitem"><div class="rowitem-bar bar-teal"></div><div class="rowitem-body">'
-              + '<div class="rowitem-title mono" style="font-size:13.5px">' + esc(p.prompt_name) + '</div>'
-              + '<div class="rowitem-meta">' + esc(p.author) + ' &middot; edited ' + esc(p.last_edited) + '</div></div></div>';
-          }).join('') + '</div></div>'
+              +'<div class="rowitem-title mono" style="font-size:12.5px">'+esc(p.prompt_name)+'</div>'
+              +'<div class="rowitem-meta">'+esc(p.author)+' &middot; edited '+esc(p.last_edited)+'</div></div></div>';}).join('')
+        +'</div>'+note('provenance')+'</div>'
+      +'</div></div>';
+  }
 
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Why this matters</div><div class="panel-tag">Interpretive</div></div>'
-        + '<div class="panel-note" style="margin-bottom:0">The two prompts above were written by different recruiters, weeks apart. Without provenance on the judgment itself, neither would know the other existed, and a hiring manager could not tell which reasoning produced the number they are acting on.</div></div>'
-      + '</div></div>';
+  function paintAlign(){
+    var box=document.getElementById('alignBox'); if(!box) return;
+    var r=compute(W), A=D.assessment;
+    box.innerHTML='<div class="align-wrap"><div class="align-num">'+r.score+'</div><div class="align-side">'
+      +'<div class="align-band">'+esc(r.band)+' '+provCard(findProv('alignment'))+'</div>'
+      +'<div class="align-line">'+esc(A.one_line)+' '+provCard(findProv('one_line'))+'</div></div></div>'
+      +'<div class="meter"><div class="meter-fill" style="width:'+r.score+'%"></div></div>'
+      +'<div class="align-why">'+esc(driverLine(r))+'</div>'
+      +(changed()?'<div class="align-flag">Unrecorded change. This weighting is yours, not what R. Okafor saved. Moment 3 shows it as a pending entry.</div>':'');
   }
 
   /* ── MOMENT 3 ── */
   function m3(){
-    var kindNode = {submit:'',parse:'sys',correct:'human',weights:'human',alert:'alert',assess:'sys',review:'human',knockout:'sys',block:'block',override:'human',seal:'seal'};
-    var tl = D.events.map(function(e){
-      return '<div class="tl-item"><div class="tl-node ' + (kindNode[e.kind]||'') + '"></div>'
-        + '<div class="tl-top"><span class="tl-actor">' + esc(e.actor) + '</span><span class="tl-time">' + time(e.at) + '</span></div>'
-        + '<div class="tl-text">' + esc(e.text) + '</div></div>';
-    }).join('');
-
-    var esc_ = D.escalations.map(function(x){
+    var kind={submit:'',parse:'sys',correct:'human',weights:'human',alert:'alert',assess:'sys',review:'human',knockout:'sys',block:'block',override:'human',seal:'seal'};
+    var tl=D.events.map(function(e){
+      return '<div class="tl-item"><div class="tl-node '+(kind[e.kind]||'')+'"></div>'
+        +'<div class="tl-top"><span class="tl-actor">'+esc(e.actor)+'</span><span class="tl-time">'+time(e.at)+'</span></div>'
+        +'<div class="tl-text">'+esc(e.text)+'</div></div>';}).join('');
+    if(changed()){
+      var r=compute(W);
+      tl+='<div class="tl-item tl-pending"><div class="tl-node pending"></div>'
+        +'<div class="tl-top"><span class="tl-actor">You, this session</span><span class="tl-time">unsaved</span></div>'
+        +'<div class="tl-text">Adjusted weights to Technical '+W.technical+', Growth '+W.growth+', Stability '+W.stability
+        +'. Alignment would move to '+r.score+'. In a real system this would require a reason before it could be saved.</div></div>';
+    }
+    var esc_=D.escalations.map(function(x){
       return '<div class="rowitem"><div class="rowitem-bar bar-amber"></div><div class="rowitem-body">'
-        + '<div class="rowitem-title">' + esc(x.reason) + ' <span class="pill pill-green">' + esc(x.resolution) + '</span></div>'
-        + '<div class="rowitem-meta">Waited ' + x.elapsed_hours + ' hours on ' + esc(x.waiting_on) + '. ' + esc(x.note) + '</div></div></div>';
-    }).join('');
+        +'<div class="rowitem-title">'+esc(x.reason)+' <span class="pill pill-green">'+esc(x.resolution)+'</span></div>'
+        +'<div class="rowitem-meta">Waited '+x.elapsed_hours+' hours on '+esc(x.waiting_on)+'. '+esc(x.note)+'</div></div></div>';}).join('');
+    var ai=D.adverse_impact;
+    var bars=ai.groups.map(function(g){
+      var cls=g.state==='below'?'below':(g.state==='reference'?'ref':'');
+      return '<div class="imp-row"><div class="imp-label">'+esc(g.label)+'</div>'
+        +'<div class="imp-track"><div class="imp-bar '+cls+'" style="width:'+Math.round(g.ratio*100)+'%"></div></div>'
+        +'<div class="imp-val"'+(g.state==='below'?' style="color:var(--red)"':'')+'>'+g.ratio.toFixed(2)+'</div></div>';}).join('');
 
-    var ai = D.adverse_impact;
-    var bars = ai.groups.map(function(g){
-      var cls = g.state==='below' ? 'below' : (g.state==='reference' ? 'ref' : '');
-      return '<div class="imp-row"><div class="imp-label">' + esc(g.label) + '</div>'
-        + '<div class="imp-track"><div class="imp-bar ' + cls + '" style="width:' + Math.round(g.ratio*100) + '%"></div></div>'
-        + '<div class="imp-val" style="' + (g.state==='below'?'color:var(--red)':'') + '">' + g.ratio.toFixed(2) + '</div></div>';
-    }).join('');
-
-    return '<div class="moment-head">'
-      + '<div class="moment-eyebrow"><span class="moment-step">MOMENT 03</span><span class="moment-lens">After the fact &middot; transformative lens</span></div>'
-      + '<h1 class="moment-title">What a reviewer can reconstruct</h1>'
-      + '<p class="moment-lede">No rejection leaves the system without a human signature, and <b>every step above replays here</b> in the order it happened.</p></div>'
-
-      + '<div class="grid g-2">'
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Escalation queue</div><div class="panel-tag">Human on the loop</div></div>'
-        + '<div class="panel-note">Automated screen-outs route to a person before anything reaches the candidate.</div>'
-        + esc_
-        + '<div class="alert" style="margin-top:12px"><div class="alert-icon">&#9888;</div><div><div class="alert-title">The rule worked. The rule was wrong.</div>'
-        + '<div class="alert-text">A knockout on years-in-title would have rejected this candidate automatically. It measured job titles, not the work described in the application.</div></div></div></div>'
-
-        + '<div class="panel"><div class="panel-head"><div class="panel-title">Adverse impact</div><div class="panel-tag">Four-fifths rule</div></div>'
-        + '<div class="panel-note">' + esc(ai.window) + '. Selection rate ratios against the reference group.</div>'
-        + bars
-        + '<div class="imp-thresh">Threshold is 0.80. ' + esc(ai.note) + '</div>'
-        + '<div class="alert-basis">' + esc(ai.basis) + '</div></div>'
-      + '</div>'
-
-      + '<div class="panel"><div class="panel-head"><div class="panel-title">Decision ledger</div><div class="panel-tag">Read only</div></div>'
-      + '<div class="panel-note">The same record, replayed end to end. Every weight change, model run, override, and sign-off, with the actor on each.</div>'
-      + '<div class="tl">' + tl + '</div></div>';
+    return '<div class="moment-head"><div class="moment-eyebrow"><span class="moment-step">MOMENT 03</span>'
+      +'<span class="moment-lens">After the fact &middot; transformative lens</span></div>'
+      +'<h1 class="moment-title">What a reviewer can reconstruct</h1>'
+      +'<p class="moment-lede">No rejection leaves the system without a human signature, and <b>every step above replays here</b> in the order it happened.</p></div>'
+      +'<div class="grid g-2">'
+        +'<div class="panel"><div class="panel-head"><div class="panel-title">Escalation queue</div><div class="panel-tag">Human on the loop</div></div>'
+        +'<div class="panel-note">Automated screen-outs route to a person before anything reaches the candidate.</div>'+esc_
+        +'<div class="alert" style="margin-top:12px"><div class="alert-icon">&#9888;</div><div>'
+        +'<div class="alert-title">The rule worked. The rule was wrong.</div>'
+        +'<div class="alert-text">A knockout on years-in-title would have rejected this candidate automatically. It measured job titles, not the work described.</div></div></div>'
+        +note('escalation')+'</div>'
+        +'<div class="panel"><div class="panel-head"><div class="panel-title">Adverse impact</div><div class="panel-tag">Four-fifths rule</div></div>'
+        +'<div class="panel-note">'+esc(ai.window)+'. Selection rate ratios against the reference group.</div>'+bars
+        +'<div class="imp-thresh">Threshold is 0.80. '+esc(ai.note)+'</div>'
+        +'<div class="alert-basis">'+esc(ai.basis)+'</div>'+note('impact')+'</div>'
+      +'</div>'
+      +'<div class="panel"><div class="panel-head"><div class="panel-title">Decision ledger</div><div class="panel-tag">Read only</div></div>'
+      +'<div class="panel-note">The same record, replayed end to end, with the actor on each step.</div>'
+      +'<div class="tl">'+tl+'</div>'+note('ledger')+'</div>';
   }
 
-  var views = {'1':m1,'2':m2,'3':m3};
+  var views={'1':m1,'2':m2,'3':m3};
+
+  function paintProxy(){
+    var a=D.proxy_alert, v=W.stability;
+    var html = v>a.threshold
+      ? '<div class="alert"><div class="alert-icon">&#9888;</div><div><div class="alert-title">Proxy warning: '+esc(a.factor)+' at '+v+'</div>'
+        +'<div class="alert-text">'+esc(a.message)+'</div><div class="alert-basis">'+esc(a.basis)+'</div></div></div>'
+      : '<div class="alert ok"><div class="alert-icon">&#10003;</div><div><div class="alert-title">No proxy warning at '+v+'</div>'
+        +'<div class="alert-text">'+esc(a.factor)+' sits at or below the review threshold of '+a.threshold+'. Raise it above that to see the warning fire.</div></div></div>';
+    ['proxyBox','proxyBox2'].forEach(function(id){var el=document.getElementById(id); if(el) el.innerHTML=html;});
+  }
+  function paintEcho(){
+    var el=document.getElementById('scoreEcho'); if(!el) return;
+    var r=compute(W);
+    el.innerHTML='<div class="echo">Alignment at these weights: <b>'+r.score+'</b> <span class="echo-band">'+esc(r.band)+'</span></div>';
+  }
 
   function bind(){
-    // evidence accordions
     document.querySelectorAll('.ev-head').forEach(function(h){
-      h.addEventListener('click', function(){ h.parentElement.classList.toggle('open'); });
+      h.addEventListener('click',function(){h.parentElement.classList.toggle('open');});
     });
-    // sliders
     document.querySelectorAll('input[type=range]').forEach(function(s){
-      s.addEventListener('input', function(){
-        var k = s.getAttribute('data-w');
-        document.getElementById('v-' + k).textContent = s.value;
-        if(k === 'stability') paintProxy(parseInt(s.value,10));
+      s.addEventListener('input',function(){
+        var k=s.getAttribute('data-w');
+        W[k]=parseInt(s.value,10);
+        var lbl=document.getElementById('v-'+k); if(lbl) lbl.textContent=s.value;
+        paintProxy(); paintAlign(); paintEcho();
       });
     });
-    paintProxy(D.weights.final.stability);
-  }
-
-  function paintProxy(v){
-    var box = document.getElementById('proxyBox');
-    if(!box) return;
-    var a = D.proxy_alert;
-    if(v > a.threshold){
-      box.innerHTML = '<div class="alert"><div class="alert-icon">&#9888;</div><div>'
-        + '<div class="alert-title">Proxy warning: ' + esc(a.factor) + ' at ' + v + '</div>'
-        + '<div class="alert-text">' + esc(a.message) + '</div>'
-        + '<div class="alert-basis">' + esc(a.basis) + '</div></div></div>';
-    } else {
-      box.innerHTML = '<div class="alert ok"><div class="alert-icon">&#10003;</div><div>'
-        + '<div class="alert-title">No proxy warning at ' + v + '</div>'
-        + '<div class="alert-text">' + esc(a.factor) + ' sits at or below the review threshold of ' + a.threshold + '. Raise it above that to see the warning fire.</div></div></div>';
-    }
+    paintProxy(); paintAlign(); paintEcho();
   }
 
   function show(m){
-    document.getElementById('canvas').innerHTML = views[m]();
-    document.getElementById('crumbMoment').innerHTML = titles[m];
+    CUR=m;
+    document.getElementById('canvas').innerHTML=views[m]();
+    document.getElementById('crumbMoment').innerHTML=titles[m];
     bind();
     window.scrollTo({top:0,behavior:'smooth'});
   }
-
-  function goto(m){
-    if(!views[m] || !D) return;
-    document.querySelectorAll('.rail-item').forEach(function(x){
-      x.classList.toggle('active', x.getAttribute('data-moment') === m);
-    });
+  function goto_(m){
+    if(!views[m]||!D) return;
+    document.querySelectorAll('.rail-item').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-moment')===m);});
     show(m);
   }
-
   document.querySelectorAll('.rail-item').forEach(function(it){
-    it.addEventListener('click', function(){ goto(it.getAttribute('data-moment')); });
+    it.addEventListener('click',function(){goto_(it.getAttribute('data-moment'));});
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.target.tagName==='INPUT') return;
+    if(e.key==='1'||e.key==='2'||e.key==='3'){goto_(e.key);return;}
+    if(e.key==='g'||e.key==='G'){toggleGuide();return;}
+    var cur=document.querySelector('.rail-item.active'); if(!cur) return;
+    var n=parseInt(cur.getAttribute('data-moment'),10);
+    if(e.key==='ArrowRight'&&n<3) goto_(String(n+1));
+    if(e.key==='ArrowLeft'&&n>1) goto_(String(n-1));
   });
 
-  // keyboard nav, useful when recording a walkthrough
-  document.addEventListener('keydown', function(e){
-    if(e.target.tagName === 'INPUT') return;
-    if(e.key === '1' || e.key === '2' || e.key === '3'){ goto(e.key); return; }
-    var cur = document.querySelector('.rail-item.active');
-    if(!cur) return;
-    var n = parseInt(cur.getAttribute('data-moment'),10);
-    if(e.key === 'ArrowRight' && n < 3) goto(String(n+1));
-    if(e.key === 'ArrowLeft'  && n > 1) goto(String(n-1));
-  });
-
-  var btn = document.getElementById('themeBtn'), icon = document.getElementById('themeIcon'), label = document.getElementById('themeLabel');
-  function paintTheme(){
-    var dark = root.getAttribute('data-theme') === 'dark';
-    icon.innerHTML = dark ? '&#9788;' : '&#9789;';
-    label.textContent = dark ? 'Light mode' : 'Dark mode';
+  function toggleGuide(){
+    GUIDE=!GUIDE;
+    var b=document.getElementById('guideBtn');
+    b.classList.toggle('on',GUIDE);
+    b.setAttribute('aria-pressed',GUIDE?'true':'false');
+    document.getElementById('guideState').textContent=GUIDE?'on':'off';
+    if(D) show(CUR);
   }
-  btn.addEventListener('click', function(){
-    root.setAttribute('data-theme', root.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+  document.getElementById('guideBtn').addEventListener('click',toggleGuide);
+
+  var btn=document.getElementById('themeBtn'),icon=document.getElementById('themeIcon'),label=document.getElementById('themeLabel');
+  function paintTheme(){
+    var dark=root.getAttribute('data-theme')==='dark';
+    icon.innerHTML=dark?'&#9788;':'&#9789;';
+    label.textContent=dark?'Light mode':'Dark mode';
+  }
+  btn.addEventListener('click',function(){
+    root.setAttribute('data-theme',root.getAttribute('data-theme')==='dark'?'light':'dark');
     paintTheme();
   });
   paintTheme();
 
-  fetch('ledger.json')
-    .then(function(r){ if(!r.ok) throw new Error('http ' + r.status); return r.json(); })
+  fetch('ledger.json').then(function(r){if(!r.ok)throw new Error('http '+r.status);return r.json();})
     .then(function(j){
-      D = j;
-      document.getElementById('railApp').innerHTML = 'Application #' + esc(D.application.id) + '</b> &middot; ' + esc(D.application.role);
-      document.getElementById('foot').innerHTML = esc(D._disclaimer)
-        + ' It assumes an applicant tracking system upstream; no integration is implied.<br><a href="../">Back to milankhanal.com</a>';
+      D=j; W={technical:D.weights.final.technical,growth:D.weights.final.growth,stability:D.weights.final.stability};
+      document.getElementById('railApp').innerHTML='Application #'+esc(D.application.id)+'</b> &middot; '+esc(D.application.role);
+      document.getElementById('foot').innerHTML=esc(D._disclaimer)
+        +' It assumes an applicant tracking system upstream; no integration is implied. Scoring method: '+esc(D.scoring.method)
+        +'<br><a href="../">Back to milankhanal.com</a>';
       show('1');
     })
     .catch(function(){
-      document.getElementById('canvas').innerHTML = '<div class="loading">This prototype reads its record from <span class="mono">ledger.json</span>, so it needs to be served over http rather than opened as a file. Run <span class="mono">npm run dev</span> in the repo root and open <span class="mono">localhost:8765/talentpilot-v2/</span>.</div>';
+      document.getElementById('canvas').innerHTML='<div class="loading">This prototype reads its record from <span class="mono">ledger.json</span>, so it needs to be served over http rather than opened as a file. Run <span class="mono">npm run dev</span> in the repo root and open <span class="mono">localhost:8765/talentpilot-v2/</span>.</div>';
     });
 })();
 </script>
