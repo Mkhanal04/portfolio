@@ -16,8 +16,7 @@
   --text-0:#1C1917;--text-1:#44403C;--text-2:#78716C;--text-3:#A8A29E;
   --border:#E7E5E4;--border-light:#F5F5F4;
   --shadow-sm:0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.06);--shadow-lg:0 12px 32px rgba(0,0,0,.08);
-  --card:#FFFFFF;--sidebar-bg:#FFFFFF;--sidebar-active-bg:#1C1917;--sidebar-active-text:#FFFFFF;
-  --code-bg:#F5F5F4;--code-text:#44403C;
+  --card:#FFFFFF;--code-bg:#F5F5F4;--code-text:#44403C;
   --rail-bg:linear-gradient(180deg,#0F1729 0%,#1B2A4A 100%);
   --rail-text:#F0F0F2;--rail-muted:rgba(255,255,255,.55);
   --rail-item-hover:rgba(255,255,255,.07);--rail-item-active:rgba(255,255,255,.12);
@@ -28,8 +27,7 @@
   --text-0:#F0F0F2;--text-1:#C8C8CE;--text-2:#8A8A95;--text-3:#5A5A66;
   --border:#27272A;--border-light:#1E1E22;
   --shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow-md:0 4px 12px rgba(0,0,0,.3);--shadow-lg:0 12px 32px rgba(0,0,0,.4);
-  --card:#141416;--sidebar-bg:#141416;--sidebar-active-bg:#2563EB;--sidebar-active-text:#FFFFFF;
-  --code-bg:#1C1C1F;--code-text:#C8C8CE;
+  --card:#141416;--code-bg:#1C1C1F;--code-text:#C8C8CE;
   --rail-bg:linear-gradient(180deg,#0A1628 0%,#152238 100%);
   --rail-text:#F0F0F2;--rail-muted:rgba(255,255,255,.5);
   --rail-item-hover:rgba(255,255,255,.06);--rail-item-active:rgba(255,255,255,.1);
@@ -48,214 +46,185 @@
   --red-bg:rgba(220,38,38,.12);--red-border:rgba(220,38,38,.25);
   --amber-bg:rgba(217,119,6,.12);--amber-border:rgba(217,119,6,.25);
   --green-bg:rgba(5,150,105,.12);--green-border:rgba(5,150,105,.25);
-  --blue-bg:rgba(37,99,235,.12);
-  --purple-bg:rgba(124,58,237,.12);
+  --blue-bg:rgba(37,99,235,.12);--purple-bg:rgba(124,58,237,.12);
   --teal-bg:rgba(13,148,136,.12);--accent-bg:rgba(13,148,136,.12);
 }
 
-/* ═══ BASE ═══ */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{
-  font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
-  background:var(--bg-0);color:var(--text-0);
-  -webkit-font-smoothing:antialiased;line-height:1.5;
-  overflow-x:hidden;
-}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-0);color:var(--text-0);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
 a{color:inherit}
 .mono{font-family:'JetBrains Mono',monospace}
-.serif{font-family:'DM Serif Display',serif}
 
-/* ═══ SHELL ═══ */
 .shell{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
 
 /* ═══ RAIL ═══ */
-.rail{
-  background:var(--rail-bg);color:var(--rail-text);
-  display:flex;flex-direction:column;
-  border-right:1px solid var(--rail-border);
-  position:sticky;top:0;height:100vh;
-}
+.rail{background:var(--rail-bg);color:var(--rail-text);display:flex;flex-direction:column;border-right:1px solid var(--rail-border);position:sticky;top:0;height:100vh}
 .rail-head{padding:22px 20px 18px;border-bottom:1px solid var(--rail-border)}
 .rail-brand{display:flex;align-items:center;gap:9px;margin-bottom:9px}
-.rail-mark{
-  width:26px;height:26px;border-radius:7px;flex:none;
-  background:linear-gradient(135deg,var(--teal),#22B8A6);
-  display:grid;place-items:center;font-size:12px;font-weight:700;color:#04201C;
-}
+.rail-mark{width:26px;height:26px;border-radius:7px;flex:none;background:linear-gradient(135deg,var(--teal),#22B8A6);display:grid;place-items:center;font-size:12px;font-weight:700;color:#04201C}
 .rail-name{font-size:15px;font-weight:600;letter-spacing:-.01em}
 .rail-name span{color:var(--teal)}
 .rail-sub{font-size:11.5px;color:var(--rail-muted);line-height:1.45}
-
 .rail-section{padding:16px 12px 6px}
-.rail-label{
-  font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--rail-muted);padding:0 8px 8px;
-}
-.rail-item{
-  display:flex;gap:11px;align-items:flex-start;
-  padding:11px 10px;border-radius:8px;cursor:pointer;
-  border:1px solid transparent;margin-bottom:3px;
-  transition:background .13s ease,border-color .13s ease;
-}
+.rail-label{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--rail-muted);padding:0 8px 8px}
+.rail-item{display:flex;gap:11px;align-items:flex-start;padding:11px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;margin-bottom:3px;transition:background .13s ease,border-color .13s ease}
 .rail-item:hover{background:var(--rail-item-hover)}
 .rail-item.active{background:var(--rail-item-active);border-color:var(--rail-border)}
-.rail-step{
-  width:21px;height:21px;border-radius:6px;flex:none;margin-top:1px;
-  display:grid;place-items:center;font-size:10.5px;font-weight:600;
-  background:rgba(255,255,255,.09);color:var(--rail-muted);
-  font-family:'JetBrains Mono',monospace;
-}
+.rail-step{width:21px;height:21px;border-radius:6px;flex:none;margin-top:1px;display:grid;place-items:center;font-size:10.5px;font-weight:600;background:rgba(255,255,255,.09);color:var(--rail-muted);font-family:'JetBrains Mono',monospace}
 .rail-item.active .rail-step{background:var(--teal);color:#04201C}
-.rail-item-body{min-width:0}
 .rail-item-title{font-size:13px;font-weight:500;letter-spacing:-.005em;margin-bottom:2px}
 .rail-item.active .rail-item-title{font-weight:600}
 .rail-item-meta{font-size:10.5px;color:var(--rail-muted);line-height:1.4}
-
 .rail-foot{margin-top:auto;padding:14px 20px 18px;border-top:1px solid var(--rail-border)}
 .rail-thread{font-size:10.5px;color:var(--rail-muted);line-height:1.5;margin-bottom:12px}
 .rail-thread b{color:var(--rail-text);font-weight:500}
-.theme-btn{
-  width:100%;padding:8px;border-radius:8px;cursor:pointer;
-  background:rgba(255,255,255,.07);border:1px solid var(--rail-border);
-  color:var(--rail-text);font-family:inherit;font-size:11.5px;
-  display:flex;align-items:center;justify-content:center;gap:7px;
-}
+.theme-btn{width:100%;padding:8px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,.07);border:1px solid var(--rail-border);color:var(--rail-text);font-family:inherit;font-size:11.5px;display:flex;align-items:center;justify-content:center;gap:7px}
 .theme-btn:hover{background:rgba(255,255,255,.12)}
 
 /* ═══ MAIN ═══ */
 .main{display:flex;flex-direction:column;min-width:0}
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding:13px 30px;border-bottom:1px solid var(--border);
-  background:var(--bg-1);position:sticky;top:0;z-index:5;flex-wrap:wrap;
-}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 30px;border-bottom:1px solid var(--border);background:var(--bg-1);position:sticky;top:0;z-index:20;flex-wrap:wrap}
 .crumb{font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:7px}
 .crumb b{color:var(--text-0);font-weight:500}
 .crumb i{font-style:normal;color:var(--text-3)}
 .topbar-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-
-.badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:4px 10px;border-radius:6px;
-  font-size:11px;font-weight:500;letter-spacing:.01em;
-  border:1px solid transparent;white-space:nowrap;
-}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:500;border:1px solid transparent;white-space:nowrap}
 .badge-proto{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
 .badge-teal{background:var(--accent-bg);color:var(--teal);border-color:var(--accent-border)}
+.badge-green{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.badge-red{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
 .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
-
 .canvas{padding:30px;max-width:1240px;width:100%}
 
-/* ═══ NOTICE ═══ */
-.notice{
-  display:flex;gap:12px;align-items:flex-start;
-  padding:13px 15px;border-radius:10px;margin-bottom:26px;
-  background:var(--amber-bg);border:1px solid var(--amber-border);
-}
-.notice-icon{color:var(--amber);flex:none;margin-top:1px}
-.notice-text{font-size:12.5px;color:var(--text-1);line-height:1.55}
-.notice-text b{color:var(--text-0);font-weight:600}
-
-/* ═══ MOMENT HEADER ═══ */
-.moment-head{margin-bottom:24px;max-width:760px}
-.moment-eyebrow{
-  display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap;
-}
-.moment-step{
-  font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:500;
-  color:var(--teal);background:var(--accent-bg);
-  border:1px solid var(--accent-border);border-radius:5px;padding:3px 8px;
-}
+.moment-head{margin-bottom:24px;max-width:780px}
+.moment-eyebrow{display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
+.moment-step{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--teal);background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:5px;padding:3px 8px}
 .moment-lens{font-size:11px;color:var(--text-3);letter-spacing:.02em}
-.moment-title{
-  font-family:'DM Serif Display',serif;font-size:32px;line-height:1.15;
-  letter-spacing:-.015em;margin-bottom:11px;
-}
+.moment-title{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.15;letter-spacing:-.015em;margin-bottom:11px}
 .moment-lede{font-size:14.5px;color:var(--text-1);line-height:1.65}
 .moment-lede b{color:var(--text-0);font-weight:600}
 
-/* ═══ GRID + PANELS ═══ */
 .grid{display:grid;gap:16px;margin-bottom:16px}
 .g-2{grid-template-columns:1fr 1fr}
-.g-3{grid-template-columns:repeat(3,1fr)}
 .g-wide{grid-template-columns:1.55fr 1fr}
-
-.panel{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:12px;padding:19px;box-shadow:var(--shadow-sm);
-  min-width:0;
-}
-.panel-head{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  margin-bottom:5px;
-}
-.panel-title{font-size:13.5px;font-weight:600;letter-spacing:-.005em}
-.panel-note{font-size:11.5px;color:var(--text-2);line-height:1.5;margin-bottom:15px}
-.panel-tag{
-  font-family:'JetBrains Mono',monospace;font-size:9.5px;
-  color:var(--text-3);letter-spacing:.04em;text-transform:uppercase;
-  white-space:nowrap;
-}
-
-/* placeholder blocks for the wireframe pass */
-.ph{
-  border:1px dashed var(--border);border-radius:8px;
-  background:var(--bg-2);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:6px;padding:18px 14px;text-align:center;
-}
-.ph-label{font-size:11.5px;font-weight:500;color:var(--text-1)}
-.ph-hint{font-size:10.5px;color:var(--text-3);line-height:1.45;max-width:250px}
-.ph-sm{min-height:74px}
-.ph-md{min-height:132px}
-.ph-lg{min-height:188px}
-.ph-xl{min-height:250px}
-
-.ph-accent{border-color:var(--accent-border);background:var(--accent-bg)}
-.ph-accent .ph-label{color:var(--teal)}
-
-.rowlist{display:flex;flex-direction:column;gap:8px}
-.rowitem{
-  display:flex;align-items:center;gap:11px;
-  padding:11px 13px;border-radius:8px;
-  background:var(--bg-2);border:1px solid var(--border-light);
-}
-.rowitem-bar{width:3px;height:26px;border-radius:2px;background:var(--text-3);flex:none}
-.rowitem-body{min-width:0;flex:1}
-.rowitem-title{font-size:12.5px;font-weight:500;margin-bottom:2px}
-.rowitem-meta{font-size:10.5px;color:var(--text-3)}
-
 .stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:19px;box-shadow:var(--shadow-sm);min-width:0}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
+.panel-title{font-size:13.5px;font-weight:600}
+.panel-note{font-size:11.5px;color:var(--text-2);line-height:1.5;margin-bottom:15px}
+.panel-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-3);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
 
-/* ═══ FOOT ═══ */
-.foot{
-  border-top:1px solid var(--border);margin-top:34px;padding:20px 30px 40px;
-  font-size:11.5px;color:var(--text-3);line-height:1.6;max-width:1240px;
-}
+/* rows */
+.rowlist{display:flex;flex-direction:column;gap:8px}
+.rowitem{display:flex;align-items:flex-start;gap:11px;padding:11px 13px;border-radius:8px;background:var(--bg-2);border:1px solid var(--border-light)}
+.rowitem-bar{width:3px;align-self:stretch;min-height:26px;border-radius:2px;background:var(--text-3);flex:none}
+.bar-green{background:var(--green)}.bar-amber{background:var(--amber)}.bar-red{background:var(--red)}.bar-teal{background:var(--teal)}
+.rowitem-body{min-width:0;flex:1}
+.rowitem-title{font-size:12.5px;font-weight:500;margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rowitem-meta{font-size:10.5px;color:var(--text-3);line-height:1.5}
+.pill{font-size:9.5px;padding:1.5px 6px;border-radius:4px;font-weight:500;border:1px solid transparent;white-space:nowrap}
+.pill-green{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.pill-amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+.pill-teal{background:var(--accent-bg);color:var(--teal);border-color:var(--accent-border)}
+.pill-plain{background:var(--bg-3);color:var(--text-2)}
+
+/* alignment */
+.align-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.align-num{font-family:'DM Serif Display',serif;font-size:58px;line-height:1;letter-spacing:-.02em}
+.align-side{min-width:0;flex:1}
+.align-band{font-size:13px;font-weight:600;margin-bottom:5px}
+.align-line{font-size:12.5px;color:var(--text-1);line-height:1.6}
+.meter{height:6px;border-radius:3px;background:var(--bg-3);overflow:hidden;margin-top:14px}
+.meter-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),#22B8A6)}
+
+/* provenance */
+.prov{position:relative;display:inline-flex;align-items:center;gap:5px;cursor:help;border-bottom:1px dashed var(--accent-border);padding-bottom:1px}
+.prov-mark{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--teal);background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:4px;padding:1px 5px;white-space:nowrap}
+.prov-card{position:absolute;z-index:60;left:0;top:calc(100% + 9px);width:370px;max-width:78vw;background:var(--bg-1);border:1px solid var(--accent-border);border-radius:10px;box-shadow:var(--shadow-lg);padding:15px;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .14s ease,transform .14s ease,visibility .14s;text-align:left;cursor:default}
+.prov:hover .prov-card,.prov:focus-within .prov-card{opacity:1;visibility:visible;transform:translateY(0)}
+.prov-title{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin-bottom:9px;font-weight:600}
+.prov-row{display:flex;gap:9px;font-size:11px;line-height:1.55;margin-bottom:6px}
+.prov-key{color:var(--text-3);min-width:56px;flex:none}
+.prov-val{color:var(--text-1);min-width:0}
+.prov-prompt{font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.6;background:var(--code-bg);color:var(--code-text);border-radius:7px;padding:10px;margin:9px 0}
+.prov-note{font-size:10.5px;color:var(--text-2);line-height:1.55;border-top:1px solid var(--border);padding-top:9px;margin-top:2px}
+
+/* sliders */
+.slider-row{margin-bottom:15px}
+.slider-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.slider-name{font-size:12px;font-weight:500}
+.slider-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--teal)}
+input[type=range]{width:100%;height:5px;border-radius:3px;background:var(--bg-3);appearance:none;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:15px;height:15px;border-radius:50%;background:var(--teal);cursor:pointer;border:2px solid var(--card)}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--teal);cursor:pointer;border:2px solid var(--card)}
+
+/* alert */
+.alert{display:flex;gap:11px;padding:13px 14px;border-radius:9px;background:var(--amber-bg);border:1px solid var(--amber-border);margin-top:4px}
+.alert.ok{background:var(--green-bg);border-color:var(--green-border)}
+.alert-icon{flex:none;color:var(--amber);font-size:14px;line-height:1.3}
+.alert.ok .alert-icon{color:var(--green)}
+.alert-title{font-size:12px;font-weight:600;margin-bottom:4px}
+.alert-text{font-size:11.5px;color:var(--text-1);line-height:1.55}
+.alert-basis{font-size:10.5px;color:var(--text-3);margin-top:6px;font-style:italic}
+
+/* evidence */
+.ev{border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:9px}
+.ev-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;cursor:pointer;background:var(--bg-2)}
+.ev-head:hover{background:var(--bg-3)}
+.ev-claim{font-size:12.5px;font-weight:500}
+.ev-chev{color:var(--text-3);font-size:11px;transition:transform .16s ease;flex:none}
+.ev.open .ev-chev{transform:rotate(90deg)}
+.ev-body{display:none;padding:13px;border-top:1px solid var(--border);font-size:12px;line-height:1.65;color:var(--text-1)}
+.ev.open .ev-body{display:block}
+.ev-src{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-3);margin-top:8px;display:block}
+
+/* timeline */
+.tl{position:relative;padding-left:26px}
+.tl:before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--border)}
+.tl-item{position:relative;padding-bottom:16px}
+.tl-item:last-child{padding-bottom:0}
+.tl-node{position:absolute;left:-23px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--bg-3);border:2px solid var(--bg-0)}
+.tl-node.sys{background:var(--text-3)}
+.tl-node.alert{background:var(--amber)}
+.tl-node.block{background:var(--red)}
+.tl-node.human{background:var(--teal)}
+.tl-node.seal{background:var(--green)}
+.tl-top{display:flex;align-items:baseline;gap:9px;margin-bottom:3px;flex-wrap:wrap}
+.tl-actor{font-size:11.5px;font-weight:600}
+.tl-time{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-3)}
+.tl-text{font-size:12px;color:var(--text-1);line-height:1.6}
+
+/* impact */
+.imp-row{display:flex;align-items:center;gap:12px;margin-bottom:11px}
+.imp-label{font-size:11.5px;width:150px;flex:none;color:var(--text-1)}
+.imp-track{flex:1;height:22px;background:var(--bg-2);border-radius:5px;overflow:hidden;position:relative;min-width:0}
+.imp-bar{height:100%;border-radius:5px;background:var(--green);opacity:.75}
+.imp-bar.below{background:var(--red)}
+.imp-bar.ref{background:var(--text-3)}
+.imp-val{font-family:'JetBrains Mono',monospace;font-size:11px;width:44px;text-align:right;flex:none}
+.imp-thresh{font-size:10.5px;color:var(--text-3);margin-top:10px;line-height:1.5}
+
+.foot{border-top:1px solid var(--border);margin-top:34px;padding:20px 30px 40px;font-size:11.5px;color:var(--text-3);line-height:1.6;max-width:1240px}
 .foot a{color:var(--text-2)}
+.loading{padding:60px 30px;color:var(--text-2);font-size:13px}
 
-/* ═══ RESPONSIVE ═══ */
-@media (max-width:1080px){
-  .g-3{grid-template-columns:1fr 1fr}
-  .g-wide{grid-template-columns:1fr}
-}
+@media (max-width:1080px){.g-wide{grid-template-columns:1fr}}
 @media (max-width:860px){
   .shell{grid-template-columns:1fr}
   .rail{position:static;height:auto}
-  .rail-item{margin-bottom:4px}
   .canvas{padding:22px 18px}
   .topbar{padding:12px 18px}
-  .g-2,.g-3{grid-template-columns:1fr}
+  .g-2{grid-template-columns:1fr}
   .moment-title{font-size:26px}
   .foot{padding:20px 18px 36px}
+  .prov-card{width:min(370px,86vw)}
+  .imp-label{width:110px}
 }
 </style>
 </head>
 <body>
 <div class="shell">
-
-  <!-- ══ RAIL ══ -->
   <nav class="rail">
     <div class="rail-head">
       <div class="rail-brand">
@@ -264,264 +233,291 @@ a{color:inherit}
       </div>
       <div class="rail-sub">A companion workspace for recruiting decisions. Assumes an applicant tracking system upstream.</div>
     </div>
-
     <div class="rail-section">
       <div class="rail-label">One application, three moments</div>
-
       <div class="rail-item active" data-moment="1">
         <div class="rail-step">01</div>
-        <div class="rail-item-body">
-          <div class="rail-item-title">Candidate Pre-Submit Sandbox</div>
-          <div class="rail-item-meta">Before submit &middot; candidate</div>
-        </div>
+        <div><div class="rail-item-title">Candidate Pre-Submit Sandbox</div><div class="rail-item-meta">Before submit &middot; candidate</div></div>
       </div>
-
       <div class="rail-item" data-moment="2">
         <div class="rail-step">02</div>
-        <div class="rail-item-body">
-          <div class="rail-item-title">Recruiter Decision Support</div>
-          <div class="rail-item-meta">At decision &middot; recruiter</div>
-        </div>
+        <div><div class="rail-item-title">Recruiter Decision Support</div><div class="rail-item-meta">At decision &middot; recruiter</div></div>
       </div>
-
       <div class="rail-item" data-moment="3">
         <div class="rail-step">03</div>
-        <div class="rail-item-body">
-          <div class="rail-item-title">Oversight &amp; Compliance</div>
-          <div class="rail-item-meta">After the fact &middot; reviewer</div>
-        </div>
+        <div><div class="rail-item-title">Oversight &amp; Compliance</div><div class="rail-item-meta">After the fact &middot; reviewer</div></div>
       </div>
     </div>
-
     <div class="rail-foot">
-      <div class="rail-thread">
-        Every view reads the same record.<br>
-        <b>Application #A-4471</b> &middot; Senior Data Analyst
-      </div>
-      <button class="theme-btn" id="themeBtn">
-        <span id="themeIcon">&#9788;</span><span id="themeLabel">Light mode</span>
-      </button>
+      <div class="rail-thread">Every view reads the same record.<br><b id="railApp">Loading</b></div>
+      <button class="theme-btn" id="themeBtn"><span id="themeIcon">&#9788;</span><span id="themeLabel">Light mode</span></button>
     </div>
   </nav>
 
-  <!-- ══ MAIN ══ -->
   <div class="main">
     <div class="topbar">
-      <div class="crumb">
-        <b>TalentPilot V2</b><i>&rsaquo;</i><span id="crumbMoment">Candidate Pre-Submit Sandbox</span>
-      </div>
+      <div class="crumb"><b>TalentPilot V2</b><i>&rsaquo;</i><span id="crumbMoment">Candidate Pre-Submit Sandbox</span></div>
       <div class="topbar-right">
         <span class="badge badge-teal"><span class="dot"></span>Chain of custody</span>
         <span class="badge badge-proto"><span class="dot"></span>Interactive prototype, mock data</span>
       </div>
     </div>
-
-    <div class="canvas">
-
-      <div class="notice">
-        <div class="notice-icon">&#9432;</div>
-        <div class="notice-text">
-          <b>Wireframe pass.</b> Layout and design tokens only. Dashed regions mark where interactive components will go once the structure is approved. Nothing here is wired up yet, and all content is illustrative.
-        </div>
-      </div>
-
-      <!-- ── MOMENT 1 ── -->
-      <section class="moment" data-view="1">
-        <div class="moment-head">
-          <div class="moment-eyebrow">
-            <span class="moment-step">MOMENT 01</span>
-            <span class="moment-lens">Before submit &middot; technical lens</span>
-          </div>
-          <h1 class="moment-title">What the candidate saw</h1>
-          <p class="moment-lede">A candidate can check how the parser actually read their resume <b>before</b> they submit it, and a human sets the weighting before any model runs.</p>
-        </div>
-
-        <div class="grid g-wide">
-          <div class="stack">
-            <div class="panel">
-              <div class="panel-head"><div class="panel-title">Resume intake</div><div class="panel-tag">Upload</div></div>
-              <div class="panel-note">Drop zone plus a formatting checklist showing what parses cleanly and what does not.</div>
-              <div class="ph ph-lg">
-                <div class="ph-label">Upload and formatting checklist</div>
-                <div class="ph-hint">File drop target, parse status per section, plain-language fixes</div>
-              </div>
-            </div>
-
-            <div class="panel">
-              <div class="panel-head"><div class="panel-title">Identified skills</div><div class="panel-tag">Editable</div></div>
-              <div class="panel-note">What the parser extracted, and the candidate's chance to correct it in their own words.</div>
-              <div class="rowlist">
-                <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Extracted skill row</div><div class="rowitem-meta">Confidence, source line, confirm or correct</div></div></div>
-                <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Extracted skill row</div><div class="rowitem-meta">Confidence, source line, confirm or correct</div></div></div>
-                <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Missed or ambiguous term</div><div class="rowitem-meta">Candidate can add what the parser did not catch</div></div></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="stack">
-            <div class="panel">
-              <div class="panel-head"><div class="panel-title">Weight calibration</div><div class="panel-tag">Human above the loop</div></div>
-              <div class="panel-note">Factor weights are set by a person before the model runs. No autonomous evaluation.</div>
-              <div class="ph ph-md">
-                <div class="ph-label">Technical, Growth, Stability sliders</div>
-                <div class="ph-hint">Locked until a human sets them; shows who set them and when</div>
-              </div>
-            </div>
-
-            <div class="panel">
-              <div class="panel-head"><div class="panel-title">Proxy warning</div><div class="panel-tag">Simulated</div></div>
-              <div class="panel-note">Flags when a weighted factor may stand in for a protected characteristic.</div>
-              <div class="ph ph-md ph-accent">
-                <div class="ph-label">Proxy correlation alert</div>
-                <div class="ph-hint">Triggered by the simulated ledger, labeled as simulated on screen</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── MOMENT 2 ── -->
-      <section class="moment" data-view="2" hidden>
-        <div class="moment-head">
-          <div class="moment-eyebrow">
-            <span class="moment-step">MOMENT 02</span>
-            <span class="moment-lens">At decision &middot; interpretive lens</span>
-          </div>
-          <h1 class="moment-title">What the recruiter saw</h1>
-          <p class="moment-lede">One alignment indicator first, detail on demand. Every AI-assisted judgment carries <b>the prompt that produced it</b>, on hover.</p>
-        </div>
-
-        <div class="grid g-wide">
-          <div class="stack">
-            <div class="panel">
-              <div class="panel-head"><div class="panel-title">Alignment overview</div><div class="panel-tag">Overview first</div></div>
-              <div class="panel-note">The high-level read. Deliberately sparse to protect attention.</div>
-              <div class="ph ph-md">
-                <div class="ph-label">Single alignment indicator</div>
-                <div class="ph-hint">One number and one sentence, not a wall of sub-scores</div>
-              </div>
-            </div>
-
-            <div class="panel">
-              <div class="panel-head"><div class="panel-title">Evidence chain</div><div class="panel-tag">Details on demand</div></div>
-              <div class="panel-note">Expands into plain-English reasoning traced to lines in the application.</div>
-              <div class="ph ph-xl">
-                <div class="ph-label">Expandable evidence panel</div>
-                <div class="ph-hint">Collapsed by default; each claim links to the source line that supports it</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="stack">
-            <div class="panel">
-              <div class="panel-head"><div class="panel-title">Prompt provenance</div><div class="panel-tag">On hover</div></div>
-              <div class="panel-note">The prompt that ran, the data it saw, who wrote it, and when. Attached to the judgment, not hidden in an admin screen.</div>
-              <div class="ph ph-lg ph-accent">
-                <div class="ph-label">Hover provenance card</div>
-                <div class="ph-hint">Appears over any AI-assisted value; the pattern shipped on FinOva</div>
-              </div>
-            </div>
-
-            <div class="panel">
-              <div class="panel-head"><div class="panel-title">Calibrators</div><div class="panel-tag">Human in the loop</div></div>
-              <div class="panel-note">Adjusting criteria visibly recalculates against the ledger, so reading stays active.</div>
-              <div class="ph ph-md">
-                <div class="ph-label">Live criteria sliders</div>
-                <div class="ph-hint">Every adjustment writes an entry the reviewer will later see</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── MOMENT 3 ── -->
-      <section class="moment" data-view="3" hidden>
-        <div class="moment-head">
-          <div class="moment-eyebrow">
-            <span class="moment-step">MOMENT 03</span>
-            <span class="moment-lens">After the fact &middot; transformative lens</span>
-          </div>
-          <h1 class="moment-title">What a reviewer can reconstruct</h1>
-          <p class="moment-lede">No rejection leaves the system without a human signature, and <b>every decision above is replayable here</b> in the order it happened.</p>
-        </div>
-
-        <div class="grid g-2">
-          <div class="panel">
-            <div class="panel-head"><div class="panel-title">Escalation queue</div><div class="panel-tag">Human on the loop</div></div>
-            <div class="panel-note">Automated screen-outs route to a person for review and sign-off before anything is sent.</div>
-            <div class="rowlist">
-              <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Queued for human review</div><div class="rowitem-meta">Reason, who it is waiting on, how long</div></div></div>
-              <div class="rowitem"><div class="rowitem-bar"></div><div class="rowitem-body"><div class="rowitem-title">Reviewed and signed off</div><div class="rowitem-meta">Reviewer name, decision, timestamp</div></div></div>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="panel-head"><div class="panel-title">Adverse impact</div><div class="panel-tag">Four-fifths rule</div></div>
-            <div class="panel-note">Selection rates watched for drift across the pipeline.</div>
-            <div class="ph ph-lg">
-              <div class="ph-label">Impact ratio pane</div>
-              <div class="ph-hint">Rate comparison against the four-fifths threshold, with drift over time</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-head"><div class="panel-title">Decision ledger</div><div class="panel-tag">Read only</div></div>
-          <div class="panel-note">The same record, replayed end to end. Weight changes, model runs, overrides, and sign-offs, in order, with the actor on each.</div>
-          <div class="ph ph-xl ph-accent">
-            <div class="ph-label">Event timeline for application #A-4471</div>
-            <div class="ph-hint">Append-only, traceable for an external auditor, exportable</div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-
-    <footer class="foot">
-      TalentPilot V2 is an interactive prototype built to explore human-centered design in recruiting workflows. All candidate records, scores, and events shown are fabricated for demonstration and do not represent any real person or hiring process. It assumes an applicant tracking system upstream; no integration is implied.
-      <br><a href="../">Back to milankhanal.com</a>
-    </footer>
+    <div class="canvas" id="canvas"><div class="loading">Loading the record...</div></div>
+    <footer class="foot" id="foot"></footer>
   </div>
 </div>
 
 <script>
 (function(){
-  var root = document.documentElement;
-  var titles = {
-    '1':'Candidate Pre-Submit Sandbox',
-    '2':'Recruiter Decision Support',
-    '3':'Oversight &amp; Compliance'
+  var D = null, root = document.documentElement;
+  var titles = {'1':'Candidate Pre-Submit Sandbox','2':'Recruiter Decision Support','3':'Oversight &amp; Compliance'};
+  var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+  var time = function(iso){
+    var d = new Date(iso);
+    return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});
   };
 
-  // moment switching
-  var items = document.querySelectorAll('.rail-item');
-  var views = document.querySelectorAll('.moment');
-  var crumb = document.getElementById('crumbMoment');
-  items.forEach(function(it){
+  function provCard(p){
+    if(!p) return '';
+    return '<span class="prov" tabindex="0"><span class="prov-mark">prompt</span>'
+      + '<span class="prov-card">'
+      + '<div class="prov-title">Prompt provenance</div>'
+      + '<div class="prov-row"><span class="prov-key">Prompt</span><span class="prov-val mono">' + esc(p.prompt_name) + '</span></div>'
+      + '<div class="prov-row"><span class="prov-key">Author</span><span class="prov-val">' + esc(p.author) + '</span></div>'
+      + '<div class="prov-row"><span class="prov-key">Written</span><span class="prov-val">' + esc(p.authored) + ', last edited ' + esc(p.last_edited) + '</span></div>'
+      + '<div class="prov-row"><span class="prov-key">Saw</span><span class="prov-val">' + esc(p.inputs) + '</span></div>'
+      + '<div class="prov-prompt">' + esc(p.prompt) + '</div>'
+      + '<div class="prov-note">' + esc(p.note) + '</div>'
+      + '</span></span>';
+  }
+  function findProv(t){ return (D.provenance||[]).filter(function(p){return p.target===t;})[0]; }
+
+  /* ── MOMENT 1 ── */
+  function m1(){
+    var r = D.resume, s = D.skills, w = D.weights, a = D.proxy_alert;
+    var secs = r.sections.map(function(x){
+      var cls = x.parsed==='clean' ? 'bar-green' : (x.parsed==='partial' ? 'bar-amber' : 'bar-red');
+      var pill = x.parsed==='clean' ? 'pill-green' : (x.parsed==='partial' ? 'pill-amber' : 'pill-plain');
+      return '<div class="rowitem"><div class="rowitem-bar ' + cls + '"></div><div class="rowitem-body">'
+        + '<div class="rowitem-title">' + esc(x.label) + ' <span class="pill ' + pill + '">' + esc(x.parsed) + '</span></div>'
+        + (x.issue ? '<div class="rowitem-meta">' + esc(x.issue) + '</div>' : '')
+        + '</div></div>';
+    }).join('');
+
+    var found = s.extracted.map(function(x){
+      return '<div class="rowitem"><div class="rowitem-bar bar-green"></div><div class="rowitem-body">'
+        + '<div class="rowitem-title">' + esc(x.term) + ' <span class="pill pill-plain">' + Math.round(x.confidence*100) + '% confidence</span></div>'
+        + '<div class="rowitem-meta">' + esc(x.source) + '</div></div></div>';
+    }).join('');
+
+    var missed = s.missed.map(function(x){
+      return '<div class="rowitem"><div class="rowitem-bar bar-teal"></div><div class="rowitem-body">'
+        + '<div class="rowitem-title">' + esc(x.term) + ' <span class="pill pill-teal">' + esc(x.status) + '</span></div>'
+        + '<div class="rowitem-meta">' + esc(x.why) + '<br><span class="mono" style="font-size:10px">' + esc(x.source) + '</span></div></div></div>';
+    }).join('');
+
+    var sl = function(name,key,val){
+      return '<div class="slider-row"><div class="slider-top"><span class="slider-name">' + name + '</span>'
+        + '<span class="slider-val" id="v-' + key + '">' + val + '</span></div>'
+        + '<input type="range" min="0" max="60" value="' + val + '" data-w="' + key + '"></div>';
+    };
+
+    return '<div class="moment-head">'
+      + '<div class="moment-eyebrow"><span class="moment-step">MOMENT 01</span><span class="moment-lens">Before submit &middot; technical lens</span></div>'
+      + '<h1 class="moment-title">What the candidate saw</h1>'
+      + '<p class="moment-lede">The candidate checks how the parser actually read their resume <b>before</b> submitting, and a person sets the weighting before any model runs.</p></div>'
+
+      + '<div class="grid g-wide"><div class="stack">'
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Resume intake</div><div class="panel-tag">Parse status</div></div>'
+        + '<div class="panel-note">' + esc(r.narrative) + '</div>'
+        + '<div class="rowlist">' + secs + '</div></div>'
+
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Identified skills</div><div class="panel-tag">Editable</div></div>'
+        + '<div class="panel-note">What the parser found on its own.</div>'
+        + '<div class="rowlist">' + found + '</div>'
+        + '<div class="panel-note" style="margin:16px 0 10px">What it missed, corrected by the candidate.</div>'
+        + '<div class="rowlist">' + missed + '</div>'
+        + '<div class="alert" style="margin-top:14px"><div class="alert-icon">&#9432;</div><div><div class="alert-title">The strongest evidence has no keyword in it</div>'
+        + '<div class="alert-text">' + esc(s.ambiguity_note) + '</div></div></div></div>'
+      + '</div>'
+
+      + '<div class="stack">'
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Weight calibration</div><div class="panel-tag">Human above the loop</div></div>'
+        + '<div class="panel-note">' + esc(w.note) + ' Set by ' + esc(w.set_by) + '.</div>'
+        + sl('Technical','technical',w.final.technical)
+        + sl('Growth','growth',w.final.growth)
+        + sl('Stability','stability',w.final.stability)
+        + '<div id="proxyBox"></div></div>'
+
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">What happened here</div><div class="panel-tag">Recorded</div></div>'
+        + '<div class="panel-note">Stability opened at ' + w.initial.stability + ', which raised the warning above. It was lowered to ' + w.final.stability + ' before the model ran.</div>'
+        + '<div class="alert ok"><div class="alert-icon">&#10003;</div><div><div class="alert-title">Reason recorded</div>'
+        + '<div class="alert-text">' + esc(a.outcome) + ' The reason given was that the gap is caregiving, not performance. That sentence is in the ledger a reviewer reads later.</div></div></div></div>'
+      + '</div></div>';
+  }
+
+  /* ── MOMENT 2 ── */
+  function m2(){
+    var A = D.assessment;
+    var ev = A.evidence.map(function(e,i){
+      return '<div class="ev" data-ev="' + i + '"><div class="ev-head"><span class="ev-claim">' + esc(e.claim) + '</span>'
+        + '<span class="ev-chev">&#9654;</span></div>'
+        + '<div class="ev-body">' + esc(e.support)
+        + '<span class="ev-src">' + esc(e.source) + ' &middot; weight: ' + esc(e.weight) + '</span></div></div>';
+    }).join('');
+
+    return '<div class="moment-head">'
+      + '<div class="moment-eyebrow"><span class="moment-step">MOMENT 02</span><span class="moment-lens">At decision &middot; interpretive lens</span></div>'
+      + '<h1 class="moment-title">What the recruiter saw</h1>'
+      + '<p class="moment-lede">One indicator first, detail on demand. Every AI-assisted judgment carries <b>the prompt that produced it</b>, on hover.</p></div>'
+
+      + '<div class="grid g-wide"><div class="stack">'
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Alignment</div><div class="panel-tag">Overview first</div></div>'
+        + '<div class="panel-note">Deliberately one number and one sentence. Detail is available, not forced.</div>'
+        + '<div class="align-wrap"><div class="align-num">' + A.alignment + '</div><div class="align-side">'
+        + '<div class="align-band">' + esc(A.band) + ' ' + provCard(findProv('alignment')) + '</div>'
+        + '<div class="align-line">' + esc(A.one_line) + ' ' + provCard(findProv('one_line')) + '</div>'
+        + '</div></div><div class="meter"><div class="meter-fill" style="width:' + A.alignment + '%"></div></div></div>'
+
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Evidence chain</div><div class="panel-tag">Details on demand</div></div>'
+        + '<div class="panel-note">Collapsed by default. Each claim traces to a line in the application.</div>'
+        + ev + '</div>'
+      + '</div>'
+
+      + '<div class="stack">'
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Prompt provenance</div><div class="panel-tag">On hover</div></div>'
+        + '<div class="panel-note">Hover any <span class="prov-mark">prompt</span> marker to see what ran, what it saw, who wrote it, and when. Prompts belong to the team, not to whoever typed them.</div>'
+        + '<div class="rowlist">' + (D.provenance||[]).map(function(p){
+            return '<div class="rowitem"><div class="rowitem-bar bar-teal"></div><div class="rowitem-body">'
+              + '<div class="rowitem-title mono" style="font-size:11.5px">' + esc(p.prompt_name) + '</div>'
+              + '<div class="rowitem-meta">' + esc(p.author) + ' &middot; edited ' + esc(p.last_edited) + '</div></div></div>';
+          }).join('') + '</div></div>'
+
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Why this matters</div><div class="panel-tag">Interpretive</div></div>'
+        + '<div class="panel-note" style="margin-bottom:0">The two prompts above were written by different recruiters, weeks apart. Without provenance on the judgment itself, neither would know the other existed, and a hiring manager could not tell which reasoning produced the number they are acting on.</div></div>'
+      + '</div></div>';
+  }
+
+  /* ── MOMENT 3 ── */
+  function m3(){
+    var kindNode = {submit:'',parse:'sys',correct:'human',weights:'human',alert:'alert',assess:'sys',review:'human',knockout:'sys',block:'block',override:'human',seal:'seal'};
+    var tl = D.events.map(function(e){
+      return '<div class="tl-item"><div class="tl-node ' + (kindNode[e.kind]||'') + '"></div>'
+        + '<div class="tl-top"><span class="tl-actor">' + esc(e.actor) + '</span><span class="tl-time">' + time(e.at) + '</span></div>'
+        + '<div class="tl-text">' + esc(e.text) + '</div></div>';
+    }).join('');
+
+    var esc_ = D.escalations.map(function(x){
+      return '<div class="rowitem"><div class="rowitem-bar bar-amber"></div><div class="rowitem-body">'
+        + '<div class="rowitem-title">' + esc(x.reason) + ' <span class="pill pill-green">' + esc(x.resolution) + '</span></div>'
+        + '<div class="rowitem-meta">Waited ' + x.elapsed_hours + ' hours on ' + esc(x.waiting_on) + '. ' + esc(x.note) + '</div></div></div>';
+    }).join('');
+
+    var ai = D.adverse_impact;
+    var bars = ai.groups.map(function(g){
+      var cls = g.state==='below' ? 'below' : (g.state==='reference' ? 'ref' : '');
+      return '<div class="imp-row"><div class="imp-label">' + esc(g.label) + '</div>'
+        + '<div class="imp-track"><div class="imp-bar ' + cls + '" style="width:' + Math.round(g.ratio*100) + '%"></div></div>'
+        + '<div class="imp-val" style="' + (g.state==='below'?'color:var(--red)':'') + '">' + g.ratio.toFixed(2) + '</div></div>';
+    }).join('');
+
+    return '<div class="moment-head">'
+      + '<div class="moment-eyebrow"><span class="moment-step">MOMENT 03</span><span class="moment-lens">After the fact &middot; transformative lens</span></div>'
+      + '<h1 class="moment-title">What a reviewer can reconstruct</h1>'
+      + '<p class="moment-lede">No rejection leaves the system without a human signature, and <b>every step above replays here</b> in the order it happened.</p></div>'
+
+      + '<div class="grid g-2">'
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Escalation queue</div><div class="panel-tag">Human on the loop</div></div>'
+        + '<div class="panel-note">Automated screen-outs route to a person before anything reaches the candidate.</div>'
+        + esc_
+        + '<div class="alert" style="margin-top:12px"><div class="alert-icon">&#9888;</div><div><div class="alert-title">The rule worked. The rule was wrong.</div>'
+        + '<div class="alert-text">A knockout on years-in-title would have rejected this candidate automatically. It measured job titles, not the work described in the application.</div></div></div></div>'
+
+        + '<div class="panel"><div class="panel-head"><div class="panel-title">Adverse impact</div><div class="panel-tag">Four-fifths rule</div></div>'
+        + '<div class="panel-note">' + esc(ai.window) + '. Selection rate ratios against the reference group.</div>'
+        + bars
+        + '<div class="imp-thresh">Threshold is 0.80. ' + esc(ai.note) + '</div>'
+        + '<div class="alert-basis">' + esc(ai.basis) + '</div></div>'
+      + '</div>'
+
+      + '<div class="panel"><div class="panel-head"><div class="panel-title">Decision ledger</div><div class="panel-tag">Read only</div></div>'
+      + '<div class="panel-note">The same record, replayed end to end. Every weight change, model run, override, and sign-off, with the actor on each.</div>'
+      + '<div class="tl">' + tl + '</div></div>';
+  }
+
+  var views = {'1':m1,'2':m2,'3':m3};
+
+  function bind(){
+    // evidence accordions
+    document.querySelectorAll('.ev-head').forEach(function(h){
+      h.addEventListener('click', function(){ h.parentElement.classList.toggle('open'); });
+    });
+    // sliders
+    document.querySelectorAll('input[type=range]').forEach(function(s){
+      s.addEventListener('input', function(){
+        var k = s.getAttribute('data-w');
+        document.getElementById('v-' + k).textContent = s.value;
+        if(k === 'stability') paintProxy(parseInt(s.value,10));
+      });
+    });
+    paintProxy(D.weights.final.stability);
+  }
+
+  function paintProxy(v){
+    var box = document.getElementById('proxyBox');
+    if(!box) return;
+    var a = D.proxy_alert;
+    if(v > a.threshold){
+      box.innerHTML = '<div class="alert"><div class="alert-icon">&#9888;</div><div>'
+        + '<div class="alert-title">Proxy warning: ' + esc(a.factor) + ' at ' + v + '</div>'
+        + '<div class="alert-text">' + esc(a.message) + '</div>'
+        + '<div class="alert-basis">' + esc(a.basis) + '</div></div></div>';
+    } else {
+      box.innerHTML = '<div class="alert ok"><div class="alert-icon">&#10003;</div><div>'
+        + '<div class="alert-title">No proxy warning at ' + v + '</div>'
+        + '<div class="alert-text">' + esc(a.factor) + ' sits at or below the review threshold of ' + a.threshold + '. Raise it above that to see the warning fire.</div></div></div>';
+    }
+  }
+
+  function show(m){
+    document.getElementById('canvas').innerHTML = views[m]();
+    document.getElementById('crumbMoment').innerHTML = titles[m];
+    bind();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  document.querySelectorAll('.rail-item').forEach(function(it){
     it.addEventListener('click', function(){
       var m = it.getAttribute('data-moment');
-      items.forEach(function(x){ x.classList.toggle('active', x === it); });
-      views.forEach(function(v){ v.hidden = v.getAttribute('data-view') !== m; });
-      crumb.innerHTML = titles[m];
-      window.scrollTo({top:0,behavior:'smooth'});
+      document.querySelectorAll('.rail-item').forEach(function(x){ x.classList.toggle('active', x===it); });
+      show(m);
     });
   });
 
-  // theme
-  var btn = document.getElementById('themeBtn');
-  var icon = document.getElementById('themeIcon');
-  var label = document.getElementById('themeLabel');
-  function paint(){
+  var btn = document.getElementById('themeBtn'), icon = document.getElementById('themeIcon'), label = document.getElementById('themeLabel');
+  function paintTheme(){
     var dark = root.getAttribute('data-theme') === 'dark';
     icon.innerHTML = dark ? '&#9788;' : '&#9789;';
     label.textContent = dark ? 'Light mode' : 'Dark mode';
   }
   btn.addEventListener('click', function(){
-    var dark = root.getAttribute('data-theme') === 'dark';
-    root.setAttribute('data-theme', dark ? 'light' : 'dark');
-    paint();
+    root.setAttribute('data-theme', root.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+    paintTheme();
   });
-  paint();
+  paintTheme();
+
+  fetch('ledger.json')
+    .then(function(r){ if(!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function(j){
+      D = j;
+      document.getElementById('railApp').innerHTML = 'Application #' + esc(D.application.id) + '</b> &middot; ' + esc(D.application.role);
+      document.getElementById('foot').innerHTML = esc(D._disclaimer)
+        + ' It assumes an applicant tracking system upstream; no integration is implied.<br><a href="../">Back to milankhanal.com</a>';
+      show('1');
+    })
+    .catch(function(){
+      document.getElementById('canvas').innerHTML = '<div class="loading">This prototype reads its record from <span class="mono">ledger.json</span>, so it needs to be served over http rather than opened as a file. Run <span class="mono">npm run dev</span> in the repo root and open <span class="mono">localhost:8765/talentpilot-v2/</span>.</div>';
+    });
 })();
 </script>
 </body>
