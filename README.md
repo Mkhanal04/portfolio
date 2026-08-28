@@ -1,4 +1,4 @@
-# Pilot Suite
+# Portfolio
 
 Source for [milankhanal.com](https://milankhanal.com) — Milan Khanal's portfolio and applied-AI work.
 
