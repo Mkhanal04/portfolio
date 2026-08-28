@@ -5,8 +5,10 @@ Source for [milankhanal.com](https://milankhanal.com) — Milan Khanal's portfol
 ## What's Here
 
 - **Portfolio** (`index.html`, `content/`) — React 18 SPA. Positioning, timeline, and pointers to the prototypes below.
+- **NewsLens** (`newslens/`) — One story, side by side, across the newsrooms that covered it, with every claim traced back to the sentence it came from. No bias labels, no accuracy verdicts. Research prototype for HCAI 4304 at Texas Tech. [Live](https://milankhanal.com/newslens/) and [documented](./newslens/README.md).
 - **TradePilot** (`tradepilot/`) — Decision intelligence for supply chain. Six views, five AI agents, guided tour.
 - **TalentPilot** (`talentpilot/`) — Decision intelligence for recruiting. Seven views, four AI agents, guided tour.
+- **Writing** (`writing/`) — Long-form pieces on AI delivery and the cost of running AI in production.
 - **API** (`api/`) — Vercel serverless functions. Gemini calls stay server-side; the browser never sees the key.
 
 ## Stack
