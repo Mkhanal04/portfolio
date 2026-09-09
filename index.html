@@ -349,6 +349,7 @@ function Portfolio() {
     const isEngagement = item.type === "engagement";
     const clickable = item.status !== "coming";
     const hasValidation = !!item.validation;
+    const showTags = false; // 2026-09-08: tags read as jargon on cards; detail pages still show them
     const handleClick = () => {
       if (!clickable) return;
       if (isEngagement && item.appUrl) { window.location.href = item.appUrl; }
@@ -356,7 +357,12 @@ function Portfolio() {
     };
     return (
       <div onClick={handleClick} style={{ ...s.card, padding: 0, overflow: "hidden", cursor: clickable ? "pointer" : "default", opacity: item.status === "coming" ? 0.6 : 1, transition: "border-color 0.3s, transform 0.3s", borderLeft: isEngagement ? `3px solid ${c}` : undefined }} onMouseEnter={e => { if (clickable) { e.currentTarget.style.borderColor = t.borderH; e.currentTarget.style.transform = "translateY(-2px)"; } }} onMouseLeave={e => { e.currentTarget.style.borderColor = t.border; e.currentTarget.style.transform = "translateY(0)"; }}>
-        {item.type === "product" && item.status === "live" && (
+        {item.type === "product" && item.status === "live" && item.preview && (
+          <div style={{ height: 160, overflow: "hidden", background: t.bg2, borderBottom: `1px solid ${t.border}` }}>
+            <img src={item.preview} alt={item.previewAlt || `${item.title} screenshot`} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top left", display: "block" }} />
+          </div>
+        )}
+        {item.type === "product" && item.status === "live" && !item.preview && (
           <div style={{ height: 140, background: `linear-gradient(135deg, ${c}08, ${c}15)`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 8, position: "relative", overflow: "hidden" }}>
             <div style={{ width: 44, height: 44, borderRadius: 10, background: `linear-gradient(135deg, ${c}30, ${c}10)`, border: `1px solid ${c}25`, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <span style={{ fontFamily: mono, fontSize: 13, color: c, fontWeight: 600 }}>{item.title.substring(0,2).toUpperCase()}</span>
@@ -385,7 +391,7 @@ function Portfolio() {
             <div style={{ fontSize: 11, fontFamily: mono, color: t.t3, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Prototype in progress</div>
           )}
           <p style={{ fontSize: 14, color: t.t1, lineHeight: 1.6, marginBottom: 16 }}>{item.summary}</p>
-          {item.tags && item.tags.length > 0 && (
+          {showTags && item.tags && item.tags.length > 0 && (
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
               {item.tags.slice(0,4).map(tag => <span key={tag} style={{ fontSize: 11, color: t.t2, background: t.bg2, padding: "3px 8px", borderRadius: 5 }}>{tag}</span>)}
             </div>
@@ -518,7 +524,7 @@ function Portfolio() {
           <div style={{ ...s.narrow, textAlign: "left" }}>
             <R delay={0.00}><span style={s.tLabel}>AI Product Manager & Delivery Lead</span></R>
             <R delay={0.05}><h1 style={{ ...s.tHero, marginBottom: 20 }}>Working Software in Weeks, Not Quarters.</h1></R>
-            <R delay={0.15}><p style={{ ...s.tBody, fontSize: 18, maxWidth: 720, marginBottom: 28 }}>I bridge the gap between executive strategy and technical execution. After 10 years of leading platform delivery at Toyota, Dell, CRC Group, and World Kinect, I now use AI-assisted development to compress the discovery-to-prototype cycle from months to weeks.</p></R>
+            <R delay={0.15}><p style={{ ...s.tBody, fontSize: 18, maxWidth: 720, marginBottom: 28 }}>Ten years of enterprise delivery. Now using AI to ship working prototypes in weeks.</p></R>
             <R delay={0.22}>
               <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: isMobile ? 14 : 24, marginBottom: 32, paddingTop: 14, paddingBottom: 14, borderTop: `1px solid ${t.border}`, borderBottom: `1px solid ${t.border}`, filter: "grayscale(100%)" }}>
                 {["TOYOTA", "DELL", "CRC GROUP", "WORLD KINECT"].map((name, i, arr) => (
@@ -532,6 +538,35 @@ function Portfolio() {
             <R delay={0.28}>
               <a href="mailto:milan.khanal25@gmail.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", background: t.t0, color: t.bg, fontSize: 14, fontWeight: 500, borderRadius: 8, textDecoration: "none", transition: "opacity 0.2s" }} onMouseEnter={e => e.target.style.opacity = "0.9"} onMouseLeave={e => e.target.style.opacity = "1"}>Get in touch {"\u2192"}</a>
             </R>
+          </div>
+        </div>
+      </section>
+      <div style={s.divider} />
+
+      {/* ── THE WORK, FIRST: real screenshots, one click to each app ── */}
+      <section style={{ padding: isMobile ? "8px 20px 40px" : "16px 24px 56px" }}>
+        <div style={s.container}>
+          <R><span style={s.tLabel}>Live prototypes</span></R>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: 16, marginTop: 12 }}>
+            {allWork.filter(w => w.type === "product" && w.status === "live" && w.preview).map((item, i) => (
+              <R key={item.slug} delay={0.06 * i}>
+                <a href={item.appUrl} style={{ display: "block", textDecoration: "none", color: "inherit", borderRadius: 12, overflow: "hidden", border: `1px solid ${t.border}`, background: t.bg1, transition: "border-color 0.2s, transform 0.2s" }} onMouseEnter={e => { e.currentTarget.style.borderColor = t.borderH; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.borderColor = t.border; e.currentTarget.style.transform = "translateY(0)"; }}>
+                  <div style={{ height: 28, background: t.bg3, borderBottom: `1px solid ${t.border}`, display: "flex", alignItems: "center", padding: "0 10px", gap: 5 }}>
+                    {[0, 1, 2].map(d => <div key={d} style={{ width: 7, height: 7, borderRadius: "50%", background: t.t3 }} />)}
+                  </div>
+                  <div style={{ aspectRatio: "16 / 10", overflow: "hidden", background: t.bg2 }}>
+                    <img src={item.preview} alt={item.previewAlt || `${item.title} screenshot`} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top left", display: "block" }} />
+                  </div>
+                  <div style={{ padding: "12px 14px 14px", display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
+                    <div>
+                      <div style={{ fontFamily: font, fontSize: 16, color: t.t0 }}>{item.title}</div>
+                      <div style={{ fontSize: 12.5, color: t.t2, marginTop: 2 }}>{item.previewLine || item.domain}</div>
+                    </div>
+                    <span style={{ fontSize: 12, color: t.blue, fontWeight: 500, whiteSpace: "nowrap" }}>Open {"\u2192"}</span>
+                  </div>
+                </a>
+              </R>
+            ))}
           </div>
         </div>
       </section>
@@ -604,24 +639,6 @@ function Portfolio() {
           <div style={s.divider} />
         </>
       )}
-
-      {/* ── THREE-BUCKET TEASER STRIP ── */}
-      <section style={{ padding: isMobile ? "24px 20px 56px" : "32px 24px 72px" }}>
-        <div style={s.container}>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: 16 }}>
-            {buckets.map((b, i) => (
-              <R key={b.l} delay={0.08 * i}>
-                <a href={b.href} style={{ ...s.card, padding: "24px 24px 20px", display: "block", textDecoration: "none", transition: "border-color 0.2s, transform 0.2s", height: "100%" }} onMouseEnter={e => { e.currentTarget.style.borderColor = t.borderH; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.borderColor = t.border; e.currentTarget.style.transform = "translateY(0)"; }}>
-                  <div style={{ fontFamily: font, fontSize: 22, fontWeight: 500, color: t.t0, marginBottom: 10, letterSpacing: "-0.01em" }}>{b.l}</div>
-                  <p style={{ fontSize: 14.5, color: t.t1, lineHeight: 1.6, marginBottom: 14 }}>{b.body}</p>
-                  <span style={{ fontSize: 13, color: t.blue, fontWeight: 500 }}>Read more {"\u2192"}</span>
-                </a>
-              </R>
-            ))}
-          </div>
-        </div>
-      </section>
-      <div style={s.divider} />
 
       {/* ── QUICK ABOUT STRIP ── */}
       <section style={{ ...s.section, background: t.bg1 }}>
