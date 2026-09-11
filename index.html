@@ -24,7 +24,7 @@
     --bg: #0E1013; --surface: #15181D; --ink: #ECEEF1; --body: #C7CCD3; --muted: #9AA1AB; --rule: #262A31; --rule-strong: #ECEEF1;
     --accent: #7C9BFF; --inverse-bg: #ECEEF1; --inverse-ink: #111318; --inverse-body: #3A3F47; --inverse-muted: #5B6068;
   }
-  body { background: var(--bg); color: var(--ink); font-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.5; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.5; padding-bottom: 96px; }
   a { color: var(--accent); }
   img { max-width: 100%; display: block; }
   *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
@@ -33,7 +33,7 @@
   .wrap { max-width: 1312px; margin: 0 auto; padding: 0 32px; }
 
   .nav { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--rule); }
-  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; flex-wrap: wrap; padding-top: 10px; padding-bottom: 10px; }
   .nav .name { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 20px; font-weight: 600; color: var(--ink); text-decoration: none; }
   .nav .links { display: flex; gap: 28px; font-size: 13px; letter-spacing: 0.10em; text-transform: uppercase; }
   .nav .links a { color: var(--ink); text-decoration: none; }
@@ -41,11 +41,13 @@
   .nav .right { display: flex; gap: 10px; align-items: center; }
   .btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 20px; border-radius: 6px; font-size: 15px; font-weight: 500; text-decoration: none; border: 1px solid var(--rule-strong); color: var(--ink); background: transparent; cursor: pointer; font-family: inherit; }
   .btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  .btn.small { height: 38px; padding: 0 16px; font-size: 14px; }
+  .btn.small { height: 40px; padding: 0 16px; font-size: 15px; }
+  .btn.quiet { border-color: transparent; color: var(--muted); padding: 0 10px; }
+  .btn.quiet:hover { color: var(--ink); text-decoration: underline; }
 
   .hero .wrap { display: grid; grid-template-columns: 1fr 240px; gap: 56px; align-items: center; padding-top: 88px; padding-bottom: 80px; }
-  .hero h1 { font-size: clamp(38px, 5.2vw, 76px); line-height: 1.0; letter-spacing: -0.035em; font-weight: 600; max-width: 1000px; margin: 24px 0; }
-  .hero p { font-size: 20px; color: var(--body); max-width: 740px; }
+  .hero h1 { font-size: clamp(40px, 5vw, 72px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 600; max-width: 1000px; margin: 24px 0; }
+  .hero p { font-size: 22px; color: var(--body); max-width: 740px; }
   .hero .actions { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
   .hero img { width: 240px; height: 286px; object-fit: cover; border-radius: 10px; }
 
@@ -57,19 +59,20 @@
 
   .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .card { display: flex; flex-direction: column; gap: 12px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; }
-  .card img { width: 100%; height: 300px; object-fit: cover; object-position: top; border-radius: 6px; border: 1px solid var(--rule); }
+  .card img { width: 100%; height: 300px; object-fit: cover; object-position: left top; border-radius: 6px; border: 1px solid var(--rule); }
   .card .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .card h3 { font-size: 22px; font-weight: 600; }
   .card p { font-size: 15px; color: var(--body); }
+  .card .mono { font-size: 13px; }
   .card a.more { font-size: 15px; font-weight: 500; text-decoration: none; }
-  .card.inverse { background: var(--inverse-bg); color: var(--inverse-ink); border-color: var(--inverse-bg); padding: 26px; justify-content: space-between; }
+  .card.inverse { background: var(--inverse-bg); color: var(--inverse-ink); border-color: var(--inverse-bg); padding: 16px; justify-content: space-between; }
   .card.inverse .mono { color: var(--inverse-muted); }
-  .card.inverse h3 { font-size: 30px; line-height: 1.1; }
+  .card.inverse h3 { font-size: 22px; line-height: 1.2; }
   .card.inverse p { color: var(--inverse-body); }
   .card.inverse a.more { color: var(--inverse-ink); text-decoration: underline; }
 
-  .about p { font-size: 18px; color: var(--body); max-width: 820px; margin-bottom: 16px; }
-  .timeline { margin-top: 28px; }
+  .about p { font-size: 17px; color: var(--body); max-width: 820px; margin-bottom: 16px; }
+  .timeline { margin-top: 28px; list-style: none; }
   .timeline .r { display: grid; grid-template-columns: 210px 280px 1fr; gap: 20px; padding: 14px 0; border-top: 1px solid var(--rule); font-size: 15px; }
   .timeline .r:last-child { border-bottom: 1px solid var(--rule); }
   .timeline .r b { font-weight: 600; }
@@ -78,18 +81,19 @@
 
   .quote .wrap { padding-top: 0; padding-bottom: 80px; }
   .quote .box { display: grid; grid-template-columns: 1fr 240px; gap: 40px; align-items: center; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 36px 40px; }
-  .quote .box .q { font-size: 26px; line-height: 1.3; }
+  .quote .box .q { font-size: 22px; line-height: 1.35; margin: 0; }
   .quote .box .who { font-size: 15px; color: var(--muted); }
   .quote .box .who b { display: block; color: var(--ink); font-weight: 600; }
 
   .list .r { display: grid; grid-template-columns: 1fr 120px; gap: 20px; padding: 14px 0; border-top: 1px solid var(--rule); align-items: baseline; }
   .list .r:last-child { border-bottom: 1px solid var(--rule); }
-  .list .r a { font-size: 19px; font-weight: 500; color: var(--ink); text-decoration: none; }
+  .list ul { list-style: none; }
+  .list .r a { font-size: 22px; font-weight: 500; color: var(--ink); text-decoration: none; }
   .list .r a:hover { color: var(--accent); }
   .list .r .date { text-align: right; }
 
-  .contact .email { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: clamp(24px, 3.2vw, 44px); font-weight: 500; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; word-break: break-all; }
-  .contact .links { display: flex; gap: 24px; margin-top: 18px; font-size: 16px; flex-wrap: wrap; }
+  .contact .email { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: clamp(24px, 3.2vw, 44px); font-weight: 500; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; overflow-wrap: anywhere; }
+  .contact .links { display: flex; gap: 24px; margin-top: 18px; font-size: 15px; flex-wrap: wrap; }
   .contact .links a { text-decoration: none; }
 
   .foot { border-top: 1px solid var(--rule); }
@@ -98,11 +102,13 @@
 
   @media (max-width: 900px) {
     .wrap { padding: 0 20px; }
-    .nav .links { display: none; }
+    .nav .links { order: 3; width: 100%; gap: 18px; font-size: 12px; padding-bottom: 4px; }
+    .btn.small { height: 44px; }
     .hero .wrap { grid-template-columns: 1fr; gap: 28px; padding-top: 48px; padding-bottom: 48px; }
     .hero img { width: 160px; height: 190px; order: -1; }
     .grid { grid-template-columns: 1fr; }
-    .card img { height: 220px; }
+    .card img { height: auto; aspect-ratio: 16 / 10; }
+    .hero p { font-size: 18px; }
     .two { grid-template-columns: 1fr; gap: 20px; }
     .timeline .r { grid-template-columns: 1fr; gap: 4px; }
     .quote .box { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
@@ -124,7 +130,7 @@
       <a href="#contact">Contact</a>
     </nav>
     <div class="right">
-      <button class="btn small" id="theme-toggle" type="button" aria-label="Switch color theme">Dark</button>
+      <button class="btn small quiet" id="theme-toggle" type="button" aria-pressed="false">Dark</button>
       <a class="btn small" href="mailto:milan.khanal25@gmail.com">Email</a>
     </div>
   </div>
@@ -150,27 +156,9 @@
     <div class="wrap">
       <div class="section-head">
         <h2 class="display">Work</h2>
-        <div class="mono">Three live prototypes and one enterprise program</div>
+        <div class="mono">One enterprise program, three live prototypes</div>
       </div>
       <div class="grid">
-        <article class="card">
-          <a href="/tradepilot"><img src="/content/previews/tradepilot.jpg" alt="TradePilot dashboard" loading="lazy"></a>
-          <div class="row"><h3 class="display">TradePilot</h3><span class="mono">Live · sample data</span></div>
-          <p>Decision intelligence for supply chain. AI agents detect risk, quantify exposure, and recommend, with full transparency.</p>
-          <a class="more" href="/tradepilot">Open the prototype</a>
-        </article>
-        <article class="card">
-          <a href="/talentpilot"><img src="/content/previews/talentpilot.jpg" alt="TalentPilot dashboard" loading="lazy"></a>
-          <div class="row"><h3 class="display">TalentPilot</h3><span class="mono">Live · sample data</span></div>
-          <p>Same architecture, different domain. Decision intelligence for recruiting with native bias monitoring.</p>
-          <a class="more" href="/talentpilot">Open the prototype</a>
-        </article>
-        <article class="card">
-          <a href="/newslens"><img src="/content/previews/newslens.jpg" alt="NewsLens comparison view" loading="lazy"></a>
-          <div class="row"><h3 class="display">NewsLens</h3><span class="mono">Live · graded 95/100</span></div>
-          <p>Staged AI transparency for journalism. Illustrative sample data, not a live extraction.</p>
-          <a class="more" href="/newslens">Open the prototype</a>
-        </article>
         <article class="card inverse">
           <div>
             <div class="mono">Enterprise program · 2025 to now</div>
@@ -178,6 +166,24 @@
             <p>Product strategy and delivery lead. Bypassed offshore UX bottlenecks by acting as the proxy designer, and used AI-assisted development to build a working end-to-end billing prototype during discovery. $2M+ optimization identified.</p>
           </div>
           <a class="more" href="/work/crc-group">Read the case study</a>
+        </article>
+        <article class="card">
+          <a href="/tradepilot" tabindex="-1" aria-hidden="true"><img src="/content/previews/tradepilot.jpg" alt="TradePilot dashboard" loading="lazy"></a>
+          <div class="row"><h3 class="display">TradePilot</h3><span class="mono">Live · sample data</span></div>
+          <p>Decision intelligence for supply chain. AI agents detect risk, quantify exposure, and recommend, with full transparency.</p>
+          <a class="more" href="/tradepilot">Open the prototype</a>
+        </article>
+        <article class="card">
+          <a href="/talentpilot" tabindex="-1" aria-hidden="true"><img src="/content/previews/talentpilot.jpg" alt="TalentPilot dashboard" loading="lazy"></a>
+          <div class="row"><h3 class="display">TalentPilot</h3><span class="mono">Live · sample data</span></div>
+          <p>Same architecture, different domain. Decision intelligence for recruiting with native bias monitoring.</p>
+          <a class="more" href="/talentpilot">Open the prototype</a>
+        </article>
+        <article class="card">
+          <a href="/newslens" tabindex="-1" aria-hidden="true"><img src="/content/previews/newslens.jpg" alt="NewsLens comparison view" loading="lazy"></a>
+          <div class="row"><h3 class="display">NewsLens</h3><span class="mono">Live · sample data</span></div>
+          <p>Staged AI transparency for journalism. Illustrative sample data, not a live extraction.</p>
+          <a class="more" href="/newslens">Open the prototype</a>
         </article>
       </div>
     </div>
@@ -187,15 +193,15 @@
     <div class="wrap two">
       <h2 class="display">About</h2>
       <div>
-        <p>I've spent 10 years bridging executive strategy and technical execution at Toyota, Dell, CRC Group, and World Kinect. Supply chain, healthcare, finance, energy. BA to Product Owner to UX Research to Delivery Lead. I understand the work at every layer.</p>
-        <div class="timeline">
-          <div class="r"><b>CRC Group</b><span class="role">Product strategy and delivery lead</span><span class="what">2025 to now. $800M+ billing transformation; $2M+ optimization identified.</span></div>
-          <div class="r"><b>Toyota North America</b><span class="role">Consultant, supply and demand platforms</span><span class="what">2024. Delivery across two implementation teams.</span></div>
-          <div class="r"><b>Dell Technologies</b><span class="role">Product Owner, ESG analytics</span><span class="what">2022 to 2023. Carbon-footprint report turnaround cut from one to two months to under a day.</span></div>
-          <div class="r"><b>FleetPride</b><span class="role">Sr. Business Analyst, M&amp;A</span><span class="what">2021 to 2022. Post-acquisition ERP standardization across branches.</span></div>
-          <div class="r"><b>World Kinect</b><span class="role">Sr. Business Analyst, digital transformation</span><span class="what">2016 to 2021. Field research and driver ride-alongs; transaction processing 50% faster.</span></div>
-          <div class="r"><b>Texas Tech University</b><span class="role">B.S. Human-Centered AI</span><span class="what">Expected December 2026. 4.0 GPA.</span></div>
-        </div>
+        <p>I've spent 10 years bridging executive strategy and technical execution at Toyota, Dell, CRC Group, and World Kinect. Insurance and benefits, supply chain, energy, and finance. BA to Product Owner to UX Research to Delivery Lead. I understand the work at every layer.</p>
+        <ul class="timeline">
+          <li class="r"><b>CRC Group</b><span class="role">Product strategy and delivery lead</span><span class="what">2025 to now. $800M+ billing transformation; $2M+ optimization identified.</span></li>
+          <li class="r"><b>Toyota North America</b><span class="role">Consultant, supply and demand platforms</span><span class="what">2024. Delivery across two implementation teams.</span></li>
+          <li class="r"><b>Dell Technologies</b><span class="role">Product Owner, ESG analytics</span><span class="what">2022 to 2023. Carbon-footprint report turnaround cut from one to two months to under a day.</span></li>
+          <li class="r"><b>FleetPride</b><span class="role">Sr. Business Analyst, M&amp;A</span><span class="what">2021 to 2022. Post-acquisition ERP standardization across branches.</span></li>
+          <li class="r"><b>World Kinect</b><span class="role">Sr. Business Analyst, digital transformation</span><span class="what">2016 to 2021. Field research and driver ride-alongs; transaction processing 50% faster.</span></li>
+          <li class="r"><b>Texas Tech University</b><span class="role">B.S. Human-Centered AI</span><span class="what">Expected December 2026.</span></li>
+        </ul>
         <p style="margin-top: 22px; font-size: 15px;"><a href="/work">All work</a> · <a href="/about">More about me</a></p>
       </div>
     </div>
@@ -203,19 +209,19 @@
 
   <section class="quote">
     <div class="wrap">
-      <div class="box">
-        <div class="q display">"An outstanding project... demonstrating an intentional focus on trust, transparency, and traceability that truly reflects human-centered leadership."</div>
-        <div class="who"><b>Dr. Melanie Schmitt</b>Texas Tech University, on TradePilot</div>
-      </div>
+      <figure class="box">
+        <blockquote class="q display">"An outstanding project... demonstrating an intentional focus on trust, transparency, and traceability that truly reflects human-centered leadership."</blockquote>
+        <figcaption class="who"><b>Dr. Melanie Schmitt</b>Texas Tech University, on TradePilot</figcaption>
+      </figure>
     </div>
   </section>
 
   <section class="section list" id="writing">
     <div class="wrap two">
       <h2 class="display">Writing</h2>
-      <div>
-        <div class="r"><a href="/writing/ai-cost-crisis">Solving the AI Cost Crisis</a><span class="mono date">Apr 2026</span></div>
-      </div>
+      <ul>
+        <li class="r"><a href="/writing/ai-cost-crisis">Solving the AI Cost Crisis</a><span class="mono date">Apr 2026</span></li>
+      </ul>
     </div>
   </section>
 
@@ -248,7 +254,7 @@
     var saved = null;
     try { saved = localStorage.getItem('theme'); } catch (e) {}
     var mode = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    function apply(m) { root.setAttribute('data-theme', m); btn.textContent = m === 'dark' ? 'Light' : 'Dark'; }
+    function apply(m) { root.setAttribute('data-theme', m); btn.textContent = m === 'dark' ? 'Light' : 'Dark'; btn.setAttribute('aria-pressed', m === 'dark' ? 'true' : 'false'); }
     apply(mode);
     btn.addEventListener('click', function () {
       mode = mode === 'dark' ? 'light' : 'dark';
