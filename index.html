@@ -3,920 +3,267 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Milan Khanal | AI Product Manager & Delivery Lead</title>
+<title>Milan Khanal | Senior Business Analyst, Product Owner</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="description" content="10 years of enterprise delivery across supply chain, healthcare, and finance. Using AI to cut the time from 'let's figure this out' to 'here's the working version' from months down to weeks.">
-<meta property="og:title" content="Milan Khanal · Working prototype in weeks. Not quarters.">
-<meta property="og:description" content="Senior enterprise product and delivery. Prototype-driven discovery, applied in the wild. Based in Dallas.">
+<meta name="description" content="Ten years of enterprise delivery across supply chain, healthcare, and finance. Now using AI to ship working prototypes in weeks.">
+<meta property="og:title" content="Milan Khanal · Senior Business Analyst | Product Owner · Enterprise delivery and AI-enabled platforms">
+<meta property="og:description" content="Ten years of enterprise delivery. Now using AI to ship working prototypes in weeks. Based in Dallas.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://milankhanal.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { -webkit-font-smoothing: antialiased; }
-  a { color: inherit; }
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #63636E; border-radius: 3px; }
-
-  /* ═══ THEME TOKENS (CSS custom properties) ═══ */
   [data-theme="light"] {
-    --bg: #FAFAFA; --bg1: #FFFFFF; --bg2: #F4F4F5; --bg3: #E4E4E7;
-    --border: rgba(0,0,0,0.06); --borderH: rgba(0,0,0,0.12);
-    --t0: #18181B; --t1: #3F3F46; --t2: #71717A; --t3: #D4D4D8;
-    --blue: #2563EB; --blueS: rgba(37,99,235,0.06); --blueB: rgba(37,99,235,0.14);
-    --green: #16A34A; --greenS: rgba(22,163,74,0.06); --greenB: rgba(22,163,74,0.14);
-    --amber: #CA8A04; --amberS: rgba(202,138,4,0.06); --amberB: rgba(202,138,4,0.14);
-    --teal: #0D9488; --tealS: rgba(13,148,136,0.06); --tealB: rgba(13,148,136,0.14);
-    --navBg: rgba(250,250,250,0.88);
+    --bg: #F6F7F9; --surface: #FFFFFF; --ink: #111318; --body: #3A3F47; --muted: #5B6068; --rule: #DDE0E5; --rule-strong: #111318;
+    --accent: #1D4ED8; --inverse-bg: #111318; --inverse-ink: #ECEEF1; --inverse-body: #C7CCD3; --inverse-muted: #9AA1AB;
   }
   [data-theme="dark"] {
-    --bg: #09090B; --bg1: #0F0F12; --bg2: #17171C; --bg3: #1E1E26;
-    --border: rgba(255,255,255,0.06); --borderH: rgba(255,255,255,0.13);
-    /* WCAG AA: t1 ≥10:1, t2 ≥6.4:1 on #09090B */
-    --t0: #F4F4F5; --t1: #D4D4D8; --t2: #A1A1AA; --t3: #3F3F46;
-    --blue: #3B82F6; --blueS: rgba(59,130,246,0.08); --blueB: rgba(59,130,246,0.18);
-    --green: #22C55E; --greenS: rgba(34,197,94,0.08); --greenB: rgba(34,197,94,0.18);
-    --amber: #EAB308; --amberS: rgba(234,179,8,0.08); --amberB: rgba(234,179,8,0.18);
-    --teal: #0D9488; --tealS: rgba(13,148,136,0.08); --tealB: rgba(13,148,136,0.18);
-    --navBg: rgba(9,9,11,0.85);
+    --bg: #0E1013; --surface: #15181D; --ink: #ECEEF1; --body: #C7CCD3; --muted: #9AA1AB; --rule: #262A31; --rule-strong: #ECEEF1;
+    --accent: #7C9BFF; --inverse-bg: #ECEEF1; --inverse-ink: #111318; --inverse-body: #3A3F47; --inverse-muted: #5B6068;
   }
+  body { background: var(--bg); color: var(--ink); font-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.5; padding-bottom: 96px; }
+  a { color: var(--accent); }
+  img { max-width: 100%; display: block; }
+  *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .display { font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.02em; }
+  .mono { font-family: 'IBM Plex Mono', Menlo, Consolas, monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .wrap { max-width: 1312px; margin: 0 auto; padding: 0 32px; }
 
-  /* Keyboard focus indicators — WCAG AA */
-  *:focus-visible {
-    outline: 2px solid #3B82F6;
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
+  .nav { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; flex-wrap: wrap; padding-top: 10px; padding-bottom: 10px; }
+  .nav .name { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 20px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .nav .links { display: flex; gap: 28px; font-size: 13px; letter-spacing: 0.10em; text-transform: uppercase; }
+  .nav .links a { color: var(--ink); text-decoration: none; }
+  .nav .links a:hover { color: var(--accent); }
+  .nav .right { display: flex; gap: 10px; align-items: center; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 20px; border-radius: 6px; font-size: 15px; font-weight: 500; text-decoration: none; border: 1px solid var(--rule-strong); color: var(--ink); background: transparent; cursor: pointer; font-family: inherit; }
+  .btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .btn.small { height: 40px; padding: 0 16px; font-size: 15px; }
+  .btn.quiet { border-color: transparent; color: var(--muted); padding: 0 10px; }
+  .btn.quiet:hover { color: var(--ink); text-decoration: underline; }
 
-  /* Remove focus ring for mouse/touch clicks */
-  *:focus:not(:focus-visible) {
-    outline: none;
-  }
+  .hero .wrap { display: grid; grid-template-columns: 1fr 240px; gap: 56px; align-items: center; padding-top: 88px; padding-bottom: 80px; }
+  .hero h1 { font-size: clamp(40px, 5vw, 72px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 600; max-width: 1000px; margin: 24px 0; }
+  .hero p { font-size: 22px; color: var(--body); max-width: 740px; }
+  .hero .actions { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+  .hero img { width: 240px; height: 286px; object-fit: cover; border-radius: 10px; }
 
-  /* Scroll reveal system — CSS-driven to survive React re-renders */
-  [data-reveal] {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  [data-reveal].revealed {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
+  .section { border-top: 1px solid var(--rule-strong); }
+  .section .wrap { padding-top: 22px; padding-bottom: 80px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+  .section h2 { font-size: 32px; font-weight: 600; }
+  .two { display: grid; grid-template-columns: 280px 1fr; gap: 56px; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .card { display: flex; flex-direction: column; gap: 12px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; }
+  .card img { width: 100%; height: 300px; object-fit: cover; object-position: left top; border-radius: 6px; border: 1px solid var(--rule); }
+  .card .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .card h3 { font-size: 22px; font-weight: 600; }
+  .card p { font-size: 15px; color: var(--body); }
+  .card .mono { font-size: 13px; }
+  .card a.more { font-size: 15px; font-weight: 500; text-decoration: none; }
+  .card.inverse { background: var(--inverse-bg); color: var(--inverse-ink); border-color: var(--inverse-bg); padding: 16px; justify-content: space-between; }
+  .card.inverse .mono { color: var(--inverse-muted); }
+  .card.inverse h3 { font-size: 22px; line-height: 1.2; }
+  .card.inverse p { color: var(--inverse-body); }
+  .card.inverse a.more { color: var(--inverse-ink); text-decoration: underline; }
+
+  .about p { font-size: 17px; color: var(--body); max-width: 820px; margin-bottom: 16px; }
+  .timeline { margin-top: 28px; list-style: none; }
+  .timeline .r { display: grid; grid-template-columns: 210px 280px 1fr; gap: 20px; padding: 14px 0; border-top: 1px solid var(--rule); font-size: 15px; }
+  .timeline .r:last-child { border-bottom: 1px solid var(--rule); }
+  .timeline .r b { font-weight: 600; }
+  .timeline .r .role { color: var(--muted); }
+  .timeline .r .what { color: var(--body); }
+
+  .quote .wrap { padding-top: 0; padding-bottom: 80px; }
+  .quote .box { display: grid; grid-template-columns: 1fr 240px; gap: 40px; align-items: center; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 36px 40px; }
+  .quote .box .q { font-size: 22px; line-height: 1.35; margin: 0; }
+  .quote .box .who { font-size: 15px; color: var(--muted); }
+  .quote .box .who b { display: block; color: var(--ink); font-weight: 600; }
+
+  .list .r { display: grid; grid-template-columns: 1fr 120px; gap: 20px; padding: 14px 0; border-top: 1px solid var(--rule); align-items: baseline; }
+  .list .r:last-child { border-bottom: 1px solid var(--rule); }
+  .list ul { list-style: none; }
+  .list .r a { font-size: 22px; font-weight: 500; color: var(--ink); text-decoration: none; }
+  .list .r a:hover { color: var(--accent); }
+  .list .r .date { text-align: right; }
+
+  .contact .email { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: clamp(24px, 3.2vw, 44px); font-weight: 500; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; overflow-wrap: anywhere; }
+  .contact .links { display: flex; gap: 24px; margin-top: 18px; font-size: 15px; flex-wrap: wrap; }
+  .contact .links a { text-decoration: none; }
+
+  .foot { border-top: 1px solid var(--rule); }
+  .foot .wrap { display: flex; justify-content: space-between; gap: 16px; padding: 20px 32px; font-size: 14px; color: var(--muted); flex-wrap: wrap; }
+  .foot a { color: var(--muted); text-decoration: none; }
+
+  @media (max-width: 900px) {
+    .wrap { padding: 0 20px; }
+    .nav .links { order: 3; width: 100%; gap: 18px; font-size: 12px; padding-bottom: 4px; }
+    .btn.small { height: 44px; }
+    .hero .wrap { grid-template-columns: 1fr; gap: 28px; padding-top: 48px; padding-bottom: 48px; }
+    .hero img { width: 160px; height: 190px; order: -1; }
+    .grid { grid-template-columns: 1fr; }
+    .card img { height: auto; aspect-ratio: 16 / 10; }
+    .hero p { font-size: 18px; }
+    .two { grid-template-columns: 1fr; gap: 20px; }
+    .timeline .r { grid-template-columns: 1fr; gap: 4px; }
+    .quote .box { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
+    .quote .box .q { font-size: 20px; }
+    .section .wrap { padding-bottom: 48px; }
+    .section-head { flex-direction: column; align-items: flex-start; gap: 6px; }
   }
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect } = React;
 
-/*
- ╔═══════════════════════════════════════════════════════════════╗
- ║  MILAN KHANAL | PORTFOLIO (FULL SITE)                        ║
- ║  All pages: Homepage, Work, Product Detail, Case Study       ║
- ║  Design System: LOCKED. Newsreader + Outfit + JetBrains Mono ║
- ╚═══════════════════════════════════════════════════════════════╝
-*/
-
-// CSS custom properties proxy — all color values come from [data-theme] CSS vars.
-// data-theme attribute is set by the theme toggle via useEffect.
-const t = { bg:'var(--bg)', bg1:'var(--bg1)', bg2:'var(--bg2)', bg3:'var(--bg3)', border:'var(--border)', borderH:'var(--borderH)', t0:'var(--t0)', t1:'var(--t1)', t2:'var(--t2)', t3:'var(--t3)', blue:'var(--blue)', blueS:'var(--blueS)', blueB:'var(--blueB)', green:'var(--green)', greenS:'var(--greenS)', greenB:'var(--greenB)', amber:'var(--amber)', amberS:'var(--amberS)', amberB:'var(--amberB)', teal:'var(--teal)', tealS:'var(--tealS)', tealB:'var(--tealB)', navBg:'var(--navBg)' };
-
-
-// --- SCROLL REVEAL ---
-function useReveal(dep) {
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("revealed"); io.unobserve(e.target); } }),
-      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
-    );
-    // Inline viewport check: reveal immediately if already visible, otherwise hide and observe
-    document.querySelectorAll("[data-reveal]").forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        el.classList.add("revealed");
-      } else if (!el.classList.contains("revealed")) {
-        io.observe(el);
-      }
-    });
-    // Safety net: force-reveal any still-hidden elements after 1.5s (fixes mobile where
-    // IntersectionObserver may not fire due to layout differences at narrow viewports)
-    const safetyTimer = setTimeout(() => {
-      document.querySelectorAll("[data-reveal]").forEach((el) => {
-        if (!el.classList.contains("revealed")) {
-          el.classList.add("revealed");
-        }
-      });
-    }, 1500);
-    return () => { io.disconnect(); clearTimeout(safetyTimer); };
-  }, [dep]);
-}
-
-function R({ children, delay = 0, style = {} }) {
-  return <div data-reveal style={{ transition: `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`, ...style }}>{children}</div>;
-}
-
-function SectionHeader({ label, title, body, t, s, narrow }) {
-  const wrapper = narrow ? s.narrow : {};
-  return <div style={wrapper}><span style={s.tLabel}>{label}</span><h2 style={s.tSection}>{title}</h2>{body && <p style={{ ...s.tBody, maxWidth: 640 }}>{body}</p>}</div>;
-}
-
-// --- LIVE APP PREVIEW (iframe embed) ---
-function LiveAppPreview({ appUrl, t, color, isMobile, title }) {
-  const [loaded, setLoaded] = useState(false);
-  const containerH = isMobile ? 260 : 400;
-  // iPad landscape dimensions — readable at thumbnail scale without being too small
-  const iframeW = 1024;
-  const iframeH = 768;
-  // Scale to fit container width (container is ~1080px max, minus padding)
-  const scaleVal = isMobile ? 0.34 : 0.62;
-
-  return (
-    <div style={{ width: "100%", borderRadius: 12, overflow: "hidden", border: `1px solid ${t.border}`, boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
-      {/* Browser chrome bar */}
-      <div style={{ height: 32, background: t.bg3, borderBottom: `1px solid ${t.border}`, display: "flex", alignItems: "center", padding: "0 12px", gap: 6 }}>
-        <div style={{ width: 8, height: 8, borderRadius: "50%", background: t.t3 }} />
-        <div style={{ width: 8, height: 8, borderRadius: "50%", background: t.t3 }} />
-        <div style={{ width: 8, height: 8, borderRadius: "50%", background: t.t3 }} />
-        <div style={{ flex: 1, height: 16, background: t.bg2, borderRadius: 4, marginLeft: 8, marginRight: 8 }} />
-      </div>
-      {/* Iframe container */}
-      <div style={{ width: "100%", height: containerH, position: "relative", overflow: "hidden", background: t.bg2 }}>
-        {/* Loading skeleton */}
-        {!loaded && (
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12, zIndex: 1 }}>
-            <div style={{ width: 40, height: 40, borderRadius: 8, background: `linear-gradient(135deg, ${color}30, ${color}10)`, border: `1px solid ${color}25`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: color, fontWeight: 600 }}>{title ? title.substring(0,2).toUpperCase() : "AP"}</span>
-            </div>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: t.t2, letterSpacing: "0.1em", textTransform: "uppercase" }}>Loading preview...</span>
-          </div>
-        )}
-        {/* Scaled iframe */}
-        <div style={{
-          width: iframeW, height: iframeH,
-          transform: `scale(${scaleVal})`,
-          transformOrigin: "top left",
-          position: "absolute", top: 0, left: isMobile ? -(iframeW * scaleVal * 0.05) : 0,
-          pointerEvents: "none",
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 0.6s ease"
-        }}>
-          <iframe
-            src={appUrl}
-            title={`${title} Preview`}
-            width={iframeW}
-            height={iframeH}
-            style={{ border: "none", borderRadius: 0, background: "#fff" }}
-            loading="lazy"
-            onLoad={() => setLoaded(true)}
-          />
-        </div>
-        {/* Bottom fade gradient */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 60, background: `linear-gradient(transparent, ${t.bg2})`, pointerEvents: "none" }} />
-      </div>
-    </div>
-  );
-}
-
-// --- APP WIREFRAME COMPONENT (used for small thumbnails) ---
-function AppWireframe({ t, color, isMobile, large }) {
-  const h = large ? (isMobile ? 200 : "85%") : 120;
-  const w = large ? "92%" : "75%";
-  const sb = large ? (isMobile ? 36 : 48) : 24;
-  const pad = large ? (isMobile ? 10 : 16) : 8;
-  return (
-    <div style={{ width: w, height: h, background: t.bg1, borderRadius: large ? 10 : 6, border: `1px solid ${t.border}`, display: "flex", overflow: "hidden", boxShadow: large ? `0 4px 24px ${t.border}` : "none" }}>
-      <div style={{ width: sb, borderRight: `1px solid ${t.border}`, padding: `${pad}px 0`, display: "flex", flexDirection: "column", alignItems: "center", gap: large ? 10 : 4, background: large ? t.bg : "transparent" }}>
-        {large && <div style={{ width: isMobile ? 16 : 22, height: isMobile ? 16 : 22, borderRadius: 5, background: `linear-gradient(135deg, ${color}30, ${color}10)`, border: `1px solid ${color}25`, marginBottom: 6 }} />}
-        {[1,2,3,4,5].slice(0, large ? 5 : 3).map(d => (
-          <div key={d} style={{ width: large ? (isMobile ? 14 : 18) : 6, height: large ? (isMobile ? 14 : 18) : 6, borderRadius: large ? 4 : 2, background: d===1 ? `${color}18` : t.bg2, border: d===1 ? `1px solid ${color}25` : "1px solid transparent" }} />
-        ))}
-      </div>
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        {large && (
-          <div style={{ padding: `${isMobile ? 8 : 10}px ${isMobile ? 12 : 16}px`, borderBottom: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-              <div style={{ width: isMobile ? 50 : 80, height: 5, borderRadius: 3, background: t.bg2 }} />
-              <div style={{ width: 1, height: 12, background: t.border }} />
-              <div style={{ width: isMobile ? 30 : 50, height: 5, borderRadius: 3, background: t.bg2 }} />
-            </div>
-            <div style={{ width: isMobile ? 28 : 40, height: isMobile ? 12 : 14, borderRadius: 4, background: `${color}15`, border: `1px solid ${color}20` }} />
-          </div>
-        )}
-        <div style={{ flex: 1, padding: pad, display: "flex", flexDirection: "column", gap: large ? (isMobile ? 8 : 10) : 4 }}>
-          {large && (
-            <div style={{ display: "flex", gap: isMobile ? 6 : 8 }}>
-              {[1,2,3].map(d => (
-                <div key={d} style={{ flex: 1, height: isMobile ? 32 : 44, borderRadius: 6, background: t.bg, border: `1px solid ${t.border}`, padding: `${isMobile ? 4 : 6}px ${isMobile ? 6 : 10}px`, display: "flex", flexDirection: "column", justifyContent: "center", gap: 3 }}>
-                  <div style={{ width: "40%", height: 3, borderRadius: 2, background: t.bg2 }} />
-                  <div style={{ width: "65%", height: 4, borderRadius: 2, background: d===1 ? `${color}20` : t.bg2 }} />
-                </div>
-              ))}
-            </div>
-          )}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: large ? 6 : 4 }}>
-            {[1,2,3].map(d => (
-              <div key={d} style={{ flex: 1, borderRadius: large ? 6 : 3, background: large ? t.bg : (d===1 ? `${color}08` : t.bg2), border: `1px solid ${d===1 ? color+"25" : t.border}`, padding: `${large ? 8 : 4}px ${large ? 12 : 6}px`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                  <div style={{ width: large ? 100 : 40, height: 4, borderRadius: 2, background: t.bg2 }} />
-                  {large && <div style={{ width: 70, height: 3, borderRadius: 2, background: t.bg2 }} />}
-                </div>
-                {large && d===1 && <div style={{ width: 36, height: 14, borderRadius: 3, background: 'var(--greenS)', border: '1px solid var(--greenB)' }} />}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// --- MAIN APP ---
-function Portfolio() {
-  const [mode, setMode] = useState("light");
-  const [page, setPage] = useState("home");
-  const [slug, setSlug] = useState(null);
-  const [filter, setFilter] = useState("all");
-  const [mobileNav, setMobileNav] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [content, setContent] = useState(null);
-  useReveal(page + slug + mode + filter + (content ? '1' : '0') + isMobile);
-
-  // Sync data-theme attribute so CSS custom properties track React mode state
-  useEffect(() => { document.documentElement.setAttribute('data-theme', mode); }, [mode]);
-
-  useEffect(() => { const c = () => setIsMobile(window.innerWidth < 640); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
-  useEffect(() => {
-    Promise.all([
-      fetch('/content/work.json').then(r => r.json()),
-      fetch('/content/writing.json').then(r => r.json())
-    ]).then(([work, writing]) => setContent({ ...work, writing: writing.articles }))
-      .catch(() => console.error('Failed to load content'));
-  }, []);
-
-  // Hash routing — parse on mount
-  useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash === 'work') { setPage('work'); setSlug(null); }
-    else if (hash.startsWith('detail/')) { setPage('detail'); setSlug(hash.split('/')[1]); }
-    else if (['story', 'method', 'thesis', 'contact', 'framework', 'pattern'].includes(hash)) {
-      setPage('home');
-      setTimeout(() => { const el = document.getElementById(hash); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 100);
-    } else { setPage('home'); setSlug(null); }
-  }, []);
-
-  // Hash routing — listen for back/forward
-  useEffect(() => {
-    const onHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (hash === 'work') { setPage('work'); setSlug(null); window.scrollTo(0, 0); }
-      else if (hash.startsWith('detail/')) { setPage('detail'); setSlug(hash.split('/')[1]); window.scrollTo(0, 0); }
-      else if (['story', 'method', 'thesis', 'contact', 'framework', 'pattern'].includes(hash)) {
-        setPage('home'); setSlug(null);
-        setTimeout(() => { const el = document.getElementById(hash); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 100);
-      } else { setPage('home'); setSlug(null); window.scrollTo(0, 0); }
-    };
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
-  }, []);
-
-  if (!content) return (
-    <div style={{ background: t.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ textAlign: 'center', color: t.t2 }}>
-        <div style={{ fontSize: 15, fontFamily: 'Outfit, sans-serif', letterSpacing: '0.04em' }}>Loading...</div>
-      </div>
-    </div>
-  );
-
-  const allWork = content.work;
-  const allWriting = content.writing || [];
-
-  const font = "'Newsreader', Georgia, serif";
-  const sans = "'Outfit', system-ui, sans-serif";
-  const mono = "'JetBrains Mono', monospace";
-  const colorMap = { blue: t.blue, amber: t.amber, green: t.green, teal: t.teal };
-
-  const go = (p, s) => {
-    setPage(p); setSlug(s || null); setMobileNav(false); window.scrollTo(0, 0);
-    if (p === 'home') window.location.hash = '';
-    else if (p === 'detail' && s) window.location.hash = 'detail/' + s;
-    else if (p === 'work') window.location.hash = 'work';
-    else window.location.hash = p;
-  };
-  const active = allWork.find(w => w.slug === slug);
-
-  const s = {
-    page: { background: t.bg, color: t.t0, fontFamily: sans, fontSize: 16, lineHeight: 1.65, minHeight: "100vh", transition: "background 0.4s, color 0.4s" },
-    container: { maxWidth: 1080, margin: "0 auto", padding: "0 24px" },
-    narrow: { maxWidth: 840, margin: "0 auto" },
-    section: { padding: isMobile ? "56px 20px" : "72px 24px" },
-    tHero: { fontFamily: font, fontSize: "clamp(34px, 5vw, 50px)", fontWeight: 400, lineHeight: 1.15, letterSpacing: "-0.02em", color: t.t0 },
-    tSection: { fontFamily: font, fontSize: "clamp(24px, 3.2vw, 32px)", fontWeight: 400, lineHeight: 1.25, letterSpacing: "-0.015em", color: t.t0, marginBottom: 12 },
-    tBody: { fontSize: 16, color: t.t1, lineHeight: 1.65 },
-    tLabel: { fontFamily: mono, fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: t.blue, marginBottom: 12, display: "block" },
-    tCaption: { fontSize: 13, color: t.t2, lineHeight: 1.5 },
-    divider: { maxWidth: 1080, margin: "0 auto", height: 1, background: t.border },
-    card: { background: t.bg1, border: `1px solid ${t.border}`, borderRadius: 12, transition: "border-color 0.3s" },
-  };
-
-  const statusBadge = (status) => {
-    const map = { live: { c: t.green, bg: t.greenS, b: t.greenB, l: "Live", dot: true }, active: { c: t.green, bg: t.greenS, b: t.greenB, l: "Active", dot: true }, building: { c: t.teal, bg: t.tealS, b: t.tealB, l: "Building", dot: true }, completed: { c: t.blue, bg: t.blueS, b: t.blueB, l: "Completed", dot: false }, coming: { c: t.t3, bg: t.bg2, b: t.border, l: "Coming", dot: false } };
-    const v = map[status] || map.coming;
-    return <span style={{ fontFamily: mono, fontSize: 10, color: v.c, background: v.bg, border: `1px solid ${v.b}`, padding: "3px 10px", borderRadius: 12, display: "flex", alignItems: "center", gap: 4 }}>{v.dot && <span style={{ width: 5, height: 5, borderRadius: "50%", background: v.c }} />}{v.l}</span>;
-  };
-
-  const Breadcrumb = ({ items }) => (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 32, flexWrap: "wrap" }}>
-      {items.map((item, i) => (
-        <span key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {i > 0 && <span style={{ color: t.t3, fontSize: 12 }}>/</span>}
-          {item.onClick ? <span onClick={item.onClick} style={{ fontSize: 13, color: t.t2, cursor: "pointer" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>{item.label}</span> : <span style={{ fontSize: 13, color: t.t0, fontWeight: 500 }}>{item.label}</span>}
-        </span>
-      ))}
-    </div>
-  );
-
-
-  const typeLabels = { product: "Product", "case-study": "Case Study", engagement: "Engagement" };
-
-  const WorkCard = ({ item }) => {
-    const c = colorMap[item.color] || t.blue;
-    const isEngagement = item.type === "engagement";
-    const clickable = item.status !== "coming";
-    const hasValidation = !!item.validation;
-    const handleClick = () => {
-      if (!clickable) return;
-      if (isEngagement && item.appUrl) { window.location.href = item.appUrl; }
-      else if (item.detail) { go("detail", item.slug); }
-    };
-    return (
-      <div onClick={handleClick} style={{ ...s.card, padding: 0, overflow: "hidden", cursor: clickable ? "pointer" : "default", opacity: item.status === "coming" ? 0.6 : 1, transition: "border-color 0.3s, transform 0.3s", borderLeft: isEngagement ? `3px solid ${c}` : undefined }} onMouseEnter={e => { if (clickable) { e.currentTarget.style.borderColor = t.borderH; e.currentTarget.style.transform = "translateY(-2px)"; } }} onMouseLeave={e => { e.currentTarget.style.borderColor = t.border; e.currentTarget.style.transform = "translateY(0)"; }}>
-        {item.type === "product" && item.status === "live" && (
-          <div style={{ height: 140, background: `linear-gradient(135deg, ${c}08, ${c}15)`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 8, position: "relative", overflow: "hidden" }}>
-            <div style={{ width: 44, height: 44, borderRadius: 10, background: `linear-gradient(135deg, ${c}30, ${c}10)`, border: `1px solid ${c}25`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontFamily: mono, fontSize: 13, color: c, fontWeight: 600 }}>{item.title.substring(0,2).toUpperCase()}</span>
-            </div>
-            <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: c }}>Live Prototype</span>
-          </div>
-        )}
-        <div style={{ padding: "20px 24px 24px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-            <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: c, background: `${c}12`, border: `1px solid ${c}25`, padding: "3px 8px", borderRadius: 5 }}>{item.domain}</span>
-              <span style={{ fontSize: 11, color: t.t2, background: t.bg2, padding: "3px 8px", borderRadius: 5 }}>{typeLabels[item.type] || item.type}</span>
-            </div>
-            {statusBadge(item.status)}
-          </div>
-          <div style={{ fontFamily: font, fontSize: 18, color: t.t0, marginBottom: isEngagement ? 4 : 8 }}>{item.title}</div>
-          {isEngagement && item.role && (
-            <div style={{ fontSize: 13, color: t.t2, marginBottom: 10 }}>{item.role}</div>
-          )}
-          {isEngagement && item.metrics && item.metrics.length > 0 && (
-            <div style={{ fontFamily: mono, fontSize: 12, color: c, fontWeight: 600, marginBottom: 14, letterSpacing: "0.01em", lineHeight: 1.5 }}>
-              {item.metrics.join("  \u2502  ")}
-            </div>
-          )}
-          {item.status === "coming" && (
-            <div style={{ fontSize: 11, fontFamily: mono, color: t.t3, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Prototype in progress</div>
-          )}
-          <p style={{ fontSize: 14, color: t.t1, lineHeight: 1.6, marginBottom: 16 }}>{item.summary}</p>
-          {item.tags && item.tags.length > 0 && (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-              {item.tags.slice(0,4).map(tag => <span key={tag} style={{ fontSize: 11, color: t.t2, background: t.bg2, padding: "3px 8px", borderRadius: 5 }}>{tag}</span>)}
-            </div>
-          )}
-          {hasValidation && (
-            <div style={{ marginTop: 16, padding: "12px 14px", background: t.blueS, border: `1px solid ${t.blueB}`, borderRadius: 8 }}>
-              <div style={{ fontFamily: mono, fontSize: 10, color: t.blue, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>{item.validation.badge}</div>
-              <p style={{ fontSize: 12.5, color: t.t1, fontStyle: "italic", lineHeight: 1.55, marginBottom: 6 }}>{"\u201C"}{item.validation.quote}{"\u201D"}</p>
-              <div style={{ fontSize: 11, color: t.t2 }}>{"\u2014"} {item.validation.attribution}</div>
-            </div>
-          )}
-          {item.date && !isEngagement && (
-            <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${t.border}`, fontSize: 12, color: t.t3 }}>{new Date(item.date).toLocaleDateString("en-US", { year: "numeric", month: "short" })}</div>
-          )}
-          {item.status === "live" && (
-            <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${t.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: t.t2 }}>{item.stats?.metricLabel || `${item.stats?.agents || 0} agents`}</span>
-              <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                {!item.hideDetails && <span style={{ fontSize: 12, color: t.t1, fontWeight: 500, cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); go("detail", item.slug); }}>View details {"\u2192"}</span>}
-                {item.appUrl && <a href={item.appUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: 12, color: t.blue, fontWeight: 500, textDecoration: "none" }}>Try it {"\u2192"}</a>}
-              </div>
-            </div>
-          )}
-          {isEngagement && (
-            <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${t.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: t.t3 }}>{item.date && new Date(item.date).toLocaleDateString("en-US", { year: "numeric", month: "short" })}</span>
-              <span style={{ fontSize: 12, color: c, fontWeight: 500 }}>Read case study {"\u2192"}</span>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  // === WRITING CARD (editorial, type-only) ===
-  const writingMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const formatWritingDate = (d) => {
-    if (!d) return "";
-    const parts = d.split("-");
-    const idx = parseInt(parts[1], 10) - 1;
-    return (writingMonths[idx] || "") + " " + parts[0];
-  };
-
-  const WritingCard = ({ item }) => (
-    <a href={`/writing/${item.slug}/`} style={{
-      ...s.card, padding: "28px 28px 24px",
-      display: "flex", flexDirection: "column", gap: 14,
-      textDecoration: "none", height: "100%",
-      transition: "border-color 0.2s, transform 0.2s"
-    }}
-    onMouseEnter={e => { e.currentTarget.style.borderColor = t.borderH; e.currentTarget.style.transform = "translateY(-2px)"; }}
-    onMouseLeave={e => { e.currentTarget.style.borderColor = t.border; e.currentTarget.style.transform = "translateY(0)"; }}>
-      <span style={{ fontFamily: mono, fontSize: 11, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", color: t.t2 }}>
-        {formatWritingDate(item.date)} {"\u00b7"} {item.category} {"\u00b7"} {item.readMinutes} min read
-      </span>
-      <h3 style={{ fontFamily: font, fontSize: "clamp(22px, 2.4vw, 28px)", fontWeight: 500, lineHeight: 1.2, letterSpacing: "-0.015em", color: t.t0, margin: 0 }}>
-        {item.title}
-      </h3>
-      <p style={{ fontSize: 15, color: t.t1, lineHeight: 1.6, margin: 0 }}>{item.deck}</p>
-      <span style={{ fontSize: 13, color: t.blue, fontWeight: 500, marginTop: "auto" }}>Read the field notes {"\u2192"}</span>
-    </a>
-  );
-
-  // === NAV ===
-  const navItems = [
-    { l: "Work", href: "/work" },
-    { l: "Lab", href: "/lab" },
-    { l: "Writing", href: "/writing" },
-    { l: "About", href: "/about" },
-  ];
-  const Nav = () => (
-    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: t.navBg, backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderBottom: `1px solid ${t.border}`, height: 56, display: "flex", alignItems: "center", padding: "0 24px", transition: "background 0.4s" }}>
-      <div style={{ maxWidth: 1080, margin: "0 auto", width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <a href="/" style={{ fontWeight: 600, fontSize: 15, letterSpacing: "-0.01em", color: t.t0, textDecoration: "none" }}>Milan Khanal</a>
-        <div style={{ display: isMobile ? "none" : "flex", alignItems: "center", gap: 24 }}>
-          {navItems.map(n => (
-            <a key={n.l} href={n.href} style={{ fontSize: 13, color: t.t2, fontWeight: 400, transition: "color 0.2s", textDecoration: "none" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>{n.l}</a>
-          ))}
-          <a href="mailto:milan.khanal25@gmail.com" style={{ fontSize: 13, fontWeight: 500, padding: "7px 14px", borderRadius: 8, background: t.t0, color: t.bg, textDecoration: "none", transition: "opacity 0.2s" }} onMouseEnter={e => e.target.style.opacity = "0.9"} onMouseLeave={e => e.target.style.opacity = "1"}>Get in touch</a>
-          <button onClick={() => setMode(mode === "dark" ? "light" : "dark")} style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${t.border}`, background: t.bg2, color: t.t1, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>{mode === "dark" ? "\u2600" : "\u263E"}</button>
-        </div>
-        <div style={{ display: isMobile ? "flex" : "none", alignItems: "center", gap: 8 }}>
-          <button onClick={() => setMode(mode === "dark" ? "light" : "dark")} style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${t.border}`, background: t.bg2, color: t.t1, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>{mode === "dark" ? "\u2600" : "\u263E"}</button>
-          <button onClick={() => setMobileNav(!mobileNav)} style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${t.border}`, background: t.bg2, color: t.t1, fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>{mobileNav ? "\u2715" : "\u2630"}</button>
-        </div>
-      </div>
-      {mobileNav && <div style={{ position: "absolute", top: 56, left: 0, right: 0, background: t.bg1, borderBottom: `1px solid ${t.border}`, padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
-        {navItems.map(n => <a key={n.l} href={n.href} style={{ fontSize: 15, color: t.t1, textDecoration: "none" }}>{n.l}</a>)}
-        <a href="mailto:milan.khanal25@gmail.com" style={{ fontSize: 14, fontWeight: 500, padding: "10px 16px", borderRadius: 8, background: t.t0, color: t.bg, textDecoration: "none", textAlign: "center", alignSelf: "flex-start" }}>Get in touch</a>
-      </div>}
+<header class="nav">
+  <div class="wrap">
+    <a class="name" href="/">Milan Khanal</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#writing">Writing</a>
+      <a href="#contact">Contact</a>
     </nav>
-  );
+    <div class="right">
+      <button class="btn small quiet" id="theme-toggle" type="button" aria-pressed="false">Dark</button>
+      <a class="btn small" href="/Milan_Khanal_Resume.pdf">Resume</a>
+      <a class="btn small" href="mailto:milan.khanal25@gmail.com">Email</a>
+    </div>
+  </div>
+</header>
 
-  const Footer = () => (
-    <footer style={{ padding: "28px 24px", borderTop: `1px solid ${t.border}`, marginTop: 40 }}>
-      <div style={{ maxWidth: 1080, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, color: t.t2, flexWrap: "wrap", gap: 12 }}>
-        <span>{"\u00a9"} 2026 <strong style={{ color: t.t0, fontWeight: 500 }}>Milan Khanal</strong> {"\u00b7"} Dallas, TX</span>
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-          <a href="/work" style={{ color: t.t2, textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>Work</a>
-          <a href="/lab" style={{ color: t.t2, textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>Lab</a>
-          <a href="/writing" style={{ color: t.t2, textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>Writing</a>
-          <a href="/about" style={{ color: t.t2, textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>About</a>
-        </div>
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-          <a href="https://www.linkedin.com/in/milankhanal41" target="_blank" rel="noopener noreferrer" style={{ color: t.t2, textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>LinkedIn</a>
-          <a href="mailto:milan.khanal25@gmail.com" style={{ color: t.t2, textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>Email</a>
-          <a href="https://github.com/Mkhanal04/pilot-suite" target="_blank" rel="noopener noreferrer" style={{ color: t.t2, textDecoration: "none", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = t.t0} onMouseLeave={e => e.target.style.color = t.t2}>GitHub</a>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="mono">Senior Business Analyst | Product Owner · Enterprise delivery and AI-enabled platforms · Dallas, TX</div>
+        <h1 class="display">Ten years of enterprise delivery. Now using AI to ship working prototypes in weeks.</h1>
+        <p>Most AI pilots don't fail on technology. They fail because humans don't trust it, can't explain it, or were never part of the design.</p>
+        <div class="actions">
+          <a class="btn primary" href="#work">See the work</a>
+          <a class="btn" href="mailto:milan.khanal25@gmail.com">Email me</a>
         </div>
       </div>
-    </footer>
-  );
-
-  // === PAGE: HOME ===
-  const HomePage = () => {
-    const buckets = [
-      { l: "Work", href: "/work", body: "Ten years of enterprise delivery across supply chain, healthcare, finance, automotive, and ESG." },
-      { l: "Lab", href: "/lab", body: "Things I've built, mostly on the side. Prototypes that proved an idea." },
-      { l: "Writing", href: "/writing", body: "Notes from the field. How discovery, prototyping, and AI delivery actually go in the wild." },
-    ];
-    const ctaLines = [
-      "Hiring for a senior product or delivery role?",
-      "Need a hand compressing a discovery-to-prototype sprint?",
-      "Want to compare notes on enterprise AI delivery?",
-    ];
-    return (
-    <>
-      {/* ── HERO ── */}
-      <section style={{ padding: isMobile ? "96px 20px 40px" : "120px 24px 56px" }}>
-        <div style={s.container}>
-          <div style={{ ...s.narrow, textAlign: "left" }}>
-            <R delay={0.00}><span style={s.tLabel}>AI Product Manager & Delivery Lead</span></R>
-            <R delay={0.05}><h1 style={{ ...s.tHero, marginBottom: 20 }}>Working Software in Weeks, Not Quarters.</h1></R>
-            <R delay={0.15}><p style={{ ...s.tBody, fontSize: 18, maxWidth: 720, marginBottom: 28 }}>I bridge the gap between executive strategy and technical execution. After 10 years of leading platform delivery at Toyota, Dell, CRC Group, and World Kinect, I now use AI-assisted development to compress the discovery-to-prototype cycle from months to weeks.</p></R>
-            <R delay={0.22}>
-              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: isMobile ? 14 : 24, marginBottom: 32, paddingTop: 14, paddingBottom: 14, borderTop: `1px solid ${t.border}`, borderBottom: `1px solid ${t.border}`, filter: "grayscale(100%)" }}>
-                {["TOYOTA", "DELL", "CRC GROUP", "WORLD KINECT"].map((name, i, arr) => (
-                  <React.Fragment key={name}>
-                    <span style={{ fontFamily: mono, fontSize: isMobile ? 11 : 12, fontWeight: 600, letterSpacing: "0.18em", color: t.t2 }}>{name}</span>
-                    {i < arr.length - 1 && <span style={{ color: t.t3, fontSize: 10 }}>{"\u2022"}</span>}
-                  </React.Fragment>
-                ))}
-              </div>
-            </R>
-            <R delay={0.28}>
-              <a href="mailto:milan.khanal25@gmail.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", background: t.t0, color: t.bg, fontSize: 14, fontWeight: 500, borderRadius: 8, textDecoration: "none", transition: "opacity 0.2s" }} onMouseEnter={e => e.target.style.opacity = "0.9"} onMouseLeave={e => e.target.style.opacity = "1"}>Get in touch {"\u2192"}</a>
-            </R>
-          </div>
-        </div>
-      </section>
-      <div style={s.divider} />
-
-      {/* ── TWO-BUCKET WORK PREVIEW ── */}
-      <section style={s.section}>
-        <div style={s.container}>
-          {/* Enterprise Delivery */}
-          <div style={{ marginBottom: 56 }}>
-            <R>
-              <div style={{ marginBottom: 24 }}>
-                <span style={s.tLabel}>Enterprise Delivery</span>
-                <h2 style={{ ...s.tSection, marginBottom: 6 }}>Operator Track Record</h2>
-                <p style={{ ...s.tBody, maxWidth: 640, color: t.t2 }}>Ten years shipping platforms at CRC Group, World Kinect, Dell, and Toyota.</p>
-              </div>
-            </R>
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
-              {allWork.filter(w => w.type === "engagement").map(item => (
-                <R key={item.slug}><WorkCard item={item} /></R>
-              ))}
-            </div>
-          </div>
-
-          {/* Prototype Lab */}
-          <div>
-            <R>
-              <div style={{ marginBottom: 24 }}>
-                <span style={s.tLabel}>Prototype Lab</span>
-                <h2 style={{ ...s.tSection, marginBottom: 6 }}>Applied AI & HCAI</h2>
-                <p style={{ ...s.tBody, maxWidth: 640, color: t.t2 }}>Live prototypes that validate architecture patterns across industries.</p>
-              </div>
-            </R>
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
-              {allWork.filter(w => w.type === "product" && w.status !== "coming").map(item => (
-                <R key={item.slug}><WorkCard item={item} /></R>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginTop: 40, textAlign: "center" }}>
-            <a href="/work" onClick={(e) => { e.preventDefault(); go("work"); }} style={{ fontSize: 14, color: t.blue, fontWeight: 500, textDecoration: "none", borderBottom: `1px solid ${t.blue}`, paddingBottom: 2 }}>View all work {"\u2192"}</a>
-          </div>
-        </div>
-      </section>
-      <div style={s.divider} />
-
-      {/* ── FIELD NOTES (FEATURED WRITING) ── */}
-      {allWriting.filter(w => w.featured && w.status === 'live').length > 0 && (
-        <>
-          <section style={s.section}>
-            <div style={s.container}>
-              <R>
-                <div style={{ marginBottom: 24 }}>
-                  <span style={s.tLabel}>Field Notes {"\u00b7"} Writing</span>
-                  <h2 style={{ ...s.tSection, marginBottom: 6 }}>Recent thinking</h2>
-                  <p style={{ ...s.tBody, maxWidth: 640, color: t.t2 }}>Notes from the work {"\u2014"} enterprise AI delivery, prototyping, and what actually holds up in production.</p>
-                </div>
-              </R>
-              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
-                {allWriting.filter(w => w.featured && w.status === 'live').map(item => (
-                  <R key={item.slug}><WritingCard item={item} /></R>
-                ))}
-              </div>
-              <div style={{ marginTop: 32, textAlign: "center" }}>
-                <a href="/writing" style={{ fontSize: 14, color: t.blue, fontWeight: 500, textDecoration: "none", borderBottom: `1px solid ${t.blue}`, paddingBottom: 2 }}>View all writing {"\u2192"}</a>
-              </div>
-            </div>
-          </section>
-          <div style={s.divider} />
-        </>
-      )}
-
-      {/* ── THREE-BUCKET TEASER STRIP ── */}
-      <section style={{ padding: isMobile ? "24px 20px 56px" : "32px 24px 72px" }}>
-        <div style={s.container}>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: 16 }}>
-            {buckets.map((b, i) => (
-              <R key={b.l} delay={0.08 * i}>
-                <a href={b.href} style={{ ...s.card, padding: "24px 24px 20px", display: "block", textDecoration: "none", transition: "border-color 0.2s, transform 0.2s", height: "100%" }} onMouseEnter={e => { e.currentTarget.style.borderColor = t.borderH; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.borderColor = t.border; e.currentTarget.style.transform = "translateY(0)"; }}>
-                  <div style={{ fontFamily: font, fontSize: 22, fontWeight: 500, color: t.t0, marginBottom: 10, letterSpacing: "-0.01em" }}>{b.l}</div>
-                  <p style={{ fontSize: 14.5, color: t.t1, lineHeight: 1.6, marginBottom: 14 }}>{b.body}</p>
-                  <span style={{ fontSize: 13, color: t.blue, fontWeight: 500 }}>Read more {"\u2192"}</span>
-                </a>
-              </R>
-            ))}
-          </div>
-        </div>
-      </section>
-      <div style={s.divider} />
-
-      {/* ── QUICK ABOUT STRIP ── */}
-      <section style={{ ...s.section, background: t.bg1 }}>
-        <div style={s.container}>
-          <div style={s.narrow}>
-            <R><span style={s.tLabel}>About</span></R>
-            <R delay={0.05}>
-              <p style={{ ...s.tBody, fontSize: 17, lineHeight: 1.7, marginBottom: 16, maxWidth: 720 }}>
-                I've spent 10 years bridging executive strategy and technical execution {"\u2014"} at Toyota, Dell, CRC Group, and World Kinect. Supply chain, healthcare, finance, energy. BA {"\u2192"} Product Owner {"\u2192"} UX Research {"\u2192"} Delivery Lead. I understand the work at every layer.
-              </p>
-              <p style={{ ...s.tBody, fontSize: 17, lineHeight: 1.7, marginBottom: 16, maxWidth: 720 }}>
-                Most AI pilots don't fail on technology. They fail because humans don't trust it, can't explain it, or were never part of the design. I went back to school (Texas Tech, B.S. Human-Centered AI, Dec 2026) to study this specifically, and I've been building prototypes that make those trust and adoption problems concrete.
-              </p>
-              <p style={{ ...s.tBody, fontSize: 17, lineHeight: 1.7, marginBottom: 20, maxWidth: 720 }}>
-                Enterprise teams with AI budget and ambiguity about how to turn it into something people actually use.
-              </p>
-            </R>
-            <R delay={0.1}><a href="/about" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, color: t.blue, fontWeight: 500, textDecoration: "none" }}>More about me {"\u2192"}</a></R>
-          </div>
-        </div>
-      </section>
-      <div style={s.divider} />
-
-      {/* ── HYBRID CTA BLOCK ── */}
-      <section style={s.section}>
-        <div style={s.container}>
-          <div style={s.narrow}>
-            <R><span style={s.tLabel}>Get in touch</span></R>
-            <R delay={0.05}><h2 style={{ ...s.tSection, marginBottom: 28 }}>Any of these sound like you?</h2></R>
-            <R delay={0.1}>
-              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 32px", display: "flex", flexDirection: "column", gap: 12 }}>
-                {ctaLines.map((line, i) => (
-                  <li key={i} style={{ fontSize: 16, color: t.t1, lineHeight: 1.6, paddingLeft: 24, position: "relative" }}>
-                    <span style={{ position: "absolute", left: 0, color: t.blue, fontFamily: mono, fontSize: 14 }}>{"\u2192"}</span>
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </R>
-            <R delay={0.15}>
-              <a href="mailto:milan.khanal25@gmail.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", background: t.t0, color: t.bg, fontSize: 14, fontWeight: 500, borderRadius: 8, textDecoration: "none", transition: "opacity 0.2s" }} onMouseEnter={e => e.target.style.opacity = "0.9"} onMouseLeave={e => e.target.style.opacity = "1"}>Get in touch {"\u2192"}</a>
-            </R>
-          </div>
-        </div>
-      </section>
-    </>
-  ); };
-
-  // === PAGE: WORK LISTING ===
-  const WorkPage = () => {
-    const engagements = allWork.filter(w => w.type === "engagement" && w.status !== "coming");
-    const products = allWork.filter(w => w.type === "product" && w.status !== "coming");
-    const gridStyle = { display: "grid", gridTemplateColumns: `repeat(auto-fill, minmax(${isMobile ? "280px" : "340px"}, 1fr))`, gap: 16 };
-    return (
-      <section style={{ padding: "120px 24px 80px" }}><div style={s.container}>
-        <Breadcrumb items={[{ label: "Home", onClick: () => go("home") }, { label: "Work" }]} />
-        <span style={s.tLabel}>The Work</span>
-        <h1 style={{ ...s.tSection, fontSize: "clamp(28px, 4vw, 40px)", marginBottom: 8 }}>Operator track record and applied AI prototypes.</h1>
-        <p style={{ ...s.tBody, marginBottom: 48, maxWidth: 640 }}>Ten years of enterprise delivery, and the applied AI prototypes that came out of it. Grouped by what they prove.</p>
-
-        {/* Enterprise Delivery */}
-        {engagements.length > 0 && (
-          <div style={{ marginBottom: 56 }}>
-            <div style={{ marginBottom: 20 }}>
-              <span style={s.tLabel}>Enterprise Delivery</span>
-              <h2 style={{ ...s.tSection, marginBottom: 4, fontSize: "clamp(22px, 2.6vw, 28px)" }}>Operator Track Record</h2>
-            </div>
-            <div style={gridStyle}>
-              {engagements.map(item => <R key={item.slug}><WorkCard item={item} /></R>)}
-            </div>
-          </div>
-        )}
-
-        {/* Prototype Lab */}
-        {products.length > 0 && (
-          <div>
-            <div style={{ marginBottom: 20 }}>
-              <span style={s.tLabel}>Prototype Lab</span>
-              <h2 style={{ ...s.tSection, marginBottom: 4, fontSize: "clamp(22px, 2.6vw, 28px)" }}>Applied AI & HCAI</h2>
-            </div>
-            <div style={gridStyle}>
-              {products.map(item => <R key={item.slug}><WorkCard item={item} /></R>)}
-            </div>
-          </div>
-        )}
-      </div></section>
-    );
-  };
-
-  // === PAGE: PRODUCT DETAIL ===
-  const ProductPage = ({ item }) => {
-    const c = colorMap[item.color];
-    const detail = item.detail;
-    const layerColorMap = { blue: t.blue, amber: t.amber, green: t.green, teal: t.teal, purple: t.blue };
-
-    // Fallback layout if no detail object
-    if (!detail) {
-      return (<>
-        <section style={{ padding: "120px 24px 0" }}><div style={s.container}><Breadcrumb items={[{ label: "Home", onClick: () => go("home") }, { label: "Work", onClick: () => go("work") }, { label: item.title }]} /></div></section>
-        <section style={{ padding: "0 24px 80px" }}><div style={s.narrow}>
-          <R><div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 20, flexWrap: "wrap" }}>
-            <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: c, background: `${c}12`, border: `1px solid ${c}25`, padding: "4px 10px", borderRadius: 6 }}>{item.domain}</span>
-            {statusBadge(item.status)}
-          </div></R>
-          <R delay={0.05}><h1 style={{ fontFamily: font, fontSize: "clamp(32px, 5vw, 44px)", fontWeight: 400, lineHeight: 1.15, letterSpacing: "-0.02em", color: t.t0, marginBottom: 16 }}>{item.title}</h1></R>
-          <R delay={0.1}><p style={{ ...s.tBody, fontSize: 18, marginBottom: 32 }}>{item.summary}</p></R>
-          {item.appUrl && <R delay={0.15}><a href={item.appUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", background: c, color: "#fff", fontSize: 15, fontWeight: 500, borderRadius: 8, textDecoration: "none" }}>Try {item.title} {"\u2192"}</a></R>}
-        </div></section>
-      </>);
-    }
-
-    return (<>
-      {/* ── BREADCRUMB ── */}
-      <section style={{ padding: "120px 24px 0" }}><div style={s.container}><Breadcrumb items={[{ label: "Home", onClick: () => go("home") }, { label: "Work", onClick: () => go("work") }, { label: item.title }]} /></div></section>
-
-      {/* ── SECTION 1: HERO STATEMENT ── */}
-      <section style={{ padding: "0 24px 80px" }}><div style={s.narrow}>
-        <R><div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 20, flexWrap: "wrap" }}>
-          <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: c, background: `${c}12`, border: `1px solid ${c}25`, padding: "4px 10px", borderRadius: 6 }}>{item.domain}</span>
-          {statusBadge(item.status)}
-        </div></R>
-        <R delay={0.05}><h1 style={{ ...s.tSection, fontSize: "clamp(28px, 4vw, 40px)", marginBottom: 20 }}>{item.title}</h1></R>
-        <R delay={0.1}><p style={{ ...s.tBody, maxWidth: 640, marginBottom: 32 }}>{detail.heroStatement}</p></R>
-        <R delay={0.15}><div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-          {item.appUrl && <a href={item.appUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", background: t.blue, color: "#fff", fontSize: 14, fontWeight: 500, borderRadius: 8, textDecoration: "none" }}>Explore {item.title} {"\u2192"}</a>}
-          <a href="https://calendly.com/milan-khanal25/new-meeting" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: t.t1, textDecoration: "none", borderBottom: `1px solid ${t.border}`, paddingBottom: 1, transition: "color 0.2s, border-color 0.2s" }} onMouseEnter={e => { e.target.style.color = t.blue; e.target.style.borderColor = t.blue; }} onMouseLeave={e => { e.target.style.color = t.t1; e.target.style.borderColor = t.border; }}>Or book a 30-minute walkthrough</a>
-        </div></R>
-      </div></section>
-      <div style={s.divider} />
-
-      {/* ── SECTION 2: ARCHITECTURE SNAPSHOT ── */}
-      {detail.architectureSnapshot && <><section style={s.section}><div style={s.container}>
-        <R><span style={s.tLabel}>Architecture {"\u00b7"} 10-80-10 Framework</span><h2 style={{ ...s.tSection, marginBottom: 24 }}>What's under the hood.</h2></R>
-        <R delay={0.1}><div style={{ ...s.card, padding: 0, overflow: "hidden" }}>
-          {detail.architectureSnapshot.layers.map((layer, i) => {
-            const lc = layerColorMap[layer.color] || t.blue;
-            return (
-              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 16, padding: 16, borderBottom: i < detail.architectureSnapshot.layers.length - 1 ? `1px solid ${t.border}` : "none", borderLeft: `4px solid ${lc}` }}>
-                <div style={{ minWidth: isMobile ? 120 : 200, flexShrink: 0 }}>
-                  <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 600, color: t.t0 }}>{layer.name}</span>
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {layer.items.map(item => <span key={item} style={{ fontSize: 11, color: t.t2, background: t.bg2, padding: "3px 10px", borderRadius: 5 }}>{item}</span>)}
-                </div>
-              </div>
-            );
-          })}
-        </div></R>
-        {detail.architectureSnapshot.framework && <R delay={0.15}><p style={{ fontSize: 14, color: t.t1, fontStyle: "italic", padding: 16, background: t.bg1, borderRadius: 8, marginTop: 16, border: `1px solid ${t.border}` }}>{detail.architectureSnapshot.framework}</p></R>}
-      </div></section>
-      <div style={s.divider} /></>}
-
-      {/* ── DIFFERENTIATOR CALLOUT ── */}
-      {detail.differentiator && (
-        <section style={{ padding: "0 24px 48px" }}>
-          <div style={s.narrow}>
-            <R>
-              <div style={{ padding: "24px 28px", background: t.blueS, border: `1px solid ${t.blueB}`, borderRadius: 12, borderLeft: `3px solid ${t.blue}` }}>
-                <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: t.blue, display: "block", marginBottom: 8 }}>{detail.differentiator.label}</span>
-                <p style={{ fontSize: 15, color: t.t0, lineHeight: 1.65, margin: 0 }}>{detail.differentiator.text}</p>
-              </div>
-            </R>
-          </div>
-        </section>
-      )}
-
-      {/* ── SECTION 3: PATTERN TRANSFER ── */}
-      {detail.patternTransfer && <><section style={s.section}><div style={s.container}>
-        <R><span style={s.tLabel}>Pattern Transfer</span><h2 style={{ ...s.tSection, marginBottom: 16 }}>Same architecture. Different domain.</h2>
-        <p style={{ ...s.tBody, marginBottom: 24, maxWidth: 640 }}>{detail.patternTransfer.text}</p></R>
-        <R delay={0.1}><div style={{ ...s.card, padding: 0, overflow: "hidden" }}>
-          {/* Header row */}
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "140px 1fr 1fr", borderBottom: `1px solid ${t.border}` }}>
-            <div style={{ padding: "10px 16px", fontFamily: mono, fontSize: 11, color: t.t2, textTransform: "uppercase", letterSpacing: "0.08em" }}></div>
-            <div style={{ padding: "10px 16px", fontFamily: mono, fontSize: 11, color: t.t2, textTransform: "uppercase", letterSpacing: "0.08em", borderLeft: `1px solid ${t.border}` }}>{item.title}</div>
-            <div style={{ padding: "10px 16px", fontFamily: mono, fontSize: 11, color: t.t2, textTransform: "uppercase", letterSpacing: "0.08em", borderLeft: `1px solid ${t.border}` }}>{allWork.find(w => w.slug === detail.patternTransfer.siblingSlug)?.title || detail.patternTransfer.siblingSlug}</div>
-          </div>
-          {/* Body row */}
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "140px 1fr 1fr" }}>
-            <div style={{ padding: "14px 16px", fontFamily: mono, fontSize: 11, color: t.t2, textTransform: "uppercase", letterSpacing: "0.08em" }}>{detail.patternTransfer.comparisonRow.dimension}</div>
-            <div style={{ padding: "14px 16px", fontSize: 14, color: t.t1, lineHeight: 1.5, borderLeft: `1px solid ${t.border}` }}>{detail.patternTransfer.comparisonRow.thisProduct}</div>
-            <div style={{ padding: "14px 16px", fontSize: 14, color: t.t1, lineHeight: 1.5, borderLeft: `1px solid ${t.border}` }}>{detail.patternTransfer.comparisonRow.sibling}</div>
-          </div>
-        </div></R>
-        <R delay={0.15}><span onClick={() => go("detail", detail.patternTransfer.siblingSlug)} style={{ display: "inline-block", marginTop: 16, fontSize: 13, color: t.blue, fontWeight: 500, cursor: "pointer" }}>See {allWork.find(w => w.slug === detail.patternTransfer.siblingSlug)?.title || "sibling product"} {"\u2192"}</span></R>
-      </div></section>
-      <div style={s.divider} /></>}
-
-      {/* ── SECTION 4: KEY METRICS ── */}
-      {detail.keyMetrics && <><section style={s.section}><div style={s.container}>
-        <R><span style={s.tLabel}>Key Metrics</span><h2 style={{ ...s.tSection, marginBottom: 24 }}>By the numbers.</h2></R>
-        <R delay={0.05}><div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 16, marginBottom: detail.caseStudy ? 48 : 0 }}>
-          {detail.keyMetrics.map((m, i) => (
-            <div key={i} style={{ ...s.card, padding: "24px 20px", textAlign: "center" }}>
-              <span style={{ fontFamily: font, fontSize: 32, color: t.t0, display: "block", marginBottom: 8 }}>{m.value}</span>
-              <span style={{ fontSize: 13, color: t.t2, lineHeight: 1.4 }}>{m.label}</span>
-            </div>
-          ))}
-        </div></R>
-
-        {/* Case Study */}
-        {detail.caseStudy && <>
-          <div style={{ height: 1, background: t.border, margin: "0 0 48px 0" }} />
-          <div style={s.narrow}>
-            <R><span style={s.tLabel}>Case Study</span><h2 style={{ ...s.tSection, marginBottom: 12 }}>{detail.caseStudy.title}</h2>
-            <p style={{ fontSize: 16, color: t.t1, fontStyle: "italic", marginBottom: 40, lineHeight: 1.6 }}>{detail.caseStudy.subtitle}</p></R>
-            {detail.caseStudy.sections.map((sec, i) => (
-              <R key={i} delay={0.05 * i}>
-                <h3 style={{ fontFamily: font, fontSize: 20, fontWeight: 400, color: t.t0, marginTop: i === 0 ? 0 : 40, marginBottom: 12 }}>{sec.heading}</h3>
-                {sec.body.split('\n\n').map((para, j) => (
-                  <p key={j} style={{ ...s.tBody, lineHeight: 1.7, marginBottom: 16 }}>{para}</p>
-                ))}
-              </R>
-            ))}
-          </div>
-        </>}
-      </div></section>
-      <div style={s.divider} /></>}
-
-      {/* ── SCENARIOS ── */}
-      {detail.scenarios && (
-        <><section style={s.section}>
-          <div style={s.narrow}>
-            <R>
-              <span style={s.tLabel}>{detail.scenarios.heading}</span>
-              <p style={{ ...s.tBody, marginBottom: 32 }}>{detail.scenarios.intro}</p>
-            </R>
-            {detail.scenarios.items.map((scenario, i) => (
-              <R key={i} delay={i * 0.08}>
-                <div style={{ marginBottom: 24, padding: "24px 28px", background: t.bg1, border: `1px solid ${t.border}`, borderRadius: 12 }}>
-                  <h4 style={{ fontSize: 16, fontWeight: 600, color: t.t0, marginBottom: 10 }}>{scenario.title}</h4>
-                  <p style={{ fontSize: 15, color: t.t1, lineHeight: 1.65 }}>{scenario.body}</p>
-                </div>
-              </R>
-            ))}
-          </div>
-        </section>
-        <div style={s.divider} /></>
-      )}
-
-      {/* ── SECTION 5: CTA ── */}
-      <section style={{ ...s.section, background: t.bg1 }}><div style={{ ...s.narrow, textAlign: "center" }}>
-        <R><h2 style={{ ...s.tSection, marginBottom: 24 }}>Ready to see it live?</h2>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-          {item.appUrl && <a href={item.appUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", background: t.blue, color: "#fff", fontSize: 14, fontWeight: 500, borderRadius: 8, textDecoration: "none" }}>Explore {item.title} {"\u2192"}</a>}
-          <a href="https://calendly.com/milan-khanal25/new-meeting" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: t.t1, textDecoration: "none", borderBottom: `1px solid ${t.border}`, paddingBottom: 1, transition: "color 0.2s, border-color 0.2s" }} onMouseEnter={e => { e.target.style.color = t.blue; e.target.style.borderColor = t.blue; }} onMouseLeave={e => { e.target.style.color = t.t1; e.target.style.borderColor = t.border; }}>Or book a 30-minute walkthrough</a>
-        </div>
-        <div style={{ marginTop: 32 }}>
-          <span onClick={() => go("work")} style={{ fontSize: 13, color: t.t1, cursor: "pointer" }}>{"\u2190"} Back to all work</span>
-        </div></R>
-      </div></section>
-    </>);
-  };
-
-  // === PAGE: CASE STUDY ===
-  const CaseStudyPage = ({ item }) => {
-    const c = colorMap[item.color];
-    const sections = [{ label: "Context", body: item.context }, { label: "The Problem", body: item.problem }, { label: "The Approach", body: item.approach }, { label: "The Outcome", body: item.outcome }, { label: "What I Learned", body: item.learnings }].filter(s => s.body);
-    return (<>
-      <section style={{ padding: "120px 24px 0" }}><div style={s.container}><Breadcrumb items={[{ label: "Home", onClick: () => go("home") }, { label: "Work", onClick: () => go("work") }, { label: item.title }]} /></div></section>
-      <section style={{ padding: "0 24px 60px" }}><div style={s.narrow}>
-        <R><div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 20, flexWrap: "wrap" }}>
-          <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: c, background: `${c}12`, border: `1px solid ${c}25`, padding: "4px 10px", borderRadius: 6 }}>{item.domain}</span>
-          <span style={{ fontSize: 11, color: t.t2, background: t.bg2, padding: "3px 8px", borderRadius: 5 }}>Case Study</span>
-          {item.date && <span style={{ fontSize: 12, color: t.t3 }}>{new Date(item.date).toLocaleDateString("en-US", { year: "numeric", month: "long" })}</span>}
-        </div></R>
-        <R delay={0.05}><h1 style={{ fontFamily: font, fontSize: "clamp(32px, 5vw, 44px)", fontWeight: 400, lineHeight: 1.15, letterSpacing: "-0.02em", color: t.t0, marginBottom: 16 }}>{item.title}</h1></R>
-        <R delay={0.1}><p style={{ ...s.tBody, fontSize: 18 }}>{item.summary}</p></R>
-      </div></section>
-      <div style={s.divider} />
-      {sections.map((sec, i) => <div key={sec.label}><section style={{ padding: "64px 24px" }}><div style={s.narrow}><R><span style={{ ...s.tLabel, color: i === sections.length - 1 ? t.green : t.blue }}>{sec.label}</span><p style={s.tBody}>{sec.body}</p></R></div></section>{i < sections.length - 1 && <div style={s.divider} />}</div>)}
-      <div style={s.divider} />
-      <section style={{ padding: "48px 24px" }}><div style={s.narrow}><div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{(item.tags || []).map(tag => <span key={tag} style={{ fontSize: 12, color: t.t2, background: t.bg2, padding: "5px 12px", borderRadius: 6 }}>{tag}</span>)}</div></div></section>
-      <div style={s.divider} />
-      <section style={{ padding: "64px 24px", background: t.bg1 }}><div style={{ ...s.narrow, textAlign: "center" }}>
-        <R><p style={{ ...s.tBody, marginBottom: 20 }}>This case study demonstrates the prototype-first discovery methodology applied to a real enterprise challenge.</p>
-        <button onClick={() => go("work")} style={{ padding: "12px 24px", background: "transparent", border: `1px solid ${t.border}`, color: t.t1, fontSize: 14, fontWeight: 500, borderRadius: 8, cursor: "pointer" }}>{"\u2190"} Back to all work</button></R>
-      </div></section>
-    </>);
-  };
-
-  // === RENDER ===
-  return (
-    <div style={s.page}>
-      <Nav />
-      {page === "home" && <HomePage />}
-      {page === "work" && <WorkPage />}
-      {page === "detail" && active && active.type === "product" && <ProductPage item={active} />}
-      {page === "detail" && active && active.type === "case-study" && <CaseStudyPage item={active} />}
-      <Footer />
+      <img src="/content/headshot-hero.jpg" alt="Milan Khanal" width="240" height="286">
     </div>
-  );
-}
+  </section>
 
-ReactDOM.render(<Portfolio />, document.getElementById("root"));
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="display">Work</h2>
+        <div class="mono">One enterprise program, three live prototypes</div>
+      </div>
+      <div class="grid">
+        <article class="card inverse">
+          <div>
+            <div class="mono">Enterprise program · 2025 to now</div>
+            <h3 class="display" style="margin: 12px 0;">CRC Group: $800M+ billing transformation</h3>
+            <p>Led the product discovery phase and owned the requirements backlog for replacing a legacy billing system handling $800M+ in annual billing volume, 7,000 employer groups, and 500K billing records per monthly run. Compressed the roadmap by 3+ months by building a functional, high-fidelity prototype that aligned executive leadership on the future-state workflow.</p>
+          </div>
+          <a class="more" href="/work/crc-group">Read the case study</a>
+        </article>
+        <article class="card">
+          <a href="/tradepilot" tabindex="-1" aria-hidden="true"><img src="/content/previews/tradepilot.jpg" alt="TradePilot dashboard" loading="lazy"></a>
+          <div class="row"><h3 class="display">TradePilot</h3><span class="mono">Live · sample data</span></div>
+          <p>A five-agent orchestration prototype for supply chain risk. The business rules, user requirements, and human-in-the-loop override controls show how automated systems can surface transparent, audit-ready decision packages.</p>
+          <a class="more" href="/tradepilot">Open the prototype</a>
+        </article>
+        <article class="card">
+          <a href="/talentpilot" tabindex="-1" aria-hidden="true"><img src="/content/previews/talentpilot.jpg" alt="TalentPilot dashboard" loading="lazy"></a>
+          <div class="row"><h3 class="display">TalentPilot</h3><span class="mono">Live · sample data</span></div>
+          <p>A glass-box recruitment matching prototype modeled on the disclosure and record-keeping obligations of NYC Local Law 144 and the EU AI Act, with bias monitoring and explainable matching logic.</p>
+          <a class="more" href="/talentpilot">Open the prototype</a>
+        </article>
+        <article class="card">
+          <a href="/newslens" tabindex="-1" aria-hidden="true"><img src="/content/previews/newslens.jpg" alt="NewsLens comparison view" loading="lazy"></a>
+          <div class="row"><h3 class="display">NewsLens</h3><span class="mono">Live · sample data</span></div>
+          <p>A staged-transparency news prototype. I built the evaluation it was assessed against: Amershi's interaction guidelines, Liao's explainability checklist, persona walkthroughs, and two rounds of blind external review. Illustrative sample data, not a live extraction.</p>
+          <a class="more" href="/newslens">Open the prototype</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section about" id="about">
+    <div class="wrap two">
+      <h2 class="display">About</h2>
+      <div>
+        <p>I've spent 10 years bridging executive strategy and technical execution at Toyota, Dell, CRC Group, and World Kinect. Insurance and benefits, supply chain, energy, and finance. BA to Product Owner to UX Research to Delivery Lead. I understand the work at every layer.</p>
+        <ul class="timeline">
+          <li class="r"><b>CRC Group</b><span class="role">Senior Business Analyst, Product Owner (consultant)</span><span class="what">2025 to now. Billing modernization discovery for an $800M+ system; roadmap compressed by 3+ months; two acquired insurance platforms migrated to Azure.</span></li>
+          <li class="r"><b>Toyota North America</b><span class="role">Delivery Lead (consultant)</span><span class="what">2024. Agile delivery of the Global Planning System across two vendor teams, internal IT, and the planners who used it.</span></li>
+          <li class="r"><b>Dell Technologies</b><span class="role">Product Owner, ESG analytics</span><span class="what">2022 to 2023. Carbon-footprint report turnaround cut from one to two months to under a day.</span></li>
+          <li class="r"><b>FleetPride</b><span class="role">Sr. Business Analyst, M&amp;A</span><span class="what">2021 to 2022. Post-acquisition ERP standardization across branches.</span></li>
+          <li class="r"><b>World Kinect</b><span class="role">Sr. Business Analyst, digital transformation</span><span class="what">2016 to 2021. Field research and driver ride-alongs; transaction processing 50% faster.</span></li>
+          <li class="r"><b>Texas Tech University</b><span class="role">B.S. Human-Centered AI</span><span class="what">Expected December 2026.</span></li>
+        </ul>
+        <p style="margin-top: 22px; font-size: 15px;"><a href="/work">All work</a> · <a href="/about">More about me</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote">
+    <div class="wrap">
+      <figure class="box">
+        <blockquote class="q display">"An outstanding project... demonstrating an intentional focus on trust, transparency, and traceability that truly reflects human-centered leadership."</blockquote>
+        <figcaption class="who"><b>Dr. Melanie Schmitt</b>Texas Tech University, on TradePilot</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section list" id="writing">
+    <div class="wrap two">
+      <h2 class="display">Writing</h2>
+      <ul>
+        <li class="r"><a href="/writing/ai-cost-crisis">Solving the AI Cost Crisis</a><span class="mono date">Apr 2026</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact">
+    <div class="wrap two">
+      <h2 class="display">Contact</h2>
+      <div>
+        <a class="email" href="mailto:milan.khanal25@gmail.com">milan.khanal25@gmail.com</a>
+        <div class="links">
+          <a href="https://www.linkedin.com/in/milankhanal41">LinkedIn</a>
+          <a href="https://github.com/Mkhanal04/portfolio">GitHub</a>
+          <a href="https://calendly.com/milan-khanal25/new-meeting">Book a call</a>
+          <a href="/Milan_Khanal_Resume.pdf">Resume (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Milan Khanal · Dallas, TX</span>
+    <span><a href="/lab">Lab</a> · <a href="/writing">Writing</a> · <a href="/about">About</a></span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var mode = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    function apply(m) { root.setAttribute('data-theme', m); btn.textContent = m === 'dark' ? 'Light' : 'Dark'; btn.setAttribute('aria-pressed', m === 'dark' ? 'true' : 'false'); }
+    apply(mode);
+    btn.addEventListener('click', function () {
+      mode = mode === 'dark' ? 'light' : 'dark';
+      apply(mode);
+      try { localStorage.setItem('theme', mode); } catch (e) {}
+    });
+  })();
 </script>
 <script src="/chatbot-widget.js" defer></script>
 </body>
