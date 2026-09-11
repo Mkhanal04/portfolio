@@ -12,7 +12,8 @@
 <meta property="og:url" content="https://milankhanal.com/writing/ai-cost-crisis">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
 <script>
   (function () {
     try {
@@ -61,23 +62,7 @@
 
   /* ═══ NAV (shared pattern) ═══ */
   .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--navBg); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); height: 56px; display: flex; align-items: center; padding: 0 24px; transition: background 0.4s; }
-  .nav-inner { max-width: 1080px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
-  .nav-brand { font-weight: 600; font-size: 15px; letter-spacing: -0.01em; color: var(--t0); }
-  .nav-links { display: flex; align-items: center; gap: 24px; }
-  .nav-link { font-size: 13px; color: var(--t2); transition: color 0.2s; }
-  .nav-link:hover { color: var(--t0); }
-  .nav-link[aria-current="page"] { color: var(--t0); font-weight: 500; }
-  .nav-cta { font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: 8px; background: var(--t0); color: var(--bg); transition: opacity 0.2s; }
-  .nav-cta:hover { opacity: 0.9; }
-  .theme-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg2); color: var(--t1); font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: inherit; }
-  .mobile-toggle { display: none; width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg2); color: var(--t1); font-size: 16px; cursor: pointer; align-items: center; justify-content: center; font-family: inherit; }
-  .mobile-menu { display: none; position: absolute; top: 56px; left: 0; right: 0; background: var(--bg1); border-bottom: 1px solid var(--border); padding: 20px 24px; flex-direction: column; gap: 16px; }
-  .mobile-menu.open { display: flex; }
-  .mobile-menu a { font-size: 15px; color: var(--t1); }
-  .mobile-menu .nav-cta { align-self: flex-start; }
   @media (max-width: 760px) {
-    .nav-links .nav-link, .nav-links .nav-cta { display: none; }
-    .mobile-toggle { display: flex; }
   }
 
   /* ═══ STICKY BREADCRUMB (NEW, per spec §3) ═══ */
@@ -376,29 +361,7 @@
 
   /* ═══ CASE-STUDY COMPONENTS (spec §2.2 / §4.4 / §4.2 — available for future pieces) ═══ */
   .themed-block { padding: 36px 40px; border-radius: 14px; margin-top: 40px; color: #FFFFFF; }
-  .themed-block .theme-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(255,255,255,0.78);
-    display: block; margin-bottom: 10px;
-  }
-  .themed-block h2 {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: clamp(24px, 3vw, 30px); font-weight: 500;
-    line-height: 1.2; letter-spacing: -0.015em;
-    color: #FFFFFF; margin-bottom: 14px;
-  }
-  .themed-block p, .themed-block li {
-    font-family: 'Newsreader', Georgia, serif;
-    font-size: 17px; line-height: 1.6;
-    color: rgba(255,255,255,0.92);
-  }
-  .themed-block p + p { margin-top: 14px; }
-  .themed-block.theme-challenges    { background: var(--theme-challenges); }
-  .themed-block.theme-infrastructure{ background: var(--theme-infrastructure); }
-  .themed-block.theme-landscape     { background: var(--theme-landscape); }
-  @media (max-width: 640px) { .themed-block { padding: 28px 24px; } }
+  @media (max-width: 640px) { }
 
   .challenge-table {
     width: 100%; border-collapse: collapse;
@@ -527,35 +490,36 @@
 
   /* ═══ FOOTER ═══ */
   .footer { padding: 28px 24px; border-top: 1px solid var(--border); max-width: 1080px; margin: 80px auto 0; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--t2); flex-wrap: wrap; gap: 8px; }
-  .footer strong { color: var(--t0); }
-  .footer-links { display: flex; gap: 16px; align-items: center; }
-  .footer-links a { color: var(--t2); transition: color 0.2s; }
-  .footer-links a:hover { color: var(--t0); }
+
+  /* chrome from the site stylesheet; article typography aligned to it */
+  body { font-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif; }
+  .prose h1, .prose h2, .prose h3, .deck { font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.02em; }
+
+  /* article text on the site's faces */
+  .prose, .prose p, .prose li, .deck, .article-meta, .img-caption, .stat-callout { font-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif; }
+  .prose h1, .prose h2, .prose h3 { font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.02em; }
+  header.nav .wrap, footer.foot .wrap { max-width: 1312px; padding-left: 32px; padding-right: 32px; }
+  @media (max-width: 900px) { header.nav .wrap, footer.foot .wrap { padding-left: 20px; padding-right: 20px; } }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="/" class="nav-brand">Milan Khanal</a>
-    <div class="nav-links">
-      <a href="/work" class="nav-link">Work</a>
-      <a href="/lab" class="nav-link">Lab</a>
-      <a href="/writing" class="nav-link" aria-current="page">Writing</a>
-      <a href="/about" class="nav-link">About</a>
-      <a href="mailto:milan.khanal25@gmail.com" class="nav-cta">Get in touch</a>
-      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">&#9790;</button>
+<header class="nav">
+  <div class="wrap">
+    <a class="name" href="/">Milan Khanal</a>
+    <nav class="links" aria-label="Site">
+      <a href="/work">Work</a>
+      <a href="/lab">Lab</a>
+      <a href="/writing" class="on">Writing</a>
+      <a href="/about">About</a>
+    </nav>
+    <div class="right">
+      <button class="btn small quiet" id="theme-toggle" type="button" aria-pressed="false">Dark</button>
+      <a class="btn small" href="/Milan_Khanal_Resume.pdf">Resume</a>
+      <a class="btn small" href="mailto:milan.khanal25@gmail.com">Email</a>
     </div>
-    <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">&#9776;</button>
   </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="/work">Work</a>
-    <a href="/lab">Lab</a>
-    <a href="/writing" aria-current="page">Writing</a>
-    <a href="/about">About</a>
-    <a href="mailto:milan.khanal25@gmail.com" class="nav-cta">Get in touch</a>
-  </div>
-</nav>
+</header>
 
 <div class="crumb-sticky" aria-label="Breadcrumb">
   <div class="crumb-sticky-inner">
@@ -751,37 +715,16 @@
     </article>
   </section>
 
-  <footer class="footer">
-    <span><strong>Milan Khanal</strong> &middot; Senior Business Analyst | Product Owner</span>
-    <div class="footer-links">
-      <a href="mailto:milan.khanal25@gmail.com">Email</a>
-      <a href="https://www.linkedin.com/in/milankhanal41" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="https://github.com/Mkhanal04/pilot-suite" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <span>&copy; 2026</span>
-    </div>
-  </footer>
-</main>
+  </main>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Milan Khanal · Dallas, TX</span>
+    <span><a href="/work">Work</a> · <a href="/lab">Lab</a> · <a href="/writing">Writing</a> · <a href="/about">About</a></span>
+  </div>
+</footer>
+
 
 <script>
-  (function () {
-    var btn = document.getElementById('themeBtn');
-    function glyph() { return document.documentElement.getAttribute('data-theme') === 'dark' ? '\u2600' : '\u263E'; }
-    btn.innerHTML = glyph();
-    btn.addEventListener('click', function () {
-      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-      btn.innerHTML = glyph();
-    });
-  })();
-  (function () {
-    var toggle = document.getElementById('mobileToggle');
-    var menu = document.getElementById('mobileMenu');
-    toggle.addEventListener('click', function () {
-      menu.classList.toggle('open');
-      toggle.innerHTML = menu.classList.contains('open') ? '&#10005;' : '&#9776;';
-    });
-  })();
   (function () {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('revealed'); io.unobserve(e.target); } });
@@ -798,5 +741,6 @@
     }, 1500);
   })();
 </script>
+<script src="/assets/site.js"></script>
 </body>
 </html>
