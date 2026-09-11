@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- ================================================================
      PILOT-SUITE HOST INJECT
@@ -9,7 +10,7 @@
      Everything pilot-suite adds on top of the raw NewsLens.dc.html.
      Re-inject this block on every design re-sync (see CLAUDE.md).
 
-     Placement: <head>, immediately before <script src="./support.js">.
+     Placement: <head>, immediately before <script src="/newslens/support.js">.
      Two things:
        1. React 18 + ReactDOM 18 CDN scripts (support.js needs them)
        2. Portfolio strip CSS + JS — the persistent "back to portfolio"
@@ -116,7 +117,7 @@
      END PILOT-SUITE HOST INJECT
      ================================================================ -->
 
-<script src="./support.js"></script>
+<script src="/newslens/support.js"></script>
 </head>
 <body>
 <x-dc>
