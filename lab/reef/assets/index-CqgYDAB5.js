@@ -12,7 +12,7 @@
     <a class="home-link" href="#top" aria-label="${$(Q.name)} home">${hc()}</a>
     <nav class="top-nav">
       <a class="nav-menu" href="#carry">${$(Q.catalogTitle)}</a>
-      <span class="demo-pill">Demo</span>
+      <a class="demo-pill" href="https://milankhanal.com/lab" title="Made by Milan Khanal">Demo</a>
     </nav>
   </header>
 
@@ -56,7 +56,7 @@
       </dl>
     </section>
 
-    <footer class="foot">${hc(`logo-foot`)}<p>${$(Q.demoNotice)}</p></footer>
+    <footer class="foot">${hc(`logo-foot`)}<p>${$(Q.demoNotice)}</p><p class="made"><a href="https://milankhanal.com/lab">Made by Milan Khanal</a></p></footer>
   </main>
 
   <div class="menu-page" id="menu-page" role="dialog" aria-modal="true" aria-labelledby="mp-title" hidden data-lenis-prevent>
