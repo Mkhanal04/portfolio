@@ -100,18 +100,20 @@ a{color:inherit;text-decoration:none}
 .lap-only{display:none}
 
 /* ---------- old fashioned ---------- */
-.of{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;background:#070504;padding-bottom:calc(var(--bar) + 40px)}
-.of-media{position:absolute;inset:0}
-.of-media img{width:100%;height:100%;object-fit:cover;object-position:50% 100%}
-.of-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,5,4,.85) 0%,rgba(7,5,4,.35) 30%,rgba(7,5,4,0) 48%)}
-.of-copy{position:relative;z-index:2;padding:104px var(--pad) 0}
+/* The pour: scrolling pours their Newari Old Fashioned onto a brass coaster while the section holds
+   still; stop on it and it finishes by itself, scroll back up and it drains. */
+.pour-track{position:relative;height:200vh;height:200svh}
+.pour-track.static{height:auto}
+.of{position:sticky;top:0;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:#070504}
+.pour-stage{position:absolute;inset:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.pour-img,.pour-cv{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:50% 50%}
+.of::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,5,4,.9) 0%,rgba(7,5,4,.5) 26%,rgba(7,5,4,0) 42%,rgba(7,5,4,0) 84%,rgba(7,5,4,.7) 100%)}
+.of-copy{position:relative;z-index:2;padding:96px var(--pad) 0}
 .of-copy h2{font-size:clamp(50px,13.4vw,128px);margin:14px 0 18px}
 .of-price{display:flex;align-items:baseline;gap:14px}
 .of-price b{font-weight:500;font-size:22px;color:var(--cream)}
 .of-price span{font-size:13px;color:var(--cream-3)}
 .of-lnk{display:none}
-.of-real{display:block;width:min(100%,420px);margin:34px auto 0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%),linear-gradient(180deg,transparent 0,#000 22%,#000 78%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%),linear-gradient(180deg,transparent 0,#000 22%,#000 78%,transparent 100%);mask-composite:intersect}
-.of-real img{width:100%;height:auto}
 
 /* ---------- bar list ---------- */
 .bar{padding:96px 0 40px;background:var(--ink)}
@@ -212,19 +214,9 @@ a{color:inherit;text-decoration:none}
 .js .rv.in{opacity:1;transform:none}
 
 @media (min-width:600px){
-  /* old fashioned: their real photo at card size */
-  .of{height:auto;min-height:100vh;display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:40px;padding:110px var(--pad) 90px;background:#070504}
-  .of-media,  .of-copy{padding:0}
+  /* the pour: copy link shows from tablet up */
   .of-copy .lnk{margin-top:34px;display:inline-flex}
-  .of-copy h2{font-size:clamp(88px,8.6vw,150px)}
-  .of-real{display:block;justify-self:center;width:400px;max-width:100%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 80%,transparent 100%),linear-gradient(180deg,transparent 0,#000 34%,#000 70%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 80%,transparent 100%),linear-gradient(180deg,transparent 0,#000 34%,#000 70%,transparent 100%);mask-composite:intersect}
-  .of-real img{width:400px;height:400px;object-fit:cover}
 
-}
-@media (min-width:600px) and (max-width:899px){
-  .of{grid-template-columns:1fr minmax(0,320px);padding:72px var(--pad) calc(var(--bar) + 48px)}
-  .of-copy h2{font-size:clamp(48px,8vw,80px)}
-  .of-real,.of-real img{width:320px;height:auto}
 }
 /* =========================================================
    LAPTOP / DESKTOP
@@ -249,6 +241,12 @@ a{color:inherit;text-decoration:none}
   .lamp .hero-copy{left:var(--pad);right:auto;max-width:52vw}
   .lamp-stage{left:auto;right:7vw;width:calc(min(100vh,100svh) * .5625);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
   .lamp::after{background:linear-gradient(180deg,rgba(5,3,3,.5) 0%,rgba(5,3,3,0) 16%,rgba(5,3,3,0) 70%,rgba(5,3,3,.7) 100%)}
+  .pour-stage{left:auto;right:9vw;width:calc(min(100vh,100svh) * .5625);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
+  .of::after{background:linear-gradient(180deg,rgba(7,5,4,.5) 0%,rgba(7,5,4,0) 16%,rgba(7,5,4,0) 80%,rgba(7,5,4,.6) 100%)}
+  .of-copy{position:absolute;left:var(--pad);top:50%;transform:translateY(-50%);max-width:48vw;padding:0}
+  .js .of-copy.rv{transform:translateY(calc(-50% + 22px))}
+  .js .of-copy.rv.in{transform:translateY(-50%)}
+  .of-copy h2{font-size:clamp(88px,8.6vw,150px)}
       .hero-title{margin:18px 0 24px}
   .hero-title .l1{font-size:clamp(52px,4.6vw,84px)}
   .hero-title .l2{font-size:clamp(180px,16.4vw,290px)}
@@ -310,6 +308,11 @@ a{color:inherit;text-decoration:none}
   .hero-copy{bottom:calc(var(--bar) + 14px)}
   .concept-note{display:none}
   .spread-media{max-height:none;height:60vw}
+  .of{min-height:0}
+  .pour-stage{left:auto;right:5vw;width:calc(min(100vh,100svh) * .5625);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
+  .of::after{background:linear-gradient(180deg,rgba(7,5,4,.5) 0%,rgba(7,5,4,0) 20%,rgba(7,5,4,0) 80%,rgba(7,5,4,.6) 100%)}
+  .of-copy{padding-top:76px;max-width:58vw}
+  .of-copy h2{font-size:clamp(30px,11vh,48px);margin:8px 0 10px}
 }
 @media (prefers-reduced-motion:reduce){
   .hero-img{animation:none}
@@ -354,17 +357,20 @@ a{color:inherit;text-decoration:none}
   </div>
 
   <!-- 2. The Newari Old Fashioned -->
+  <div class="pour-track">
   <section class="of" id="drinks" aria-label="Newari Old Fashioned">
+    <div class="pour-stage">
+      <img class="pour-img" src="/lab/bara/frames/pour/f000.jpg" alt="The Newari Old Fashioned on a brass coaster, orange peel and cherry pick in the glass" width="608" height="1081" loading="lazy">
+      <canvas class="pour-cv" aria-hidden="true"></canvas>
+    </div>
     <div class="of-copy rv">
       <p class="k">Signature cocktail</p>
       <h2 class="d">Newari Old Fashioned</h2>
       <div class="of-price num"><b>14.99</b></div>
       <a class="lnk of-lnk" href="#bar">All signature cocktails <span>&darr;</span></a>
     </div>
-    <figure class="of-real rv">
-      <img src="/lab/bara/img/old-fashioned.jpg" alt="The Newari Old Fashioned, orange peel and cherry pick in the glass" width="800" height="800" loading="lazy">
-    </figure>
   </section>
+  </div>
 
   <!-- 3. The cocktail list -->
   <section class="bar" id="bar" aria-label="Signature cocktails">
@@ -572,6 +578,49 @@ function isOpenNow(){try{var h=+new Intl.DateTimeFormat('en-US',{hour:'numeric',
     // lingering at the top: the lamp comes on by itself, and the hold is dropped so the next scroll moves the page
     setTimeout(function(){if(!scrolled&&progress()<.02){autoRun=true;autoT0=performance.now();track.classList.add('static')}},6000);
   });
+})();
+// The pour. Frames cut from a clip made from their Old Fashioned photo, set on a brass coaster:
+// the glass fills from a stream above the frame, and the last frame is the settled drink. Scroll
+// pours it while the section holds still; if the visitor stops on it, it finishes by itself;
+// scrolling back up drains it. Frames load when the section is near, decode before use, and the
+// canvas repaints only when the picture changes.
+(function(){
+  var track=document.querySelector('.pour-track'),cv=document.querySelector('.pour-cv'),img=document.querySelector('.pour-img');
+  if(!track||!cv) return;
+  var N=42,FPS=14,LAST=N-1,IDLE=1400;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    track.classList.add('static');img.src='/lab/bara/frames/pour/f'+String(LAST).padStart(3,'0')+'.jpg';img.loading='eager';cv.remove();return;
+  }
+  var frames=new Array(N),ctx=cv.getContext('2d'),dpr=1,w=0,h=0,dirty=true,shown=-1,pos=0,auto=0,autoFrom=0,autoT0=0,autoRun=false,lastY=window.scrollY,lastT=performance.now(),started=false;
+  function src(i){return '/lab/bara/frames/pour/f'+String(i).padStart(3,'0')+'.jpg'}
+  function load(i){return new Promise(function(res){var im=new Image();im.decoding='async';
+    im.onload=function(){(im.decode?im.decode().catch(function(){}):Promise.resolve()).then(function(){frames[i]=im;dirty=true;res()})};
+    im.onerror=function(){res()};im.src=src(i)})}
+  function start(){if(started)return;started=true;var q=[];for(var i=0;i<N;i++)q.push(i);
+    [0,1,2,3].forEach(function(){(function next(){if(!q.length)return;load(q.shift()).then(next)})()});
+    requestAnimationFrame(tick)}
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){start();io.disconnect()}},{rootMargin:'150% 0px'});io.observe(track)}else start();
+  function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=cv.clientWidth;h=cv.clientHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);dirty=true}
+  resize();
+  if('ResizeObserver' in window) new ResizeObserver(function(){if(cv.clientWidth!==w||cv.clientHeight!==h)resize()}).observe(cv);
+  window.addEventListener('resize',resize);
+  window.addEventListener('scroll',function(){var y=window.scrollY;if(y<lastY-2){autoRun=false;auto=0}lastY=y;lastT=performance.now()},{passive:true});
+  function put(im,a){var s=Math.max(w/im.width,h/im.height),dw=im.width*s,dh=im.height*s;ctx.globalAlpha=a;ctx.drawImage(im,(w-dw)*.5,(h-dh)*.5,dw,dh)}
+  function progress(){var r=track.getBoundingClientRect(),total=track.offsetHeight-window.innerHeight;return total>0?Math.min(1,Math.max(0,-r.top/total)):1}
+  function onStage(){var r=track.getBoundingClientRect();return r.top<window.innerHeight*.3&&r.bottom>window.innerHeight*.7}
+  function nearest(i){if(frames[i])return i;for(var d=1;d<N;d++){if(i-d>=0&&frames[i-d])return i-d;if(i+d<N&&frames[i+d])return i+d}return -1}
+  function tick(now){
+    // scroll: the first 75% of the held stretch pours it, the rest holds the full glass
+    var sp=Math.min(1,progress()/.75)*LAST;
+    if(!autoRun&&pos<LAST-.05&&frames[LAST]&&now-lastT>IDLE&&onStage()){autoRun=true;autoFrom=Math.max(pos,sp);autoT0=now}
+    if(autoRun){auto=Math.min(LAST,autoFrom+(now-autoT0)/1000*FPS)}
+    var want=Math.max(sp,auto);pos+=(want-pos)*.35;if(Math.abs(want-pos)<.01)pos=want;
+    var i0=Math.floor(pos),i1=Math.min(i0+1,N-1),f=pos-i0,key=Math.round(pos*8),a=nearest(i0);
+    if(a>=0&&(key!==shown||dirty)){
+      ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);put(frames[a],1);
+      if(a===i0&&frames[i1]&&i1!==i0&&f>.05)put(frames[i1],f);ctx.globalAlpha=1;shown=key;dirty=false;
+    }
+    requestAnimationFrame(tick)}
 })();
 // Reveal on scroll
 (function(){
