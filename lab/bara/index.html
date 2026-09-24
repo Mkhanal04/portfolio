@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:title" content="Bara Nepalese Restaurant &amp; Bar (redesign concept)">
+<meta property="og:description" content="Redesign concept for Bara Nepalese Restaurant &amp; Bar in Euless, TX. Not the official site.">
+<meta property="og:image" content="https://milankhanal.com/lab/bara/frames/lamp/f001.jpg">
+<meta property="og:url" content="https://milankhanal.com/lab/bara">
+<meta name="robots" content="noindex, nofollow">
+<title>Bara Nepalese Restaurant & Bar | Euless, TX (redesign concept)</title>
+<meta name="theme-color" content="#0c0807">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/lab/bara/frames/lamp/f000.jpg">
+<style>
+:root{
+  --ink:#0c0807;
+  --ink-2:#140e0b;
+  --ink-3:#1d1511;
+  --cream:#f3e9db;
+  --cream-2:rgba(243,233,219,.72);
+  --cream-3:rgba(243,233,219,.46);
+  --line:rgba(243,233,219,.16);
+  --brick:#a63a2b;
+  --brick-hi:#bb4433;
+  --brass:#caa36b;
+  --pad:20px;
+  --bar:60px;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--ink);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:var(--ink);color:var(--cream);
+  font-family:"Archivo",system-ui,sans-serif;font-stretch:100%;
+  font-size:16px;line-height:1.55;font-weight:400;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+
+/* ---------- type ---------- */
+.k{font-weight:600;font-size:11px;line-height:1.35;letter-spacing:.2em;text-transform:uppercase;font-stretch:125%;color:var(--brass)}
+.k.dim{color:var(--cream-3)}
+.d{font-weight:800;font-stretch:112%;letter-spacing:-.025em;line-height:.9}
+.num{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.lnk{display:inline-flex;align-items:center;gap:.6em;font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-stretch:125%;padding:6px 0;border-bottom:1px solid var(--line);transition:border-color .3s var(--ease),gap .3s var(--ease)}
+.lnk:hover{border-color:var(--cream);gap:.9em}
+.lnk span{font-stretch:100%;letter-spacing:0}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;inset:0 0 auto 0;z-index:40;height:72px;display:flex;align-items:flex-start;justify-content:space-between;padding:0 var(--pad);pointer-events:none;transition:background .4s var(--ease),transform .5s var(--ease)}
+.nav.hide{transform:translateY(-120%)}
+.nav>*{pointer-events:auto}
+.nav.solid{background:linear-gradient(180deg,rgba(12,8,7,.96) 0%,rgba(12,8,7,.9) 62%,rgba(12,8,7,0) 100%);height:96px}
+.tag{display:block;width:62px;background:#f6f0e8;padding:10px 7px 9px;transition:transform .4s var(--ease)}
+.tag img{width:100%;height:auto;mix-blend-mode:multiply}
+.nav-r{display:flex;align-items:center;gap:22px;height:72px}
+.nav-r a{font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-stretch:125%;color:var(--cream)}
+.nav-r .wide{display:none}
+.nav-r .btn{display:none}
+
+/* ---------- hero ---------- */
+/* The lamp is the open sign: it switches on when Bara is open, and a tap switches it on or off. */
+/* The first scroll warms the lamp on; the hero holds still while it does, then the page moves on. */
+.lamp-track{position:relative;height:190vh;height:190svh}
+.lamp-track.static{height:auto}
+.hero{position:sticky;top:0;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:#050303}
+.lamp{--lit:.55}
+.lamp-stage{position:absolute;inset:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.lamp-img,.lamp-cv{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:50% 18%}
+.lamp::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,3,3,.55) 0%,rgba(5,3,3,0) 16%,rgba(5,3,3,0) 58%,rgba(5,3,3,.8) 80%,#050303 100%)}
+.lamp .hero-copy{opacity:calc(.5 + var(--lit)*.5);transition:opacity .2s linear}
+@media (max-width:899px){
+  /* phones and tablets: the lamp in the top three-quarters, fading at its edges, words below it */
+  .lamp-stage{inset:0 auto auto 50%;height:76%;width:auto;aspect-ratio:9/16;max-width:100%;transform:translateX(-50%);
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%),linear-gradient(180deg,#000 72%,transparent 100%);-webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%),linear-gradient(180deg,#000 72%,transparent 100%);mask-composite:intersect}
+    .lamp .hero-title .l1{font-size:clamp(30px,8.4vw,64px)}
+  .lamp .hero-title .l2{font-size:clamp(88px,25vw,190px)}
+  .lamp .hero-title{margin:10px 0 14px}
+}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:54% 50%;transform-origin:50% 40%;animation:settle 3.2s var(--ease) both}
+@keyframes settle{from{transform:scale(1.07);opacity:.2}to{transform:scale(1);opacity:1}}
+.hero::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(12,8,7,.6) 0%,rgba(12,8,7,0) 18%,rgba(12,8,7,0) 38%,rgba(12,8,7,.72) 62%,rgba(12,8,7,.96) 84%,var(--ink) 100%)}
+.hero-copy{position:absolute;z-index:2;left:var(--pad);right:var(--pad);bottom:calc(var(--bar) + 26px + env(safe-area-inset-bottom))}
+.hero-title{margin:14px 0 18px}
+.hero-title .l1{display:block;font-size:clamp(38px,10.4vw,92px);line-height:.95;font-stretch:118%}
+.hero-title .l2{display:block;font-size:clamp(118px,33vw,300px);line-height:.8;font-stretch:118%;letter-spacing:-.045em;margin-left:-.04em;margin-top:.06em}
+.hero-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;font-size:14px;color:var(--cream-2)}
+.status{display:inline-flex;align-items:center;gap:8px;color:var(--cream);font-weight:600}
+.status i{width:7px;height:7px;background:#7fbf7a;display:inline-block}
+.status.closed i{background:var(--brass)}
+.concept-note{position:absolute;z-index:3;right:7px;top:100px;transform:rotate(180deg);writing-mode:vertical-rl;font-size:9px;letter-spacing:.24em;text-transform:uppercase;font-stretch:125%;color:rgba(243,233,219,.5)}
+.lap-only{display:none}
+
+/* ---------- old fashioned ---------- */
+.of{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;background:#070504;padding-bottom:calc(var(--bar) + 40px)}
+.of-media{position:absolute;inset:0}
+.of-media img{width:100%;height:100%;object-fit:cover;object-position:50% 100%}
+.of-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,5,4,.85) 0%,rgba(7,5,4,.35) 30%,rgba(7,5,4,0) 48%)}
+.of-copy{position:relative;z-index:2;padding:104px var(--pad) 0}
+.of-copy h2{font-size:clamp(50px,13.4vw,128px);margin:14px 0 18px}
+.of-price{display:flex;align-items:baseline;gap:14px}
+.of-price b{font-weight:500;font-size:22px;color:var(--cream)}
+.of-price span{font-size:13px;color:var(--cream-3)}
+.of-lnk{display:none}
+.of-real{display:block;width:min(100%,420px);margin:34px auto 0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%),linear-gradient(180deg,transparent 0,#000 22%,#000 78%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%),linear-gradient(180deg,transparent 0,#000 22%,#000 78%,transparent 100%);mask-composite:intersect}
+.of-real img{width:100%;height:auto}
+
+/* ---------- bar list ---------- */
+.bar{padding:96px 0 40px;background:var(--ink)}
+.bar-head{padding:0 var(--pad)}
+.bar-head h2{font-size:clamp(46px,12vw,120px);margin-top:14px}
+.bar-photo{margin:36px 0 10px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 80%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 80%,transparent 100%)}
+.bar-photo img{width:100%;max-width:400px;aspect-ratio:4/3;object-fit:cover;object-position:50% 100%}
+.pours{list-style:none;padding:0 var(--pad)}
+.pours li{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:15px 0 14px;border-top:1px solid var(--line)}
+.pours li:last-child{border-bottom:1px solid var(--line)}
+.pours .n{font-weight:700;font-size:21px;line-height:1.15;font-stretch:108%;letter-spacing:-.01em}
+.pours .p{font-size:15px;color:var(--cream-2)}
+.pours li.star .n{color:var(--brass)}
+.night{margin:40px 0 0;padding:26px var(--pad) 28px;background:var(--brick);color:#fff4ea}
+.night .k{color:#fff4ea;opacity:.8;font-size:11px;font-weight:600;line-height:1.35;margin:0;letter-spacing:.2em}
+.night p{font-weight:700;font-stretch:108%;font-size:22px;line-height:1.2;margin:10px 0 8px;letter-spacing:-.01em}
+.night small{font-size:13px;opacity:.8}
+.more-pours{padding:30px var(--pad) 0;display:grid;gap:18px}
+.more-pours div{display:grid;gap:6px;font-size:15px;color:var(--cream-2)}
+.quote{padding:72px var(--pad) 24px}
+.quote blockquote{font-weight:500;font-stretch:100%;font-size:24px;line-height:1.32;letter-spacing:-.01em}
+.quote cite{display:block;margin-top:18px;font-style:normal}
+.bar-foot{padding:26px var(--pad) 0}
+
+/* ---------- spread (khaja set) ---------- */
+.spread{position:relative;background:var(--ink);padding-bottom:40px}
+.spread-media{position:relative;height:112vw;max-height:560px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 96%);mask-image:linear-gradient(180deg,#000 55%,transparent 96%)}
+.spread-media img{width:100%;height:100%;object-fit:cover;object-position:50% 46%;transform:scale(1.18);transform-origin:50% 46%}
+.spread-copy{position:relative;z-index:2;margin-top:-18px;padding:0 var(--pad)}
+.spread-copy h2{font-size:clamp(44px,11.6vw,104px);margin:14px 0 16px}
+.spread-price{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
+.spread-price b{font-weight:500;font-size:22px}
+.spread-price span{font-size:13px;color:var(--cream-3)}
+.eleven{list-style:none;columns:2;column-gap:18px;border-top:1px solid var(--line);padding-top:16px;margin-bottom:28px}
+.eleven li{break-inside:avoid;display:flex;gap:10px;font-size:14.5px;line-height:1.3;padding:5px 0;color:var(--cream-2)}
+.eleven li em{font-style:normal;font-size:10px;letter-spacing:.1em;color:var(--brass);padding-top:3px;min-width:16px}
+
+/* ---------- kitchen ---------- */
+.interlude{position:relative;height:62vw;max-height:78vh;min-height:240px;overflow:hidden}
+.interlude img{width:100%;height:100%;object-fit:cover;object-position:52% 60%}
+.interlude::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--ink) 0,rgba(12,8,7,0) 18%,rgba(12,8,7,0) 76%,var(--ink) 100%)}
+.interlude figcaption{position:absolute;z-index:2;left:var(--pad);bottom:10px;font-size:12px;color:var(--cream-2);display:flex;gap:10px}
+.interlude figcaption b{font-weight:600;color:var(--cream)}
+.kitchen{padding:64px 0 24px}
+.kitchen-head{padding:0 var(--pad);margin-bottom:34px}
+.kitchen-head h2{font-size:clamp(44px,11.6vw,104px);margin-top:14px}
+.dish{margin-bottom:54px}
+.dish-img{overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,#000 72%,transparent 100%)}
+.dish-img img{width:100%;aspect-ratio:1/1;object-fit:cover;transition:transform 1.2s var(--ease)}
+.dish-img{max-width:400px}
+.dish-img.wide{max-width:720px}
+.dish:nth-child(2) .dish-img{margin-left:auto;width:82%}
+.dish:nth-child(3) .dish-img{width:82%}
+.dish-img.wide img{aspect-ratio:4/3}
+.dish-copy{padding:0 var(--pad);margin-top:-12px;position:relative}
+.dish-copy h3{font-weight:800;font-stretch:112%;letter-spacing:-.02em;font-size:32px;line-height:1}
+.dish-copy .opts{margin:10px 0 10px;font-size:13.5px;color:var(--brass)}
+.dish-copy p{font-size:15px;color:var(--cream-2);max-width:34em}
+
+/* ---------- about ---------- */
+.about{padding:40px var(--pad) 72px;display:grid;gap:30px}
+.about-img{max-width:400px;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+.about-img img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:60% 50%}
+.about p.big{font-weight:500;font-size:23px;line-height:1.36;letter-spacing:-.01em;margin:14px 0 22px}
+
+/* ---------- visit ---------- */
+.visit{background:var(--ink-2);padding:80px var(--pad) 40px;border-top:1px solid var(--line)}
+.visit h2{font-size:clamp(42px,11.2vw,112px);margin:14px 0 10px}
+.visit .addr2{font-size:17px;color:var(--cream-2);margin-bottom:28px}
+.visit-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:34px}
+.btn{display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 18px;font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-stretch:112%;border:1px solid var(--line);transition:background .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease)}
+.btn span{font-stretch:100%;letter-spacing:0}
+.btn.solid{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.btn.solid:hover{background:#fff}
+.btn:not(.solid):hover{border-color:var(--cream)}
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:104px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:15.5px}
+.row .k{padding-top:4px}
+.row a{border-bottom:1px solid var(--line)}
+.row a:hover{border-color:var(--cream)}
+.row .sep{color:var(--cream-3);margin:0 .5em}
+
+/* ---------- footer ---------- */
+.foot{padding:40px var(--pad) calc(var(--bar) + 40px + env(safe-area-inset-bottom));background:var(--ink-2);display:flex;gap:18px;align-items:flex-end}
+.foot .tag{width:54px;flex:none}
+.foot p{font-size:12px;line-height:1.5;color:var(--cream-3)}
+.foot .made{margin-top:8px}
+.foot .made a{color:var(--cream-2);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- sticky action bar (phone) ---------- */
+.actions{position:fixed;z-index:50;left:0;right:0;bottom:0;display:grid;grid-template-columns:1.25fr 1fr 1fr;height:calc(var(--bar) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:rgba(12,8,7,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.actions a{display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-stretch:112%}
+.actions a+a{border-left:1px solid var(--line)}
+.actions a.order{background:var(--brick);color:#fff6ee}
+
+/* ---------- reveal ---------- */
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+
+@media (min-width:600px){
+  /* old fashioned: their real photo at card size */
+  .of{height:auto;min-height:100vh;display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:40px;padding:110px var(--pad) 90px;background:#070504}
+  .of-media,  .of-copy{padding:0}
+  .of-copy .lnk{margin-top:34px;display:inline-flex}
+  .of-copy h2{font-size:clamp(88px,8.6vw,150px)}
+  .of-real{display:block;justify-self:center;width:400px;max-width:100%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 80%,transparent 100%),linear-gradient(180deg,transparent 0,#000 34%,#000 70%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 80%,transparent 100%),linear-gradient(180deg,transparent 0,#000 34%,#000 70%,transparent 100%);mask-composite:intersect}
+  .of-real img{width:400px;height:400px;object-fit:cover}
+
+}
+@media (min-width:600px) and (max-width:899px){
+  .of{grid-template-columns:1fr minmax(0,320px);padding:72px var(--pad) calc(var(--bar) + 48px)}
+  .of-copy h2{font-size:clamp(48px,8vw,80px)}
+  .of-real,.of-real img{width:320px;height:auto}
+}
+/* =========================================================
+   LAPTOP / DESKTOP
+   ========================================================= */
+@media (min-width:900px){
+  :root{--pad:56px}
+  .nav{height:96px}
+  .tag{width:84px;padding:13px 10px 12px}
+  .nav-r{height:88px;gap:30px}
+  .nav-r .wide{display:inline}
+  .nav-r .btn{display:flex;height:44px;padding:0 18px;gap:14px}
+  .nav-r .btn.order{background:var(--brick);border-color:var(--brick);color:#fff6ee}
+  .nav-r .btn.order:hover{background:var(--brick-hi)}
+  .actions{display:none}
+  .concept-note{right:14px;top:120px;font-size:10px}
+
+  .hero-img{object-position:50% 40%}
+  .hero::after{background:
+    linear-gradient(270deg,rgba(12,8,7,.94) 0%,rgba(12,8,7,.78) 30%,rgba(12,8,7,.25) 50%,rgba(12,8,7,0) 62%),
+    linear-gradient(180deg,rgba(12,8,7,.55) 0%,rgba(12,8,7,0) 18%,rgba(12,8,7,0) 60%,rgba(12,8,7,.55) 90%,rgba(12,8,7,.9) 100%)}
+  .hero-copy{bottom:60px;left:auto;right:var(--pad)}
+  .lamp .hero-copy{left:var(--pad);right:auto;max-width:52vw}
+  .lamp-stage{left:auto;right:7vw;width:calc(min(100vh,100svh) * .5625);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
+  .lamp::after{background:linear-gradient(180deg,rgba(5,3,3,.5) 0%,rgba(5,3,3,0) 16%,rgba(5,3,3,0) 70%,rgba(5,3,3,.7) 100%)}
+      .hero-title{margin:18px 0 24px}
+  .hero-title .l1{font-size:clamp(52px,4.6vw,84px)}
+  .hero-title .l2{font-size:clamp(180px,16.4vw,290px)}
+  .hero-meta{font-size:15px}
+  .lap-only{display:inline}
+
+  .bar{display:grid;grid-template-columns:minmax(280px,400px) 1fr;column-gap:clamp(56px,6vw,88px);padding:120px var(--pad) 80px;align-items:start}
+  .bar-head{grid-column:1/-1;padding:0;margin-bottom:40px}
+  .bar-photo{grid-column:1;grid-row:2 / span 3;margin:0;position:sticky;top:120px}
+  .pours{grid-column:2;padding:0}
+  .pours .n{font-size:30px}
+  .pours .p{font-size:17px}
+  .pours li{padding:20px 0 18px}
+  .night{grid-column:2;margin:36px 0 0;display:grid;grid-template-columns:1fr auto;align-items:end;column-gap:24px}
+  .night .k{grid-column:1/-1}
+  .night p{font-size:30px;margin-bottom:0}
+  .more-pours{grid-column:2;padding:30px 0 0;grid-template-columns:1fr 1fr}
+  .quote{grid-column:1/-1;padding:110px 0 0;max-width:1080px}
+  .quote blockquote{font-size:40px;line-height:1.22}
+  .bar-foot{grid-column:1/-1;padding:30px 0 0}
+
+  .spread{display:grid;grid-template-columns:minmax(420px,.9fr) 1.1fr;min-height:100vh;padding:0;align-items:center}
+  .spread-media{grid-column:2;grid-row:1;height:100vh;max-height:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)}
+  .spread-media img{transform:none}
+  .spread-copy{grid-column:1;grid-row:1;margin:0;padding:80px 0 80px var(--pad)}
+  .spread-copy h2{font-size:clamp(64px,6vw,104px)}
+
+  .interlude{height:78vh}
+  .interlude figcaption{bottom:24px;font-size:13px}
+  .kitchen{padding:90px var(--pad) 40px}
+  .kitchen-head{padding:0;margin-bottom:56px}
+  .dishes{display:grid;grid-template-columns:repeat(3,minmax(0,400px));justify-content:space-between;gap:48px}
+  .dish:nth-child(2){margin-top:120px}
+  .dish:nth-child(3){margin-top:48px}
+  .dish:nth-child(2) .dish-img,.dish:nth-child(3) .dish-img{margin:0;width:auto}
+  .dish-img.wide{max-width:400px}
+  .dish-img.wide img{aspect-ratio:1/1}
+  .dish-copy{padding:0}
+  .dish:hover .dish-img img{transform:scale(1.035)}
+
+  .about{grid-template-columns:minmax(280px,400px) 1fr;gap:clamp(56px,6vw,88px);align-items:center;padding:80px var(--pad) 120px}
+  .about p.big{font-size:34px;line-height:1.28;max-width:24em}
+
+  .visit{display:grid;grid-template-columns:1.2fr 1fr;column-gap:88px;padding:120px var(--pad) 80px;align-items:start}
+  .visit h2{font-size:clamp(64px,6.4vw,112px)}
+  .visit-btns{max-width:520px}
+  .visit .rows{grid-column:2;grid-row:1 / span 4;margin-top:40px}
+  .row{grid-template-columns:150px 1fr;font-size:17px;padding:20px 0}
+  .foot{padding:40px var(--pad) 48px}
+}
+@media (min-width:900px) and (max-height:760px){
+  .hero-title .l2{font-size:clamp(150px,13.5vw,240px)}
+}
+@media (max-width:899px) and (max-height:520px){
+  .hero{min-height:0}
+  .hero-title{margin:8px 0 10px}
+  .hero-title .l1{font-size:30px}
+  .hero-title .l2{font-size:clamp(64px,21vh,110px)}
+  .hero-copy{bottom:calc(var(--bar) + 14px)}
+  .concept-note{display:none}
+  .spread-media{max-height:none;height:60vw}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-img{animation:none}
+  .js .rv{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="tag" href="#top" aria-label="Bara Nepalese Restaurant and Bar, home"><img src="/lab/bara/img/logo.png" alt="Bara, Newari Kitchen" width="500" height="500"></a>
+  <nav class="nav-r" aria-label="Main">
+    <a href="#food">Menu</a>
+    <a class="wide" href="#drinks">Drinks</a>
+    <a class="wide" href="#food">Food</a>
+    <a class="wide" href="#visit">Visit</a>
+    <a href="tel:+16825036223" class="res">Call</a>
+    <a class="btn order" href="#order">Order <span>&rarr;</span></a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- 1. The room at night -->
+  <div class="lamp-track">
+  <section class="hero lamp" aria-label="Bara">
+    <div class="lamp-stage">
+      <img class="lamp-img" src="/lab/bara/frames/lamp/f000.jpg" alt="Bara's carved brass lamp with its ring of leaf-shaped pendants" width="768" height="1376">
+      <canvas class="lamp-cv" aria-hidden="true"></canvas>
+    </div>
+    <div class="hero-copy">
+      <p class="k">Nepalese Restaurant &amp; Bar</p>
+      <h1 class="hero-title d" id="lamp-title"><span class="l1">Open till</span><span class="l2">2&thinsp;AM</span></h1>
+      <div class="hero-meta">
+        <span class="status" id="status"><i></i><span>4 PM to 2 AM</span></span>
+        <span>1201 W Airport Freeway</span>
+        <a class="lap-only" href="tel:+16825036223">(682) 503-6223</a>
+      </div>
+    </div>
+    <p class="concept-note">Redesign concept by Milan Khanal &middot; not the official site</p>
+  </section>
+  </div>
+
+  <!-- 2. The Newari Old Fashioned -->
+  <section class="of" id="drinks" aria-label="Newari Old Fashioned">
+    <div class="of-copy rv">
+      <p class="k">Signature cocktail</p>
+      <h2 class="d">Newari Old Fashioned</h2>
+      <div class="of-price num"><b>14.99</b></div>
+      <a class="lnk of-lnk" href="#bar">All signature cocktails <span>&darr;</span></a>
+    </div>
+    <figure class="of-real rv">
+      <img src="/lab/bara/img/old-fashioned.jpg" alt="The Newari Old Fashioned, orange peel and cherry pick in the glass" width="800" height="800" loading="lazy">
+    </figure>
+  </section>
+
+  <!-- 3. The cocktail list -->
+  <section class="bar" id="bar" aria-label="Signature cocktails">
+    <div class="bar-head rv">
+      <p class="k">Signature cocktails</p>
+      <h2 class="d">The bar</h2>
+    </div>
+    <figure class="bar-photo rv">
+      <img src="/lab/bara/img/cocktails-counter.jpg" alt="Bara's signature cocktails lined up on the bar" width="800" height="800" loading="lazy">
+    </figure>
+    <ul class="pours num rv">
+      <li class="star"><span class="n">Newari Old Fashioned</span><span class="p">14.99</span></li>
+      <li><span class="n">Kathmandu Driver</span><span class="p">13.99</span></li>
+      <li><span class="n">Mango Pasa</span><span class="p">13.00</span></li>
+      <li><span class="n">Titaura Soaltee</span><span class="p">12.99</span></li>
+      <li><span class="n">Bara Margarita</span><span class="p">12.99</span></li>
+      <li><span class="n">Passion Fruit Mule</span><span class="p">12.00</span></li>
+      <li><span class="n">Imli Bomb</span><span class="p">12.00</span></li>
+      <li><span class="n">Khukri Rum Toddy</span><span class="p">11.00</span></li>
+    </ul>
+    <div class="night rv">
+      <p class="k">Wednesday</p>
+      <p>Cocktail night! All cocktails are $10</p>
+      <small class="num">04:00 PM - 02:00 AM</small>
+    </div>
+    <div class="more-pours rv">
+      <div><span class="k dim">Draft beer</span><span class="num">Deep&nbsp;Ellum&nbsp;IPA&nbsp;8 &middot; Stella&nbsp;7 &middot; Dos&nbsp;Equis&nbsp;7 &middot; Miller&nbsp;Lite&nbsp;6</span></div>
+      <div><span class="k dim">From Nepal</span><span class="num">Khukri Rum 8</span></div>
+    </div>
+    <div class="quote rv">
+      <blockquote>&ldquo;Much needed Newari/Nepali restaurant in town! Great food, interesting seating choices, cozy atmosphere and personable service. Don't forget to try this original cocktail!&rdquo;</blockquote>
+      <cite class="k dim">Miglena M. &middot; Google review</cite>
+    </div>
+    
+  </section>
+
+  <!-- 4. The Newari spread -->
+  <section class="spread" id="food" aria-label="Bara Khaja Set Platter">
+    <div class="spread-media">
+      <img src="/lab/bara/img/spread.jpg" alt="A Newari spread from above: beaten rice with black soybeans in the center, bara, peanuts, green soybeans, potato curry and meat dishes around it" width="2880" height="2880" loading="lazy">
+    </div>
+    <div class="spread-copy rv">
+      <p class="k">Bara Newari Platter Set &middot; for groups larger than 4</p>
+      <h2 class="d">Bara Khaja Set Platter</h2>
+      <div class="spread-price num"><b>39.99</b><span>11 traditional Newari items</span></div>
+      <ol class="eleven">
+        <li><em>01</em>Chiura</li>
+        <li><em>02</em>Peanuts</li>
+        <li><em>03</em>Your choice of Meat</li>
+        <li><em>04</em>Piro Jhol Aloo</li>
+        <li><em>05</em>Wau Musya</li>
+        <li><em>06</em>Your choice of Chwela</li>
+        <li><em>07</em>Chula</li>
+        <li><em>08</em>Bara</li>
+        <li><em>09</em>Bodi</li>
+        <li><em>10</em>Dyakula</li>
+        <li><em>11</em>Aloo Tama</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Kitchen -->
+  <figure class="interlude" aria-label="Buff Aloo">
+    <img src="/lab/bara/img/buff-aloo-wide.jpg" alt="Buff Aloo up close: fried potatoes and spiced buff with long ribbons of green onion" width="2000" height="1335" loading="lazy">
+    <figcaption class="num"><b>Buff Aloo</b> 15.99</figcaption>
+  </figure>
+
+  <section class="kitchen" aria-label="From the kitchen">
+    <div class="kitchen-head rv">
+      <p class="k">Newari &amp; Nepali kitchen</p>
+      <h2 class="d">From the kitchen</h2>
+    </div>
+    <div class="dishes">
+      <article class="dish rv">
+        <div class="dish-img wide"><img src="/lab/bara/img/taas.jpg" alt="Mutton Taas on a brass plate with onions, lemon, carrot, cucumber and radish" width="1428" height="953" loading="lazy"></div>
+        <div class="dish-copy">
+          <h3>Taas</h3>
+          <p class="opts num">Mutton 12.99 &middot; Pork 11.99</p>
+          <p>Nepali spice mix marinated meat cut in cubes, pan fried with sliced onions and spices.</p>
+        </div>
+      </article>
+      <article class="dish rv">
+        <div class="dish-img"><img src="/lab/bara/img/chhwela.jpg" alt="Chicken Chhwela on a brass plate" width="800" height="800" loading="lazy"></div>
+        <div class="dish-copy">
+          <h3>Chhwela</h3>
+          <p class="opts num">Chicken 10.99 &middot; Buff 14.99 &middot; Mushroom 9.99</p>
+          <p>A traditional Newari dish, Chhwela features charred grilled meat, that is seasoned with a blend of spices, garlic, and herbs and then tempered with hot mustard oil.</p>
+        </div>
+      </article>
+      <article class="dish rv">
+        <div class="dish-img"><img src="/lab/bara/img/sadeko-momo.jpg" alt="Sadheko momo up close, dressed in spices, onion and cilantro" width="800" height="800" loading="lazy"></div>
+        <div class="dish-copy">
+          <h3>Momo</h3>
+          <p class="opts num">Sadheko: Chicken, Veggie or Pork 13.99</p>
+          <p>Delightful Nepali dumplings filled with spiced minced meat. Served with a tangy in-house dipping sauce, they are a must-try for a taste of Himalayan cuisine!</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 6. About, in their words -->
+  <section class="about" aria-label="About Bara">
+    <div class="about-img rv"><img src="/lab/bara/img/lamp.jpg" alt="One of Bara's carved lamps, lit, with the red mural behind it" width="800" height="800" loading="lazy"></div>
+    <div class="rv">
+      <p class="k">About</p>
+      <p class="big">Born out of a dream to bring the warmth of Newa culture to Dallas, The Bara is more than just a restaurant; it's a celebration of tradition and a journey through the culinary wonders of Nepal.</p>
+    </div>
+  </section>
+
+  <!-- 7. Visit -->
+  <section class="visit" id="visit" aria-label="Visit">
+    <p class="k rv">Visit</p>
+    <h2 class="d rv">1201 W Airport Freeway</h2>
+    <p class="addr2 rv">Suite 115, Euless, TX 76040</p>
+    <div class="visit-btns rv">
+      <a class="btn solid" href="https://www.google.com/maps/dir/?api=1&amp;destination=Bara%20Nepalese%20Restaurant%20and%20Bar&amp;destination_place_id=ChIJr2S3mq5_ToYRv71zie0Y9Qo" target="_blank" rel="noopener">Directions <span>&rarr;</span></a>
+      <a class="btn" href="tel:+16825036223">Call <span>&rarr;</span></a>
+    </div>
+    <div class="rows rv" id="order">
+      <div class="row"><span class="k dim">Hours</span><span class="num">4 PM to 2 AM</span></div>
+      <div class="row"><span class="k dim">Call</span><a class="num" href="tel:+16825036223">(682) 503-6223</a></div>
+      <div class="row"><span class="k dim">Order</span><span><a href="https://www.doordash.com/store/bara-euless-25284648/" target="_blank" rel="noopener">DoorDash</a><span class="sep">/</span><a href="https://www.ubereats.com/store/bara-nepalese-restaurant-and-bar/qmitOcClT6iuZBZdfGke5g" target="_blank" rel="noopener">Uber Eats</a></span></div>
+      <div class="row"><span class="k dim">Events</span><span>Parties<span class="sep">/</span>Catering</span></div>
+      <div class="row"><span class="k dim">Follow</span><span><a href="https://www.instagram.com/bara_restaurant" target="_blank" rel="noopener">Instagram</a><span class="sep">/</span><a href="https://www.facebook.com/107451188786311" target="_blank" rel="noopener">Facebook</a></span></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span class="tag"><img src="/lab/bara/img/logo.png" alt="Bara, Newari Kitchen" width="500" height="500"></span>
+    <div><p>Redesign concept for Bara Nepalese Restaurant &amp; Bar. Not the official website. Photos, menu and words are Bara's own. Some concept images are edited from Bara's photos.</p>
+    <p class="made"><a href="https://milankhanal.com/lab">Redesign concept by Milan Khanal</a></p></div>
+  </footer>
+</main>
+
+<nav class="actions" aria-label="Quick actions">
+  <a class="order" href="#order">Order</a>
+  <a href="tel:+16825036223">Call</a>
+  <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Bara%20Nepalese%20Restaurant%20and%20Bar&amp;destination_place_id=ChIJr2S3mq5_ToYRv71zie0Y9Qo" target="_blank" rel="noopener">Directions</a>
+</nav>
+
+<script>
+document.documentElement.classList.add('js');
+function isOpenNow(){try{var h=+new Intl.DateTimeFormat('en-US',{hour:'numeric',hour12:false,timeZone:'America/Chicago'}).format(new Date());return h>=16||h<2}catch(e){return true}}
+// Open-now status, Dallas time. Hours as printed on Bara's site: 4 PM to 2 AM.
+(function(){
+  var el=document.getElementById('status'); if(!el) return;
+  try{
+    var h=+new Intl.DateTimeFormat('en-US',{hour:'numeric',hour12:false,timeZone:'America/Chicago'}).format(new Date());
+    var open=(h>=16||h<2);
+    el.querySelector('span').textContent=open?'Open now · till 2 AM':'Opens at 4 PM';
+    if(!open) el.classList.add('closed');
+  }catch(e){}
+})();
+// Nav: clear over the hero, tucks away while scrolling down, returns (solid) on the way up
+(function(){
+  var nav=document.getElementById('nav'),last=window.scrollY;
+  var track=document.querySelector('.lamp-track');
+  function t(){var y=window.scrollY,end=track?track.offsetHeight-window.innerHeight*.4:window.innerHeight*.6;nav.classList.toggle('solid',y>end);nav.classList.toggle('hide',y>last&&y>140);last=y}
+  window.addEventListener('scroll',t,{passive:true}); t();
+})();
+// The lamp. Frames cut from a clip made from Bara's own lamp photo: bulb off to on (the
+// filament warms, flickers, then full light). The first scroll warms it on while the hero holds
+// still; if the visitor lingers at the top without scrolling, it comes on by itself. The
+// headline says Open till 2 AM or Opens at 4 PM from the Dallas clock. Frames are decoded
+// before use and the canvas repaints only when the picture changes.
+(function(){
+  var track=document.querySelector('.lamp-track'),stage=document.querySelector('.lamp-stage'),cv=document.querySelector('.lamp-cv'),hero=document.querySelector('.lamp');
+  var title=document.getElementById('lamp-title');
+  if(!track||!cv) return;
+  var N=2,FPS=1.4,ON=1; // ON: the frame where the light is fully up
+  var open=isOpenNow();
+  title.innerHTML=open?'<span class="l1">Open till</span><span class="l2">2&thinsp;AM</span>':'<span class="l1">Opens at</span><span class="l2">4&thinsp;PM</span>';
+  var frames=new Array(N),ctx=cv.getContext('2d'),dpr=1,w=0,h=0,dirty=true,shown=-1,pos=0,auto=0,autoT0=0,autoRun=false,scrolled=false;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    track.classList.add('static');document.querySelector('.lamp-img').src='/lab/bara/frames/lamp/f'+String(ON).padStart(3,'0')+'.jpg';hero.style.setProperty('--lit','1');cv.remove();return;
+  }
+  function src(i){return '/lab/bara/frames/lamp/f'+String(i).padStart(3,'0')+'.jpg'}
+  function load(i){return new Promise(function(res){var im=new Image();im.decoding='async';
+    im.onload=function(){(im.decode?im.decode().catch(function(){}):Promise.resolve()).then(function(){frames[i]=im;dirty=true;res()})};
+    im.onerror=function(){res()};im.src=src(i)})}
+  var q=[];for(var i=0;i<N;i++)q.push(i);
+  var ready=Promise.all([0,1,2,3].map(function(){return (function next(){if(!q.length)return Promise.resolve();return load(q.shift()).then(next)})()}));
+  function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=cv.clientWidth;h=cv.clientHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);dirty=true}
+  resize();
+  if('ResizeObserver' in window) new ResizeObserver(function(){if(cv.clientWidth!==w||cv.clientHeight!==h)resize()}).observe(cv);
+  window.addEventListener('resize',resize);
+  window.addEventListener('scroll',function(){if(window.scrollY>4)scrolled=true},{passive:true});
+  function put(im,a){var s=Math.max(w/im.width,h/im.height),dw=im.width*s,dh=im.height*s;ctx.globalAlpha=a;ctx.drawImage(im,(w-dw)*.5,(h-dh)*.18,dw,dh)}
+  function progress(){var r=track.getBoundingClientRect(),total=track.offsetHeight-window.innerHeight;return total>0?Math.min(1,Math.max(0,-r.top/total)):1}
+  function nearest(i){if(frames[i])return i;for(var d=1;d<N;d++){if(i-d>=0&&frames[i-d])return i-d;if(i+d<N&&frames[i+d])return i+d}return -1}
+  function tick(now){
+    // scroll: the first 70% of the held stretch runs the light up, the rest holds it on
+    var sp=Math.min(1,progress()/.7)*ON;
+    if(autoRun){auto=Math.min(ON,(now-autoT0)/1000*FPS)}
+    var want=Math.max(sp,auto);pos+=(want-pos)*.35;if(Math.abs(want-pos)<.01)pos=want;
+    var i0=Math.floor(pos),i1=Math.min(i0+1,N-1),f=pos-i0,key=Math.round(pos*8),a=nearest(i0);
+    if(a>=0&&(key!==shown||dirty)){
+      ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);put(frames[a],1);
+      if(a===i0&&frames[i1]&&i1!==i0&&f>.05)put(frames[i1],f);ctx.globalAlpha=1;shown=key;dirty=false;
+      hero.style.setProperty('--lit',Math.min(1,pos/ON).toFixed(3));
+    }
+    requestAnimationFrame(tick)}
+  ready.then(function(){
+    requestAnimationFrame(tick);
+    // lingering at the top: the lamp comes on by itself
+    setTimeout(function(){if(!scrolled&&progress()<.02){autoRun=true;autoT0=performance.now()}},2200);
+  });
+})();
+// Reveal on scroll
+(function(){
+  var els=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});
+  els.forEach(function(e){io.observe(e)});
+})();
+</script>
+</body>
+</html>
