@@ -6,7 +6,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:title" content="Bara Nepalese Restaurant &amp; Bar (redesign concept)">
 <meta property="og:description" content="Redesign concept for Bara Nepalese Restaurant &amp; Bar in Euless, TX. Not the official site.">
-<meta property="og:image" content="https://milankhanal.com/lab/bara/frames/room/f023.jpg">
+<meta property="og:image" content="https://milankhanal.com/lab/bara/frames/lamp/f001.jpg">
 <meta property="og:url" content="https://milankhanal.com/lab/bara">
 <meta name="robots" content="noindex, nofollow">
 <title>Bara Nepalese Restaurant & Bar | Euless, TX (redesign concept)</title>
@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="/lab/bara/frames/room/f000.jpg">
+<link rel="preload" as="image" href="/lab/bara/frames/lamp/f000.jpg">
 <style>
 :root{
   --ink:#0c0807;
@@ -65,16 +65,25 @@ a{color:inherit;text-decoration:none}
 .nav-r .btn{display:none}
 
 /* ---------- hero ---------- */
-/* The room as a clock: the hero holds still while scroll runs the light from 4 PM to 2 AM. */
-.hero-track{position:relative;height:300vh;height:300svh}
-.hero-track.static{height:auto}
-.hero{position:sticky;top:0;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:var(--ink)}
-.hero-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hero-title{display:grid}
-.hero-title .t{grid-area:1/1;will-change:opacity,transform}
-.hero-title .t-close{opacity:0}
-.hero-track.static .hero-title .t-open{display:none}
-.hero-track.static .hero-title .t-close{opacity:1}
+/* The lamp is the open sign: it switches on when Bara is open, and a tap switches it on or off. */
+/* The first scroll warms the lamp on; the hero holds still while it does, then the page moves on. */
+.lamp-track{position:relative;height:190vh;height:190svh}
+.lamp-track.static{height:auto}
+.hero{position:sticky;top:0;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:#050303}
+.lamp{--lit:.55}
+.lamp-stage{position:absolute;inset:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.lamp-img,.lamp-cv{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:50% 18%}
+.lamp::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,3,3,.55) 0%,rgba(5,3,3,0) 16%,rgba(5,3,3,0) 58%,rgba(5,3,3,.8) 80%,#050303 100%)}
+.lamp .hero-copy{opacity:calc(.5 + var(--lit)*.5);transition:opacity .2s linear}
+@media (max-width:899px){
+  /* phones and tablets: the lamp in the top three-quarters, fading at its edges, words below it */
+  .lamp-stage{inset:0 auto auto 50%;height:76%;width:auto;aspect-ratio:9/16;max-width:100%;transform:translateX(-50%);
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%),linear-gradient(180deg,#000 72%,transparent 100%);-webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%),linear-gradient(180deg,#000 72%,transparent 100%);mask-composite:intersect}
+    .lamp .hero-title .l1{font-size:clamp(30px,8.4vw,64px)}
+  .lamp .hero-title .l2{font-size:clamp(88px,25vw,190px)}
+  .lamp .hero-title{margin:10px 0 14px}
+}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:54% 50%;transform-origin:50% 40%;animation:settle 3.2s var(--ease) both}
 @keyframes settle{from{transform:scale(1.07);opacity:.2}to{transform:scale(1);opacity:1}}
 .hero::after{content:"";position:absolute;inset:0;background:
@@ -235,7 +244,10 @@ a{color:inherit;text-decoration:none}
     linear-gradient(270deg,rgba(12,8,7,.94) 0%,rgba(12,8,7,.78) 30%,rgba(12,8,7,.25) 50%,rgba(12,8,7,0) 62%),
     linear-gradient(180deg,rgba(12,8,7,.55) 0%,rgba(12,8,7,0) 18%,rgba(12,8,7,0) 60%,rgba(12,8,7,.55) 90%,rgba(12,8,7,.9) 100%)}
   .hero-copy{bottom:60px;left:auto;right:var(--pad)}
-    .hero-title{margin:18px 0 24px}
+  .lamp .hero-copy{left:var(--pad);right:auto;max-width:52vw}
+  .lamp-stage{left:auto;right:7vw;width:calc(min(100vh,100svh) * .5625);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
+  .lamp::after{background:linear-gradient(180deg,rgba(5,3,3,.5) 0%,rgba(5,3,3,0) 16%,rgba(5,3,3,0) 70%,rgba(5,3,3,.7) 100%)}
+      .hero-title{margin:18px 0 24px}
   .hero-title .l1{font-size:clamp(52px,4.6vw,84px)}
   .hero-title .l2{font-size:clamp(180px,16.4vw,290px)}
   .hero-meta{font-size:15px}
@@ -320,13 +332,15 @@ a{color:inherit;text-decoration:none}
 <main id="top">
 
   <!-- 1. The room at night -->
-  <div class="hero-track">
-  <section class="hero" aria-label="Bara">
-    <img class="hero-img" src="/lab/bara/frames/room/f000.jpg" alt="Bara's dining room: the Kathmandu skyline mural, brass lamps and floor seating with red cushions" width="1152" height="648">
-    <canvas class="hero-cv" aria-hidden="true"></canvas>
+  <div class="lamp-track">
+  <section class="hero lamp" aria-label="Bara">
+    <div class="lamp-stage">
+      <img class="lamp-img" src="/lab/bara/frames/lamp/f000.jpg" alt="Bara's carved brass lamp with its ring of leaf-shaped pendants" width="768" height="1376">
+      <canvas class="lamp-cv" aria-hidden="true"></canvas>
+    </div>
     <div class="hero-copy">
       <p class="k">Nepalese Restaurant &amp; Bar</p>
-      <h1 class="hero-title d" aria-label="Open 4 PM to 2 AM"><span class="t t-open" aria-hidden="true"><span class="l1">Opens at</span><span class="l2">4&thinsp;PM</span></span><span class="t t-close" aria-hidden="true"><span class="l1">Open till</span><span class="l2">2&thinsp;AM</span></span></h1>
+      <h1 class="hero-title d" id="lamp-title"><span class="l1">Open till</span><span class="l2">2&thinsp;AM</span></h1>
       <div class="hero-meta">
         <span class="status" id="status"><i></i><span>4 PM to 2 AM</span></span>
         <span>1201 W Airport Freeway</span>
@@ -490,6 +504,7 @@ a{color:inherit;text-decoration:none}
 
 <script>
 document.documentElement.classList.add('js');
+function isOpenNow(){try{var h=+new Intl.DateTimeFormat('en-US',{hour:'numeric',hour12:false,timeZone:'America/Chicago'}).format(new Date());return h>=16||h<2}catch(e){return true}}
 // Open-now status, Dallas time. Hours as printed on Bara's site: 4 PM to 2 AM.
 (function(){
   var el=document.getElementById('status'); if(!el) return;
@@ -503,51 +518,57 @@ document.documentElement.classList.add('js');
 // Nav: clear over the hero, tucks away while scrolling down, returns (solid) on the way up
 (function(){
   var nav=document.getElementById('nav'),last=window.scrollY;
-  var track=document.querySelector('.hero-track');
+  var track=document.querySelector('.lamp-track');
   function t(){var y=window.scrollY,end=track?track.offsetHeight-window.innerHeight*.4:window.innerHeight*.6;nav.classList.toggle('solid',y>end);nav.classList.toggle('hide',y>last&&y>140);last=y}
   window.addEventListener('scroll',t,{passive:true}); t();
 })();
-// The room as a clock. 24 frames cut from two clips made from Bara's own photo:
-// 4 PM (lamps and red backlight off) to evening (their real photo) to 2 AM. Scroll picks
-// the frame; neighbouring frames are blended so the light moves smoothly. Frames are
-// decoded before use and the canvas repaints only when the picture changes.
+// The lamp. Frames cut from a clip made from Bara's own lamp photo: bulb off to on (the
+// filament warms, flickers, then full light). The first scroll warms it on while the hero holds
+// still; if the visitor lingers at the top without scrolling, it comes on by itself. The
+// headline says Open till 2 AM or Opens at 4 PM from the Dallas clock. Frames are decoded
+// before use and the canvas repaints only when the picture changes.
 (function(){
-  var track=document.querySelector('.hero-track'),cv=document.querySelector('.hero-cv'),img=document.querySelector('.hero-img');
-  var tOpen=document.querySelector('.t-open'),tClose=document.querySelector('.t-close');
+  var track=document.querySelector('.lamp-track'),stage=document.querySelector('.lamp-stage'),cv=document.querySelector('.lamp-cv'),hero=document.querySelector('.lamp');
+  var title=document.getElementById('lamp-title');
   if(!track||!cv) return;
+  var N=2,FPS=1.4,ON=1; // ON: the frame where the light is fully up
+  var open=isOpenNow();
+  title.innerHTML=open?'<span class="l1">Open till</span><span class="l2">2&thinsp;AM</span>':'<span class="l1">Opens at</span><span class="l2">4&thinsp;PM</span>';
+  var frames=new Array(N),ctx=cv.getContext('2d'),dpr=1,w=0,h=0,dirty=true,shown=-1,pos=0,auto=0,autoT0=0,autoRun=false,scrolled=false;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    track.classList.add('static'); img.src='/lab/bara/img/room.jpg'; cv.remove(); return;
+    track.classList.add('static');document.querySelector('.lamp-img').src='/lab/bara/frames/lamp/f'+String(ON).padStart(3,'0')+'.jpg';hero.style.setProperty('--lit','1');cv.remove();return;
   }
-  var N=24,frames=new Array(N),ctx=cv.getContext('2d'),dpr=1,w=0,h=0,dirty=true,shown=-1,p=0;
-  function src(i){return '/lab/bara/frames/room/f'+String(i).padStart(3,'0')+'.jpg'}
+  function src(i){return '/lab/bara/frames/lamp/f'+String(i).padStart(3,'0')+'.jpg'}
   function load(i){return new Promise(function(res){var im=new Image();im.decoding='async';
     im.onload=function(){(im.decode?im.decode().catch(function(){}):Promise.resolve()).then(function(){frames[i]=im;dirty=true;res()})};
     im.onerror=function(){res()};im.src=src(i)})}
-  var order=[0,N-1],seen={};seen[0]=seen[N-1]=1;
-  [8,4,2,1].forEach(function(st){for(var i=0;i<N;i+=st){if(!seen[i]){seen[i]=1;order.push(i)}}});
-  (function run(){var q=order.slice();var workers=[];for(var k=0;k<4;k++){workers.push((function next(){if(!q.length)return Promise.resolve();return load(q.shift()).then(next)})())}})();
+  var q=[];for(var i=0;i<N;i++)q.push(i);
+  var ready=Promise.all([0,1,2,3].map(function(){return (function next(){if(!q.length)return Promise.resolve();return load(q.shift()).then(next)})()}));
   function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=cv.clientWidth;h=cv.clientHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);dirty=true}
   resize();
   if('ResizeObserver' in window) new ResizeObserver(function(){if(cv.clientWidth!==w||cv.clientHeight!==h)resize()}).observe(cv);
   window.addEventListener('resize',resize);
+  window.addEventListener('scroll',function(){if(window.scrollY>4)scrolled=true},{passive:true});
+  function put(im,a){var s=Math.max(w/im.width,h/im.height),dw=im.width*s,dh=im.height*s;ctx.globalAlpha=a;ctx.drawImage(im,(w-dw)*.5,(h-dh)*.18,dw,dh)}
+  function progress(){var r=track.getBoundingClientRect(),total=track.offsetHeight-window.innerHeight;return total>0?Math.min(1,Math.max(0,-r.top/total)):1}
   function nearest(i){if(frames[i])return i;for(var d=1;d<N;d++){if(i-d>=0&&frames[i-d])return i-d;if(i+d<N&&frames[i+d])return i+d}return -1}
-  function put(im,a){var wide=window.innerWidth>=900,s=Math.max(w/im.width,h/im.height),dw=im.width*s,dh=im.height*s;
-    ctx.globalAlpha=a;ctx.drawImage(im,(w-dw)*(wide?.5:.54),(h-dh)*(wide?.4:.5),dw,dh)}
-  function ss(a,b,x){x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x)}
-  function target(){var r=track.getBoundingClientRect(),total=track.offsetHeight-window.innerHeight;return total>0?Math.min(1,Math.max(0,-r.top/total)):0}
-  function tick(){
-    var t=target();p+=(t-p)*.2;if(Math.abs(t-p)<.0004)p=t;
-    var pos=p*(N-1),key=Math.round(pos*48);
-    if(key!==shown||dirty){
-      var i0=Math.floor(pos),i1=Math.min(i0+1,N-1),f=pos-i0,a=nearest(i0);
-      if(a>=0){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);put(frames[a],1);
-        if(a===i0&&frames[i1]&&i1!==i0&&f>.02)put(frames[i1],f);ctx.globalAlpha=1;shown=key;dirty=false}
-      var o1=1-ss(.3,.5,p),o2=ss(.62,.85,p);
-      tOpen.style.opacity=o1;tOpen.style.transform='translateY('+(-(1-o1)*18)+'px)';
-      tClose.style.opacity=o2;tClose.style.transform='translateY('+((1-o2)*18)+'px)';
+  function tick(now){
+    // scroll: the first 70% of the held stretch runs the light up, the rest holds it on
+    var sp=Math.min(1,progress()/.7)*ON;
+    if(autoRun){auto=Math.min(ON,(now-autoT0)/1000*FPS)}
+    var want=Math.max(sp,auto);pos+=(want-pos)*.35;if(Math.abs(want-pos)<.01)pos=want;
+    var i0=Math.floor(pos),i1=Math.min(i0+1,N-1),f=pos-i0,key=Math.round(pos*8),a=nearest(i0);
+    if(a>=0&&(key!==shown||dirty)){
+      ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);put(frames[a],1);
+      if(a===i0&&frames[i1]&&i1!==i0&&f>.05)put(frames[i1],f);ctx.globalAlpha=1;shown=key;dirty=false;
+      hero.style.setProperty('--lit',Math.min(1,pos/ON).toFixed(3));
     }
     requestAnimationFrame(tick)}
-  requestAnimationFrame(tick);
+  ready.then(function(){
+    requestAnimationFrame(tick);
+    // lingering at the top: the lamp comes on by itself
+    setTimeout(function(){if(!scrolled&&progress()<.02){autoRun=true;autoT0=performance.now()}},2200);
+  });
 })();
 // Reveal on scroll
 (function(){
