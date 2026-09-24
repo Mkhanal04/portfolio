@@ -139,3 +139,33 @@
     .facts .k { margin-top: 10px; }
     .grid.three { grid-template-columns: 1fr; }
   }
+
+  /* lab: site pilots, phone-shaped previews */
+  .card.pilot { flex-direction: row; gap: 20px; align-items: stretch; }
+  .card.pilot .clip { flex: 0 0 150px; display: block; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden; background: #000; border: 1px solid var(--rule); }
+  .card.pilot video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card.pilot .body { display: flex; flex-direction: column; gap: 8px; }
+  .card.pilot .body .more { margin-top: auto; }
+  .card .row .mono { white-space: nowrap; }
+
+  @media (max-width: 900px) {
+    .card img { aspect-ratio: auto; }
+    .card .row { flex-wrap: wrap; row-gap: 2px; }
+    .grid.three .card img { height: auto; }
+    .card.pilot .clip { flex-basis: 132px; }
+    .grid.three.pilots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  /* phones: one compact header, hero actions on the first screen */
+  @media (max-width: 600px) {
+    .nav .wrap { gap: 6px 10px; min-height: 0; padding-top: 8px; padding-bottom: 6px; }
+    .nav .name { font-size: 18px; }
+    .nav .right { gap: 4px; }
+    .nav .right .btn.small { height: 40px; padding: 0 12px; font-size: 14px; }
+    .nav .right .btn.quiet { padding: 0 6px; }
+    .hero .wrap { gap: 18px; padding-top: 24px; padding-bottom: 40px; }
+    .hero img { width: 104px; height: 124px; }
+    .hero h1 { margin: 16px 0; }
+    .hero .actions { margin-top: 22px; }
+    .grid.three.pilots { grid-template-columns: 1fr; }
+  }
