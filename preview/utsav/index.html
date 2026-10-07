@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Utsav Singh · draft</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: one phone-width column, his black-and-yellow program look, one main action (Apply) that opens a short application on the page. */
+:root{--ch-bg:#e6e9e7;--ch-bar:#fbfcfb;--ch-ink:#161a18;--ch-mute:#58625d;--ch-line:#d3d9d5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ch-bg:#171a19;--ch-bar:#202423;--ch-ink:#eef1ef;--ch-mute:#a3aca7;--ch-line:#343a37;color-scheme:dark}}
+:root[data-theme="dark"]{--ch-bg:#171a19;--ch-bar:#202423;--ch-ink:#eef1ef;--ch-mute:#a3aca7;--ch-line:#343a37;color-scheme:dark}
+body{margin:0;background:var(--ch-bg);color:var(--ch-ink);font-family:'Archivo',system-ui,sans-serif}
+html.lock,html.lock body{overflow:hidden}
+*{box-sizing:border-box}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #2f7dd1;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* preview bar (not part of his site) */
+.chrome{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--ch-bar);border-bottom:1px solid var(--ch-line)}
+.chrome-in{max-width:430px;margin:0 auto;padding:10px 16px;font-size:13px;line-height:1.4;color:var(--ch-mute)}
+.chrome-in b{color:var(--ch-ink)}
+#site{max-width:430px;margin:0 auto;min-height:100vh;position:relative;box-shadow:0 0 0 1px var(--ch-line)}
+
+/* his site */
+.s,.app,.viewer{--bg:#0a0a0a;--panel:#151515;--line:#2a2a2a;--text:#f4f4f0;--mute:#a9a9a3;--acc:#ffd21f}
+.s{background:var(--bg);color:var(--text);padding-bottom:96px}
+.s img{display:block;max-width:100%}
+.disp{font-family:'Anton',Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:.95;margin:0;font-weight:400}
+.sec{padding:44px 20px 4px;display:flex;flex-direction:column;gap:14px}
+.label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin:0}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;border-radius:6px;background:var(--acc);color:#0a0a0a;font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.04em;border:0;width:100%;text-decoration:none}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--text);border:1.5px solid #4a4a4a}
+.link{background:none;border:0;color:var(--text);font-weight:600;font-size:15px;text-decoration:underline;text-underline-offset:3px;min-height:44px;padding:0;display:inline-flex;align-items:center}
+.slot{border:1.5px dashed #5a5a5a;border-radius:6px;padding:9px 11px;color:#cfcfca;background:#131313;font-size:15px;line-height:1.4}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.tick{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.35;color:#e2e2dc}
+.tick svg{flex:none;margin-top:2px}
+.step{display:grid;grid-template-columns:30px 1fr;gap:12px;font-size:15px;line-height:1.45;color:var(--mute)}
+.step b{color:var(--text)}
+.num{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--acc);color:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:20px;scroll-behavior:smooth;margin:0 -20px;padding:0 20px 4px;scrollbar-width:none}
+.rail-ctl{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;color:var(--mute)}
+.rail-ctl div{display:flex;gap:8px}
+.arw{width:44px;height:44px;border-radius:50%;border:1.5px solid #4a4a4a;background:transparent;color:var(--text);display:flex;align-items:center;justify-content:center}
+.arw:disabled{opacity:.3;cursor:default}
+.rail::-webkit-scrollbar{display:none}
+.res{flex:none;width:86%;scroll-snap-align:start;border:0;padding:0;background:none;color:inherit;text-align:left;display:flex;flex-direction:column;gap:8px}
+.res .img{border-radius:10px;overflow:hidden;background:#151515;aspect-ratio:1/1;position:relative;width:100%}
+.res img{width:100%;height:100%;object-fit:cover}
+.res .who{font-size:14px;font-weight:700}
+.chip-on{position:absolute;left:8px;top:8px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--acc);color:#0a0a0a;border-radius:4px;padding:3px 6px}
+.goals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.opt{display:flex;align-items:center;gap:10px;min-height:56px;padding:10px 14px;border-radius:8px;border:1.5px solid var(--line,#2a2a2a);background:var(--panel,#151515);color:var(--text,#f4f4f0);font-weight:700;font-size:15px;text-align:left;width:100%}
+.opt[aria-pressed="true"]{border-color:#ffd21f;background:#1d1a0c}
+.opt .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #6a6a6a}
+.opt[aria-pressed="true"] .dot{border-color:#ffd21f;background:radial-gradient(#ffd21f 0 45%,transparent 50%)}
+details summary{list-style:none;cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+.sum{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:52px;font-weight:600;font-size:16px;border-bottom:1px solid var(--line)}
+.sum .pm{flex:none;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;transition:transform .2s}
+details[open] .sum .pm{transform:rotate(45deg)}
+.ans{padding:10px 0 16px;color:var(--mute);font-size:15px;line-height:1.45}
+.dock{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);z-index:30;background:#151515;border-top:1px solid #2a2a2a;display:flex;align-items:center;gap:10px;padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+.dm{width:54px;min-height:54px;text-decoration:none;border-radius:6px;border:1.5px solid #4a4a4a;background:transparent;display:flex;align-items:center;justify-content:center;flex:none;color:var(--text)}
+
+/* application (full screen, steps) */
+.app{position:fixed;inset:0;z-index:60;background:#0a0a0a;color:#f4f4f0;display:flex;justify-content:center}
+.app-in{width:min(430px,100%);display:flex;flex-direction:column;height:100%}
+.app-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;border-bottom:1px solid #2a2a2a}
+.app-top b{font-size:15px}
+.bar{height:4px;background:#2a2a2a}
+.bar span{display:block;height:100%;background:#ffd21f;transition:width .25s}
+.app-body{flex:1;overflow:auto;padding:22px 20px 24px;display:flex;flex-direction:column;gap:18px}
+.app-body h2{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:34px;line-height:1;margin:0}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld label,.fld .lab{font-size:14px;font-weight:700}
+.fld .hint{font-size:13px;color:#a9a9a3;font-weight:500}
+.fld input,.fld select,.fld textarea{width:100%;min-height:50px;border-radius:8px;border:1.5px solid #3a3a3a;background:#151515;color:#f4f4f0;padding:12px 14px;font-size:16px}
+.fld textarea{min-height:96px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:#ffd21f;outline:none}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.scale button{min-height:48px;border-radius:8px;border:1.5px solid #3a3a3a;background:#151515;color:#f4f4f0;font-weight:800}
+.scale button[aria-pressed="true"]{border-color:#ffd21f;background:#ffd21f;color:#0a0a0a}
+.scale-ends{display:flex;justify-content:space-between;font-size:12px;color:#a9a9a3}
+.app-foot{padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid #2a2a2a;display:flex;gap:10px}
+.app-foot .btn{flex:1}
+.app-foot .back{width:auto;padding:0 18px;flex:none}
+.err{color:#ff8a7a;font-size:14px;font-weight:600}
+.x{width:44px;height:44px;border-radius:50%;border:0;background:#1f1f1f;color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+
+/* sheets and photo viewer */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.65);display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:min(430px,100%);max-height:88vh;overflow:auto;background:#fff;color:#141414;border-radius:20px 20px 0 0;padding:14px 20px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.sheet-top{display:flex;justify-content:space-between;align-items:center}
+.sheet h3{margin:0;font-size:20px}
+.sheet .x{background:#eee;color:#141414}
+.sheet .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px solid #e5e5e2;padding:10px 0;font-size:16px}
+.sheet .pay{min-height:52px;border-radius:12px;border:0;background:#141414;color:#fff;font-weight:700;font-size:16px}
+.sheet .fine{font-size:13px;color:#5a5a55;text-align:center}
+.viewer{position:fixed;inset:0;z-index:70;background:#000;display:flex;justify-content:center}
+.viewer-in{width:min(430px,100%);display:flex;flex-direction:column;gap:12px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.viewer-in img{width:100%;max-height:72vh;object-fit:contain;border-radius:10px}
+.viewer-top,.viewer-nav{display:flex;justify-content:space-between;align-items:center;color:#fff}
+.viewer-nav button{min-height:44px;border-radius:10px;border:0;background:#1f1f1f;color:#fff;font-weight:700;padding:0 16px}
+/* question helper (fixed answers; same look as the application) */
+.ask-log{flex:1;overflow:auto;padding:18px 16px;display:flex;flex-direction:column;gap:10px}
+.am{max-width:88%;font-size:15px;line-height:1.45;white-space:pre-line}
+.am.bot{align-self:flex-start;color:#e8e8e2}
+.am.user{align-self:flex-end;background:#1d1a0c;border:1.5px solid #ffd21f;border-radius:12px;padding:8px 12px}
+.am.safety{border-left:3px solid #ff8a7a;padding-left:10px}
+.am-note{font-size:12px;color:#a9a9a3;margin:0}
+.am-acts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
+.am-acts .btn{width:100%;min-height:44px;padding:0 8px;font-size:13px;letter-spacing:.02em;white-space:nowrap}
+.ask-quick{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
+.ask-quick::-webkit-scrollbar{display:none}
+.ask-quick button{flex:none;min-height:40px;border-radius:999px;border:1.5px solid #3a3a3a;background:#151515;color:#f4f4f0;font-weight:600;font-size:14px;padding:0 14px}
+.ask-form{display:flex;gap:8px;padding:10px 16px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid #2a2a2a}
+.ask-form input{flex:1;min-width:0;min-height:48px;border-radius:8px;border:1.5px solid #3a3a3a;background:#151515;color:#f4f4f0;padding:0 14px;font-size:16px}
+.ask-form input:focus{border-color:#ffd21f;outline:none}
+.ask-form .btn{width:auto;padding:0 18px;min-height:48px}
+.ask-entry{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#151515;border:1px solid #2a2a2a;border-radius:10px;padding:14px 16px}
+.ask-entry .btn{width:auto;min-height:44px;padding:0 16px;font-size:14px;flex:none}
+
+</style>
+</head>
+<body>
+
+<div class="chrome"><div class="chrome-in"><b>Draft for you, Utsav.</b> Your photos and results come from your application form. The dashed boxes are for your own words and prices. Nothing on this page sends or charges anything yet.</div></div>
+<main id="site"></main>
+<div id="layer"></div>
+
+<script>
+/* ============================================================
+   Everything specific to the coach lives here.
+   ============================================================ */
+const COACH = {
+  name: 'Utsav Singh',
+  first: 'Utsav',
+  city: 'Dallas',
+  intro: "[Utsav's intro line]",
+  story: "[Utsav's story]",
+  cert: '[Certification]', years: '[Years]', clients: '[N]',
+  replyTime: '[N] hours',
+  hero: 'his/hero.jpg',
+  // From his own program graphic.
+  program: {
+    name: '12-week fat loss and muscle building program',
+    price: '[PRICE]',
+    includes: ['Customized meal plan with macros', 'Customized workout and cardio program', 'Weekly check-ins', 'Weekly macros adjustments']
+  },
+  goals: ['Fat loss', 'Muscle building', 'Lean bulk', 'Something else'],
+  // From his application form. His own transformation first.
+  results: [
+    { img: 'his/result-02.jpg', who: 'Utsav, his own transformation', own: true },
+    { img: 'his/result-11.jpg', who: 'Client' }, { img: 'his/result-03.jpg', who: 'Client' },
+    { img: 'his/result-04.jpg', who: 'Client' }, { img: 'his/result-10.jpg', who: 'Client' },
+    { img: 'his/result-09.jpg', who: 'Client' }, { img: 'his/result-06.jpg', who: 'Client' },
+    { img: 'his/result-07.jpg', who: 'Client' }, { img: 'his/result-08.jpg', who: 'Client' },
+    { img: 'his/result-05.jpg', who: 'Client' }
+  ],
+  resultsNote: "Shown with each client's permission. Results vary.",
+  contact: { instagram: '@utsavsingh___', instagramUrl: 'https://www.instagram.com/utsavsingh___/', dmUrl: 'https://ig.me/m/utsavsingh___', whatsapp: '[WhatsApp number]', email: '[Email]' },
+  faq: [
+    ['How much does it cost?', 'The 12-week program is [PRICE]. Utsav confirms your plan and price after he reads your application.'],
+    ['What happens after I apply?', 'Utsav reads every application and replies within [N] hours on Instagram or by email. If it is a fit, he sends you a secure payment link and your plan starts.'],
+    ['Do I need a gym?', "[Utsav's answer]"],
+    ['Is it online or in person?', "[Utsav's answer]"]
+  ]
+};
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+const icon = {
+  ig: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"></circle></svg>`,
+  dm: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 4L3 11l7 2 2 7z"></path><path d="M10 13l11-9"></path></svg>`,
+  tick: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd21f" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>`,
+  x: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>`
+};
+let pickedGoal = null;
+
+function render() {
+  const C = COACH, P = C.program;
+  return `<div class="s">
+  <section style="position:relative;height:620px">
+    <img src="${C.hero}" alt="${esc(C.name)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 15%">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.5) 0%,rgba(10,10,10,0) 22%,rgba(10,10,10,.45) 46%,rgba(10,10,10,.93) 64%,#0a0a0a 100%)"></div>
+    <header style="position:absolute;left:20px;right:20px;top:16px;display:flex;justify-content:space-between;align-items:center">
+      <div class="disp" style="font-size:22px">${esc(C.name)}</div>
+      <a href="#results" style="color:#f4f4f0;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;text-decoration:none">Results</a>
+    </header>
+    <div style="position:absolute;left:20px;right:20px;bottom:18px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#ffd21f;background:rgba(10,10,10,.8);padding:4px 8px;border-radius:4px">Personal trainer · ${esc(C.city)}</div>
+      <h1 class="disp" style="font-size:76px">${esc(C.name).replace(' ', '<br>')}</h1>
+      <div class="slot" style="align-self:stretch">${esc(C.intro)}</div>
+      <button type="button" class="btn" data-apply>Apply now</button>
+      <a class="link" href="#results" style="align-self:center">See client results</a>
+    </div>
+  </section>
+
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid #2a2a2a;border-bottom:1px solid #2a2a2a">
+    ${[[C.clients, 'Clients coached'], [C.years, 'Years training'], [C.cert, 'Certified']].map(([v, l], i) => `<div style="padding:16px 6px;text-align:center;${i < 2 ? 'border-right:1px solid #2a2a2a' : ''}"><div class="disp" style="font-size:${String(v).length > 7 ? 17 : 26}px;overflow-wrap:anywhere;min-height:26px;display:flex;align-items:center;justify-content:center">${esc(v)}</div><div style="font-size:11px;color:#a9a9a3;text-transform:uppercase;letter-spacing:.08em;margin-top:4px">${l}</div></div>`).join('')}
+  </div>
+
+  <section class="sec" id="results"><p class="label">Results</p><h2 class="disp" style="font-size:44px">Before and after</h2>
+    <div class="rail">
+      ${C.results.map((r, i) => `<button type="button" class="res" data-view="${i}" aria-label="Open photo: ${esc(r.who)}">
+        <div class="img"><img src="${r.img}" alt="Before and after: ${esc(r.who)}" loading="lazy">${r.own ? '<span class="chip-on">Coach</span>' : ''}</div>
+        <span class="who">${esc(r.who)}</span></button>`).join('')}
+    </div>
+    <div class="rail-ctl"><span>${C.results.length - 1} client results · tap to enlarge</span><div><button type="button" class="arw" data-rail="-1" aria-label="Previous result" disabled>←</button><button type="button" class="arw" data-rail="1" aria-label="Next result">→</button></div></div>
+    <p style="font-size:13px;color:#a9a9a3;margin:0">${esc(C.resultsNote)}</p>
+  </section>
+
+  <section class="sec" id="program"><p class="label">The program</p><h2 class="disp" style="font-size:44px">12 weeks</h2>
+    <div class="card" style="gap:14px">
+      <div style="font-size:18px;font-weight:800;line-height:1.25">${esc(P.name[0].toUpperCase() + P.name.slice(1))}</div>
+      <div style="display:flex;flex-direction:column;gap:9px">${P.includes.map(x => `<div class="tick">${icon.tick}<span>${esc(x)}</span></div>`).join('')}</div>
+      <div style="display:flex;align-items:baseline;gap:8px;border-top:1px solid #2a2a2a;padding-top:12px"><span class="disp" style="font-size:30px">${esc(P.price)}</span><span style="color:#a9a9a3;font-size:14px">for 12 weeks</span></div>
+      <button type="button" class="link" data-ask style="font-size:14px;color:#a9a9a3;align-self:flex-start">Questions about the program? Ask here</button>
+    </div>
+  </section>
+
+  <section class="sec" id="goal"><p class="label">Start your application</p><h2 class="disp" style="font-size:44px">What's your goal?</h2>
+    <div class="goals" role="group" aria-label="Your goal">
+      ${C.goals.map(g => `<button type="button" class="opt" data-goal="${esc(g)}" aria-pressed="false"><span class="dot"></span>${esc(g)}</button>`).join('')}
+    </div>
+    <button type="button" class="btn" data-apply id="goal-next" disabled>Continue</button>
+    <div style="font-size:14px;color:#a9a9a3">Three short steps. You can add details and anything else in the application.</div>
+  </section>
+
+  <section class="sec"><p class="label">How it works</p>
+    <div class="card" style="gap:16px">
+      <div class="step"><span class="num">1</span><div><b>Apply here.</b> Your goal, a few details about you, and what has been in the way.</div></div>
+      <div class="step"><span class="num">2</span><div><b>${esc(C.first)} replies</b> within <span class="slot" style="display:inline;padding:1px 6px">${esc(C.replyTime)}</span> on Instagram or by email.</div></div>
+      <div class="step"><span class="num">3</span><div><b>Pay and start.</b> If it's a fit, he sends a secure payment link and your plan.</div></div>
+      <div class="step"><span class="num">4</span><div><b>Check in weekly.</b> He adjusts your macros and training as you go.</div></div>
+    </div>
+  </section>
+
+  <section class="sec"><p class="label">Coach</p>
+    <div style="display:flex;gap:14px;align-items:center">
+      <div style="width:120px;height:150px;border-radius:8px;overflow:hidden;flex:none"><img src="${C.hero}" alt="${esc(C.name)}" style="width:100%;height:100%;object-fit:cover;object-position:center 10%"></div>
+      <div style="display:flex;flex-direction:column;gap:8px;min-width:0"><div class="disp" style="font-size:32px">${esc(C.name)}</div><div class="slot">${esc(C.story)}</div></div>
+    </div></section>
+
+  <section class="sec"><p class="label">Questions</p>
+    <div class="ask-entry"><div><b style="display:block">Have a question?</b><span style="font-size:14px;color:#a9a9a3">Get an answer now</span></div><button type="button" class="btn" data-ask>Ask</button></div><div>${C.faq.map(([q, a]) => `<details><summary class="sum"><span>${esc(q)}</span><span class="pm" aria-hidden="true">+</span></summary><div class="ans">${esc(a)}</div></details>`).join('')}</div></section>
+
+  <footer style="padding:32px 20px 24px;font-size:14px;color:#a9a9a3;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;flex-wrap:wrap;gap:6px 16px"><a href="${C.contact.instagramUrl}" target="_blank" rel="noopener" style="color:#f4f4f0;font-weight:700;display:inline-flex;align-items:center;gap:8px;min-height:44px;text-decoration:none">${icon.ig}${esc(C.contact.instagram)}</a><span>WhatsApp ${esc(C.contact.whatsapp)}</span><span>${esc(C.contact.email)}</span></div>
+    <button type="button" class="link" data-pay style="color:#a9a9a3;font-size:14px;align-self:flex-start">Accepted by ${esc(C.first)}? Pay here</button>
+  </footer>
+
+  <div class="dock">
+    <button type="button" class="btn" data-apply>Apply now</button>
+    <a class="dm" href="${C.contact.dmUrl}" target="_blank" rel="noopener" aria-label="Message ${esc(C.first)} on Instagram">${icon.ig}</a>
+  </div>
+  </div>`;
+}
+
+/* ---------- layers ---------- */
+const layer = $('#layer');
+let lastFocus = null;
+function openLayer(html, onBind) {
+  lastFocus = document.activeElement;
+  layer.innerHTML = html;
+  document.documentElement.classList.add('lock');
+  const close = () => { layer.innerHTML = ''; document.documentElement.classList.remove('lock'); document.removeEventListener('keydown', onKey); lastFocus && lastFocus.focus && lastFocus.focus(); };
+  const onKey = e => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  const wire = () => { $$('[data-close]', layer).forEach(b => b.onclick = close); const scrim = $('.scrim', layer); if (scrim) scrim.onclick = e => { if (e.target === scrim) close(); }; };
+  wire();
+  onBind && onBind(layer, close, wire);
+  const first = $('[data-close]', layer); first && first.focus();
+}
+function openContact() {
+  const c = COACH.contact;
+  openLayer(`<div class="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="ct-t">
+    <div class="sheet-top"><h3 id="ct-t">Message ${esc(COACH.first)}</h3><button type="button" class="x" data-close aria-label="Close">${icon.x}</button></div>
+    <a class="pay" href="${c.dmUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Message on Instagram</a>
+    <div class="row"><span>Instagram</span><b>${esc(c.instagram)}</b></div>
+    <div class="row"><span>WhatsApp</span><b>${esc(c.whatsapp)}</b></div>
+    <div class="row"><span>Email</span><b>${esc(c.email)}</b></div>
+  </div></div>`);
+}
+function openPay() {
+  const P = COACH.program;
+  openLayer(`<div class="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="py-t">
+    <div class="sheet-top"><h3 id="py-t">Start your program</h3><button type="button" class="x" data-close aria-label="Close">${icon.x}</button></div>
+    <div style="font-size:15px;color:#4a4a45;line-height:1.45">For clients ${esc(COACH.first)} has accepted after their application.</div>
+    <div class="row"><span>12-week program</span><b>${esc(P.price)}</b></div>
+    <button type="button" class="pay" disabled style="opacity:.6">Pay securely</button>
+    <div class="fine">Payment by Stripe. Preview only: no payment is taken.</div>
+  </div></div>`);
+}
+function openViewer(start) {
+  let i = start; const R = COACH.results;
+  const html = () => `<div class="viewer" role="dialog" aria-modal="true" aria-label="Before and after"><div class="viewer-in">
+    <div class="viewer-top"><b>${esc(R[i].who)}</b><button type="button" class="x" data-close aria-label="Close">${icon.x}</button></div>
+    <img src="${R[i].img}" alt="Before and after: ${esc(R[i].who)}">
+    <div style="font-size:13px;color:#a9a9a3">${esc(COACH.resultsNote)}</div>
+    <div class="viewer-nav"><button type="button" data-step="-1" ${i === 0 ? 'disabled style="opacity:.35"' : ''}>Previous</button><span>${i + 1} of ${R.length}</span><button type="button" data-step="1" ${i === R.length - 1 ? 'disabled style="opacity:.35"' : ''}>Next</button></div>
+  </div></div>`;
+  openLayer(html(), (l, close, wire) => {
+    const bind = () => $$('[data-step]', l).forEach(b => b.onclick = () => { i += +b.dataset.step; l.innerHTML = html(); wire(); bind(); });
+    bind();
+  });
+}
+
+/* ---------- application (same questions as his form, plus "something else" and a comments box) ---------- */
+const heights = (() => { const a = []; for (let f = 4; f <= 6; f++) for (let n = 0; n < 12; n++) { if ((f === 4 && n < 1) || (f === 6 && n > 6)) continue; a.push(`${f}'${n}"`); } return a; })();
+function openApply(goal) {
+  const A = { goal: goal || null, goalOther: '', importance: null };
+  let step = 0;
+  const steps = [
+    { title: 'Your goal', body: () => `
+      <div class="fld"><span class="lab">What is your goal?</span>
+        <div style="display:flex;flex-direction:column;gap:8px" role="group" aria-label="Goal">${COACH.goals.map(g => `<button type="button" class="opt" data-a-goal="${esc(g)}" aria-pressed="${A.goal === g}"><span class="dot"></span>${esc(g)}</button>`).join('')}</div></div>
+      <div class="fld" id="other-wrap" ${A.goal === 'Something else' ? '' : 'hidden'}><label for="a-other">Tell ${esc(COACH.first)} your goal</label><input id="a-other" value="${esc(A.goalOther)}" placeholder="For example: get back in shape after an injury"></div>
+      <div class="fld"><span class="lab">How important is this goal to you?</span>
+        <div class="scale" role="group" aria-label="Importance from 1 to 5">${[1, 2, 3, 4, 5].map(n => `<button type="button" data-imp="${n}" aria-pressed="${A.importance === n}">${n}</button>`).join('')}</div>
+        <div class="scale-ends"><span>Not that important</span><span>Extremely important</span></div></div>
+      <div class="fld"><label for="a-phys">What best describes you now?</label><select id="a-phys"><option value="">Choose one</option>${['Under my desired weight', 'Over my desired weight', 'Not my desired shape'].map(o => `<option${A.phys === o ? ' selected' : ''}>${o}</option>`).join('')}</select></div>`,
+      valid: () => A.goal && (A.goal !== 'Something else' || A.goalOther.trim()) && A.importance && A.phys },
+    { title: 'About you', body: () => `
+      <div class="row2"><div class="fld"><label for="a-age">Age <span class="hint">optional</span></label><input id="a-age" inputmode="numeric" value="${esc(A.age || '')}"></div>
+        <div class="fld"><label for="a-gender">Gender</label><select id="a-gender"><option value="">Choose</option>${['Male', 'Female', 'Other'].map(o => `<option${A.gender === o ? ' selected' : ''}>${o}</option>`).join('')}</select></div></div>
+      <div class="row2"><div class="fld"><label for="a-height">Height</label><select id="a-height"><option value="">Choose</option>${heights.map(h => `<option${A.height === h ? ' selected' : ''}>${h}</option>`).join('')}</select></div>
+        <div class="fld"><label for="a-weight">Weight <span class="hint">lb</span></label><input id="a-weight" inputmode="decimal" value="${esc(A.weight || '')}"></div></div>
+      <div class="fld"><label for="a-job">What do you do for work?</label><input id="a-job" value="${esc(A.job || '')}" placeholder="Helps ${esc(COACH.first)} plan around your schedule"></div>
+      <div class="fld"><label for="a-block">What's the biggest thing keeping you from your goal?</label><textarea id="a-block">${esc(A.block || '')}</textarea></div>`,
+      valid: () => A.gender && A.height && A.weight && A.job && A.block },
+    { title: 'How to reach you', body: () => `
+      <div class="fld"><label for="a-name">Name</label><input id="a-name" autocomplete="name" value="${esc(A.name || '')}"></div>
+      <div class="fld"><label for="a-email">Email</label><input id="a-email" type="email" autocomplete="email" value="${esc(A.email || '')}"></div>
+      <div class="fld"><label for="a-handle">Instagram or Facebook handle</label><input id="a-handle" value="${esc(A.handle || '')}" placeholder="@yourname"></div>
+      <div class="fld"><label for="a-notes">Anything else ${esc(COACH.first)} should know? <span class="hint">optional</span></label><textarea id="a-notes" placeholder="Injuries, food preferences, your schedule, questions">${esc(A.notes || '')}</textarea></div>`,
+      valid: () => A.name && /\S+@\S+\.\S+/.test(A.email || '') && A.handle }
+  ];
+  const ids = { 'a-other': 'goalOther', 'a-phys': 'phys', 'a-age': 'age', 'a-gender': 'gender', 'a-height': 'height', 'a-weight': 'weight', 'a-job': 'job', 'a-block': 'block', 'a-name': 'name', 'a-email': 'email', 'a-handle': 'handle', 'a-notes': 'notes' };
+  const html = () => step < steps.length ? `<div class="app" role="dialog" aria-modal="true" aria-labelledby="ap-t"><div class="app-in">
+      <div class="app-top"><b id="ap-t">Apply · step ${step + 1} of ${steps.length}</b><button type="button" class="x" data-close aria-label="Close application">${icon.x}</button></div>
+      <div class="bar"><span style="width:${(step + 1) / steps.length * 100}%"></span></div>
+      <div class="app-body"><h2>${steps[step].title}</h2>${steps[step].body()}<div class="err" id="ap-err" hidden>Please answer the questions above to continue.</div></div>
+      <div class="app-foot">${step > 0 ? '<button type="button" class="btn ghost back" data-back>Back</button>' : ''}<button type="button" class="btn" data-next>${step === steps.length - 1 ? 'Send application' : 'Continue'}</button></div>
+    </div></div>`
+    : `<div class="app" role="dialog" aria-modal="true" aria-labelledby="ap-t"><div class="app-in">
+      <div class="app-top"><b id="ap-t">Application sent</b><button type="button" class="x" data-close aria-label="Close">${icon.x}</button></div>
+      <div class="app-body"><h2>Thanks, ${esc((A.name || '').split(' ')[0])}</h2>
+        <div style="font-size:16px;line-height:1.5;color:#dcdcd6">${esc(COACH.first)} reads every application and replies within <span class="slot" style="display:inline;padding:1px 6px">${esc(COACH.replyTime)}</span> on Instagram (${esc(A.handle)}) or by email.</div>
+        <div class="card"><b>Your goal</b><span style="color:#a9a9a3">${esc(A.goal === 'Something else' ? A.goalOther : A.goal)} · importance ${A.importance} of 5</span></div>
+        <div style="font-size:13px;color:#a9a9a3">Preview only: nothing was sent.</div></div>
+      <div class="app-foot"><button type="button" class="btn" data-close>Back to the site</button></div>
+    </div></div>`;
+  openLayer(html(), (l, close, wire) => {
+    const bind = () => {
+      $$('input,select,textarea', l).forEach(el => { const on = () => { A[ids[el.id]] = el.value; }; el.addEventListener('input', on); el.addEventListener('change', on); });
+      $$('[data-a-goal]', l).forEach(b => b.onclick = () => { A.goal = b.dataset.aGoal; $$('[data-a-goal]', l).forEach(x => x.setAttribute('aria-pressed', String(x === b))); $('#other-wrap', l).hidden = A.goal !== 'Something else'; });
+      $$('[data-imp]', l).forEach(b => b.onclick = () => { A.importance = +b.dataset.imp; $$('[data-imp]', l).forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
+      const go = d => { step += d; l.innerHTML = html(); wire(); bind(); const body = $('.app-body', l); if (body) body.scrollTop = 0; };
+      const next = $('[data-next]', l); if (next) next.onclick = () => { if (steps[step].valid()) go(1); else $('#ap-err', l).hidden = false; };
+      const back = $('[data-back]', l); if (back) back.onclick = () => go(-1);
+    };
+    bind();
+  });
+}
+
+/* ---------- question helper ----------
+   Fixed answers from the COACH block. It says it is
+   automated, never promises results, never quotes a price he hasn't published, sends anything
+   medical to a doctor, and hands everything else to Utsav (Apply or Instagram). A paid version
+   could draft answers with AI, and every reply would still pass guard() first. */
+const BLOCK = [
+  /\b(lose|drop|gain)\s+\d+\s*(lb|lbs|pounds|kg)\b/i,
+  /\bguarantee/i,
+  /\b(cure|diagnos|prescri)/i
+];
+const guard = t => !BLOCK.some(r => r.test(t));
+function askKind(raw) {
+  const t = raw.toLowerCase();
+  if (/injur|pain|hurt|surgery|pregnan|diabet|blood pressure|heart|medication|medical|condition|eating disorder/.test(t)) return 'medical';
+  if (/\b(talk to|speak to|real person|human|utsav himself|call me|contact)\b/.test(t)) return 'human';
+  if (/includ|what do i get|what('s| is) in|program/.test(t)) return 'included';
+  if (/price|cost|how much|\$|fee|expensive|afford/.test(t)) return 'price';
+  if (/online|in person|in-person|location|where|dallas|remote/.test(t)) return 'where';
+  if (/\bgym\b|equipment|at home|home workout/.test(t)) return 'gym';
+  if (/apply|application|sign up|join|start|how (does|do) (it|this) work/.test(t)) return 'apply';
+  if (/result|lose|weight|how much can|how fast|abs|transform/.test(t)) return 'results';
+  if (/food|diet|meal|macro|vegetarian|vegan|eat/.test(t)) return 'food';
+  if (/how long|hours a week|time|busy|schedule/.test(t)) return 'time';
+  if (/refund|cancel|pause|stop/.test(t)) return 'cancel';
+  if (/reply|respond|hear back|when will/.test(t)) return 'reply';
+  if (/\b(thank|thanks|thx)\b/.test(t)) return 'thanks';
+  if (/^(hi|hello|hey|namaste)\b/.test(t)) return 'greet';
+  return 'unknown';
+}
+function openAsk(first) {
+  const C = COACH, U = C.first;
+  openLayer(`<div class="app" role="dialog" aria-modal="true" aria-labelledby="ak-t"><div class="app-in">
+    <div class="app-top"><b id="ak-t">Questions for ${esc(U)}</b><button type="button" class="x" data-close aria-label="Close questions">${icon.x}</button></div>
+    <div class="ask-log" id="ask-log" aria-live="polite"></div>
+    <div class="ask-quick" id="ask-quick"></div>
+    <form class="ask-form" id="ask-form"><input id="ask-in" placeholder="Type a question" autocomplete="off" aria-label="Your question"><button type="submit" class="btn">Ask</button></form>
+  </div></div>`, (l, close) => {
+    const log = $('#ask-log', l), quick = $('#ask-quick', l), form = $('#ask-form', l), input = $('#ask-in', l);
+    const scroll = () => { log.scrollTop = log.scrollHeight; };
+    const add = (cls, text) => { const d = document.createElement('div'); d.className = 'am ' + cls; d.textContent = text; log.appendChild(d); scroll(); };
+    const say = (text, cls = 'bot') => add(cls, guard(text) ? text : `${U} answers that himself.`);
+    const acts = () => {
+      const d = document.createElement('div'); d.className = 'am-acts';
+      d.innerHTML = `<button type="button" class="btn">Apply now</button><a class="btn ghost" href="${C.contact.dmUrl}" target="_blank" rel="noopener">Instagram DM</a>`;
+      d.querySelector('button').onclick = () => { close(); openApply(null); };
+      log.appendChild(d); scroll();
+    };
+    const chips = list => { quick.innerHTML = ''; list.forEach(c => { const b = document.createElement('button'); b.type = 'button'; b.textContent = c; b.onclick = () => handle(c); quick.appendChild(b); }); };
+    const faq = q => (C.faq.find(([k]) => k === q) || [, `[${U}'s answer]`])[1];
+    const MENU = ["What's included?", 'How much is it?', 'Online or in person?', 'Do I need a gym?', 'How do I apply?', `Talk to ${U}`];
+    function answer(kind) {
+      switch (kind) {
+        case 'included': say(`The ${C.program.name} includes:\n${C.program.includes.map(x => '· ' + x).join('\n')}`); return;
+        case 'price': say(`The 12-week program is ${C.program.price}. ${U} confirms your plan and price after he reads your application.`); acts(); return;
+        case 'where': say(faq('Is it online or in person?')); return;
+        case 'gym': say(faq('Do I need a gym?')); return;
+        case 'apply': say(`Tap Apply now and answer three short steps: your goal, a few details about you, and how to reach you. ${U} reads every application and replies within ${C.replyTime}. If it's a fit, he sends a secure payment link.`); acts(); return;
+        case 'results': say(`Results depend on your starting point and how closely you follow the plan, so I can't promise a number. You can see real client results on this page. ${U} can tell you what's realistic for you after he reads your application.`); acts(); return;
+        case 'food': say(`Every client gets a customized meal plan with macros, adjusted each week. Put any food preferences or restrictions in your application so ${U} plans around them.`); return;
+        case 'time': say(`[${U}'s answer: how many workouts a week and how long each one takes.]`); return;
+        case 'cancel': say(faq('Can I pause or cancel?')); return;
+        case 'reply': say(`${U} replies within ${C.replyTime}, on Instagram or by email.`); return;
+        case 'medical': say(`I can't give advice about injuries, health conditions or medication. Please check with your doctor first, and mention it in your application so ${U} knows.`, 'bot safety'); acts(); return;
+        case 'human': say(`${U} answers messages himself. Apply, or message him on Instagram.`); acts(); return;
+        case 'thanks': say("You're welcome."); return;
+        case 'greet': say('Hi. What would you like to know?'); return;
+        default: say(`I don't have an answer for that yet. ${U} will answer it himself.`); acts();
+      }
+    }
+    function handle(raw) {
+      const text = String(raw).trim(); if (!text) return;
+      add('user', text); answer(askKind(text)); chips(MENU);
+    }
+    add('bot', `Hi. I'm an automated helper on ${U}'s site, not ${U}. I can answer common questions about his 12-week program and how to apply. Anything else goes to him.`);
+    const n = document.createElement('p'); n.className = 'am-note'; n.textContent = 'Preview: answers are pre-written. Nothing is sent.'; log.appendChild(n);
+    chips(MENU);
+    form.onsubmit = e => { e.preventDefault(); const v = input.value; input.value = ''; handle(v); };
+    if (first) handle(first);
+  });
+}
+
+/* ---------- page ---------- */
+const site = $('#site');
+site.innerHTML = render();
+$$('.goals [data-goal]', site).forEach(b => b.addEventListener('click', () => {
+  pickedGoal = b.dataset.goal;
+  $$('.goals [data-goal]', site).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  $('#goal-next').disabled = false;
+}));
+$$('[data-apply]', site).forEach(b => b.addEventListener('click', () => openApply(b.id === 'goal-next' ? pickedGoal : null)));
+const rail = $('.rail', site), arws = $$('[data-rail]', site);
+const syncRail = () => { arws[0].disabled = rail.scrollLeft < 8; arws[1].disabled = rail.scrollLeft + rail.clientWidth > rail.scrollWidth - 8; };
+arws.forEach(b => b.addEventListener('click', () => rail.scrollBy({ left: +b.dataset.rail * ($('.res', rail).offsetWidth + 10) })));
+rail.addEventListener('scroll', () => requestAnimationFrame(syncRail), { passive: true }); syncRail();
+$$('[data-view]', site).forEach(b => b.addEventListener('click', () => openViewer(+b.dataset.view)));
+$$('[data-contact]', site).forEach(b => b.addEventListener('click', openContact));
+$$('[data-pay]', site).forEach(b => b.addEventListener('click', openPay));
+$$('[data-ask]', site).forEach(b => b.addEventListener('click', () => openAsk()));
+</script>
+</body>
+</html>
