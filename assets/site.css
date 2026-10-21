@@ -194,3 +194,24 @@
     .role > h2 { font-size: 26px; }
     .role-lead { font-size: 17px; }
   }
+
+  /* home: client roles as one linked list; prototypes labelled by origin */
+  .ledger { list-style: none; }
+  .ledger a { display: grid; grid-template-columns: 240px 300px 1fr 20px; gap: 20px; align-items: baseline; padding: 16px 0; border-top: 1px solid var(--rule); color: var(--ink); text-decoration: none; font-size: 15px; }
+  .ledger li:last-child a { border-bottom: 1px solid var(--rule); }
+  .ledger .co { display: flex; flex-direction: column; gap: 2px; }
+  .ledger .co b { font-size: 18px; font-weight: 600; }
+  .ledger .co .mono { font-size: 12px; }
+  .ledger .title { color: var(--muted); }
+  .ledger .what { color: var(--body); }
+  .ledger a::after { content: "\2192"; color: var(--muted); justify-self: end; }
+  .ledger a:hover .co b, .ledger a:hover::after { color: var(--accent); }
+  .tag { align-self: flex-start; font-family: 'IBM Plex Mono', Menlo, Consolas, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 999px; padding: 3px 10px; }
+  .lab-quote { margin-top: 24px; }
+  .section[id] { scroll-margin-top: 96px; }
+  @media (max-width: 900px) {
+    .ledger a { grid-template-columns: 1fr 20px; gap: 4px 12px; }
+    .ledger .co { grid-column: 1; }
+    .ledger a::after { grid-column: 2; grid-row: 1; }
+    .ledger .title, .ledger .what { grid-column: 1; }
+  }
