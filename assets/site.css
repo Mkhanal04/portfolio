@@ -169,3 +169,28 @@
     .hero .actions { margin-top: 22px; }
     .grid.three.pilots { grid-template-columns: 1fr; }
   }
+
+  /* work: every role on one page, with a jump list beside it */
+  .jump { position: sticky; top: 92px; align-self: start; }
+  .jump ol { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 2px; }
+  .jump a { display: flex; flex-direction: column; padding: 8px 0 8px 14px; border-left: 2px solid var(--rule); color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 500; }
+  .jump a .mono { font-size: 12px; margin-top: 2px; }
+  .jump a:hover, .jump a.on { border-left-color: var(--accent); color: var(--accent); }
+  .roles-full { display: flex; flex-direction: column; }
+  .role { scroll-margin-top: 88px; padding: 44px 0; border-top: 1px solid var(--rule); }
+  .role:first-child { padding-top: 0; border-top: 0; }
+  .role:last-child { padding-bottom: 0; }
+  .role-lead { font-size: 19px; color: var(--body); max-width: 820px; margin-top: 10px; }
+  .role .meta { margin: 12px 0 28px 0; }
+  .prose h3 { font-size: 20px; font-weight: 600; margin: 32px 0 10px 0; }
+  .prose h3:first-child { margin-top: 0; }
+  @media (max-width: 900px) {
+    .jump { position: static; }
+    .jump ol { flex-direction: row; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .jump a { border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
+    .jump a:hover, .jump a.on { border-color: var(--accent); }
+    .jump a .mono { display: none; }
+    .role { padding: 32px 0; scroll-margin-top: 120px; }
+    .role > h2 { font-size: 26px; }
+    .role-lead { font-size: 17px; }
+  }
