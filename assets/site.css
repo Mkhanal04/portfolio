@@ -215,3 +215,28 @@
     .ledger a::after { grid-column: 2; grid-row: 1; }
     .ledger .title, .ledger .what { grid-column: 1; }
   }
+
+  /* talentpilot: the newer app's page, with its tests */
+  .page-head .actions { margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .shot { margin: 0; }
+  .shot img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 10px; }
+  .shot figcaption { margin-top: 10px; font-size: 14px; color: var(--muted); }
+  .tests-lead { font-size: 17px; color: var(--body); margin-bottom: 18px; max-width: 820px; }
+  .tests { list-style: none; max-width: 820px; }
+  .tests li { display: grid; grid-template-columns: 96px 1fr; gap: 20px; padding: 18px 0; border-top: 1px solid var(--rule); }
+  .tests li:last-child { border-bottom: 1px solid var(--rule); }
+  .tests .mono { font-size: 13px; padding-top: 3px; }
+  .tests h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .tests p { font-size: 16px; color: var(--body); }
+
+  /* work: each role at a glance, above the detail */
+  .glance { max-width: 820px; margin: 0 0 32px 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; }
+  .glance > div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 20px; border-top: 1px solid var(--rule); }
+  .glance > div:first-child { border-top: 0; }
+  .glance dt { font-size: 14px; font-weight: 600; color: var(--muted); padding-top: 2px; }
+  .glance dd { font-size: 16px; color: var(--body); }
+  .glance .big { display: block; font-size: 20px; font-weight: 600; color: var(--accent); margin-bottom: 2px; }
+  @media (max-width: 900px) {
+    .tests li { grid-template-columns: 1fr; gap: 4px; }
+    .glance > div { grid-template-columns: 1fr; gap: 2px; padding: 12px 16px; }
+  }
