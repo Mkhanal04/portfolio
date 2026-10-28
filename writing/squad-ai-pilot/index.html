@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I'd set up an AI agent pilot as the Senior BA on a squad · Milan Khanal</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="description" content="A proposed pilot design: one number, eight checks and a decision agreed before the start.">
+<meta property="og:title" content="How I'd set up an AI agent pilot as the Senior BA on a squad · Milan Khanal">
+<meta property="og:description" content="A proposed pilot design: one number, eight checks and a decision agreed before the start.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://milankhanal.com/writing/squad-ai-pilot">
+<meta property="og:image" content="https://milankhanal.com/content/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .cs .wrap { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 56px; padding-top: 22px; padding-bottom: 80px; }
+  .cs-toc { position: sticky; top: 92px; align-self: start; }
+  .cs-toc ol { list-style: none; border-left: 1px solid var(--rule); }
+  .cs-toc li a { display: block; padding: 7px 0 7px 14px; margin-left: -1px; border-left: 2px solid transparent; font-size: 15px; color: var(--muted); text-decoration: none; line-height: 1.35; }
+  .cs-toc li a:hover { color: var(--ink); }
+  .cs-toc li a.on { color: var(--ink); border-left-color: var(--accent); font-weight: 500; }
+  .cs-toc .mono { display: block; margin-bottom: 10px; }
+  .cs-body { max-width: 820px; }
+  .cs-intro p { font-size: 19px; color: var(--body); margin-bottom: 16px; }
+  .cs-intro p:first-child { font-size: 22px; color: var(--ink); line-height: 1.4; }
+  .cs-sec { border-top: 1px solid var(--rule); padding-top: 28px; margin-top: 40px; scroll-margin-top: 88px; }
+  .cs-sec h2 { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .cs-sec p, .cs-sec li { font-size: 17px; color: var(--body); }
+  .cs-sec p { margin-bottom: 14px; }
+  .cs-sec ul { padding-left: 20px; margin-bottom: 14px; }
+  .cs-sec a, .cs-intro a { text-decoration: underline; text-underline-offset: 2px; }
+  .fig { margin: 24px 0 28px; }
+  .fig img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--rule); background: #fff; }
+  .fig figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  .dl { list-style: none; padding-left: 0 !important; }
+  .dl li { display: grid; grid-template-columns: 260px 1fr; gap: 16px; padding: 12px 0; border-top: 1px solid var(--rule); }
+  .dl li:last-child { border-bottom: 1px solid var(--rule); }
+  .dl a { font-weight: 500; }
+  .src { font-size: 14px !important; color: var(--muted) !important; margin-top: 20px; }
+  .toc-mobile { display: none; }
+  @media (max-width: 900px) {
+    .cs .wrap { grid-template-columns: 1fr; gap: 8px; }
+    .cs-toc { position: static; margin-bottom: 24px; }
+    .cs-intro p:first-child { font-size: 20px; }
+    .dl li { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="name" href="/">Milan Khanal</a>
+    <nav class="links" aria-label="Site">
+      <a href="/work">Work</a>
+      <a href="/lab">Lab</a>
+      <a href="/writing" class="on">Writing</a>
+      <a href="/about">About</a>
+    </nav>
+    <div class="right">
+      <button class="btn small quiet" id="theme-toggle" type="button" aria-pressed="false">Dark</button>
+      <a class="btn small" href="/Milan_Khanal_Resume.pdf">Resume</a>
+      <a class="btn small" href="mailto:milan.khanal25@gmail.com">Email</a>
+    </div>
+  </div>
+</header>
+<main>
+  <section class="page-head">
+    <div class="wrap noimg">
+      <div>
+        <div class="mono crumb"><a href="/">Home</a> / <a href="/writing">Writing</a> / Case study</div>
+        <h1 class="display">How I'd set up an AI agent pilot as the Senior BA on a squad</h1>
+        <p class="lead">A proposed pilot design: one number, eight checks and a decision agreed before the start.</p>
+        <div class="meta mono"><span>October 2026</span><span>About 9 minutes</span><span>Proposed design</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section cs">
+    <div class="wrap">
+      <nav class="cs-toc" aria-label="On this page">
+        <span class="mono">On this page</span>
+        <ol><li><a href="#where-the-question-came-from">Where the question came from</a></li><li><a href="#how-the-pilot-is-measured-and-decided">How the pilot is measured and decided</a></li><li><a href="#what-i-ve-built-and-what-it-taught-me">What I've built, and what it taught me</a></li><li><a href="#who-is-involved">Who is involved</a></li><li><a href="#one-story-across-the-squad">One story across the squad</a></li><li><a href="#what-i-d-do-first-in-a-new-team">What I'd do first in a new team</a></li><li><a href="#downloads">Downloads</a></li></ol>
+      </nav>
+      <article class="cs-body">
+        <div class="cs-intro"><p>I set myself a practical question: if I were the Senior BA on a squad, how would I set up a pilot with AI agents so a delivery lead could decide on evidence, and the next team could learn from it?</p>
+<p>My answer is a pilot that rests on one number: the cost of each piece of accepted work, rework included, compared with the squad's own history and with a similar squad working without agents. I've built two working prototypes with coding agents, and one of them taught me to write the stop rule before the result. What follows is a proposed pilot design, not a rollout I've run.</p></div>
+        <section id="where-the-question-came-from" class="cs-sec"><h2>Where the question came from</h2><p>A LinkedIn post caught my attention this fall. Its argument was that leaders can't tell each person how their role should change with AI, so every person has to rebuild their own work with it. My first reaction was to agree completely: "Learn/build from an individual → Team → Pod → Organization."</p>
+<p>Then I read the report the post was quoting. Accenture's Future of Work Trends 2026 found that 62% of executives expect AI to substantially or completely transform their core business model within three years, while only 15% are redesigning their end-to-end processes with AI at the core. The wider research says the same about who closes that gap: in McKinsey's November 2025 survey, the small group of companies getting the most value from AI were nearly three times as likely to have fundamentally redesigned their workflows, and three times more likely to strongly agree that their senior leaders own and commit to the effort.</p>
+<p>The people doing the work are the ones who find where AI helps. Deciding what scales takes a measured pilot and a leader who owns the change. The pilot below is my design for that.</p></section><section id="how-the-pilot-is-measured-and-decided" class="cs-sec"><h2>How the pilot is measured and decided</h2><p>The pilot rests on one number: <strong>the cost of each piece of accepted work, with rework counted.</strong> Cost is the squad's people cost from the budget plus the AI tool spend from the vendors' usage reports. Accepted means the business owner signed it off. A story sent back loses its credit until it's accepted again, and a defect found within 30 days of release counts against it. The number is compared two ways: with the squad's own last six sprints, and with a similar squad that works without agents over the same sprints, which takes out the season, the backlog and anything else both squads share.</p>
+<figure class="fig"><a href="/content/squad-ai-pilot/pilot-decision.jpg"><img src="/content/squad-ai-pilot/pilot-decision.jpg" alt="A squad's AI pilot from the problem to the scale, adjust or stop decision, with each point where a person decides marked." loading="lazy"></a><figcaption>A squad's AI pilot from the problem to the scale, adjust or stop decision, with each point where a person decides marked. A proposed arrangement, not an adopted one. Click to enlarge.</figcaption></figure>
+<p>Eight checks must not get worse while the main number improves: problems in production, committed dates, review hours, code the tech lead would keep as it is, security findings, the business owner's checking time, the team's own weekly read on whether they can keep up, and the data rules. Any breach of the data rules pauses the pilot at once; any other check breached twice stops it. Review hours are on the list because of what Faros AI's telemetry showed in 2025: teams with high AI adoption merged 98% more pull requests while review time rose 91%.</p>
+<p>Some claims systems include AI that supports decisions about customers. In the states that adopted the NAIC model bulletin (24 jurisdictions by March 2025), insurers need a written AI program and oversight for those AI systems. The bulletin doesn't cover coding agents, but an agent can change a system that it does cover, so every agent change keeps a record of who approved its plan and who accepted the result.</p>
+<p>The decision rule is agreed before the start: scale, adjust or stop. Scale needs the pilot squad's cost per accepted piece of work to fall by at least 20 percentage points more than the comparison squad's (25% down against 5% down, for example), with at least 30 accepted stories across the measured sprints and no check breached twice. A gain smaller than the squads' normal sprint-to-sprint swing counts as adjust, however good it looks.</p>
+<p>The number has limits I'd state to any sponsor. It's counted in story points, so with the same people each sprint it mostly reflects how much accepted work the team gets done, which is team capacity rather than cash saved. And the limits above are proposals for a sponsor to agree; none of them is a result.</p></section><section id="what-i-ve-built-and-what-it-taught-me" class="cs-sec"><h2>What I've built, and what it taught me</h2><p>My answer draws on two things I've built with coding agents. In both, I set the direction and the checks; the agents wrote the code.</p>
+<p><strong>TalentPilot</strong> is a screening-call prep tool for recruiters. It never scores or ranks candidates. I ran four logged tests on it, each with a stop rule written down before the test ran. In one of them, the stop rule was "a plain chat prompt does about as well." It did. So I moved the value claim from the AI's answer to the workflow around it: the quotes checked word for word and the structure of the call prep. That's where the stop rule in this pilot comes from. It's live at <a href="https://talentpilot-zeta.vercel.app">talentpilot-zeta.vercel.app</a>; no recruiter has used it yet.</p>
+<p><strong>Agent Crossview</strong> is a local app for Mac and Windows that reads the records AI coding tools keep on a computer and shows, in one view across vendors, what the work cost, how close I am to my limits, how each tool is set up, and which connected tools can send, change or delete things. I ran it as phased releases with gates, and a second AI, Codex, checked every number before I saw it. It's a working prototype I use myself, public on GitHub at <a href="https://github.com/Mkhanal04/agent-crossview">github.com/Mkhanal04/agent-crossview</a>, with a <a href="https://www.linkedin.com/feed/update/urn:li:activity:7519067497094877184/">walkthrough video on LinkedIn</a>; it has no company users yet. It's where the cost side of this pilot comes from: tool spend is easy to see per vendor and hard to see per piece of work.</p></section><section id="who-is-involved" class="cs-sec"><h2>Who is involved</h2><p>A squad pilot touches more people than the squad. Above it sit the head of delivery, who sponsors the pilot and makes the final call, and the project's product manager or delivery lead, who owns the plan and picks which work goes into the pilot. Inside it are the BA or product owner, the tech lead, developers, testers, the scrum master and the business owner of the system being changed. Around it are the gatekeepers who can stop it before it starts: enterprise architecture approves the tools, the data owner decides whether any customer data may reach them, third-party risk and legal clear the vendor terms, IT security reviews the tools and the code, and the change board approves every release.</p>
+<figure class="fig"><a href="/content/squad-ai-pilot/squad.jpg"><img src="/content/squad-ai-pilot/squad.jpg" alt="The cross-functional squad, the people above it, and the partner teams it works with, with agent tasks beside the people who own them." loading="lazy"></a><figcaption>The cross-functional squad, the people above it, and the partner teams it works with, with agent tasks beside the people who own them. A proposed arrangement, not an adopted one. Click to enlarge.</figcaption></figure>
+<p>Two lessons from my own delivery work shaped this part. At World Kinect, a customer portal program in the land fuel business was missing its order-to-cash target, and every requirement came from the logistics team and their director. Nobody in that room drove a truck. I asked to go to Kansas City, the pilot region, and rode along with drivers. The drivers didn't trust the devices on their trucks and fell back to paper when the meters failed, and dispatch was quietly editing the routes the optimizer produced. Both ends of the chain were working around the system, and nobody at headquarters knew. An AI pilot can fail the same way, so the people doing the work are in the room from the first week, and the measures include their own read on whether it's working.</p>
+<p>At Toyota, planners didn't trust the forecasts our portal showed, because the teams building them weren't aligned with each other. That's why the gatekeepers and the people above the squad agree the measures before the pilot starts, rather than after the first result.</p></section><section id="one-story-across-the-squad" class="cs-sec"><h2>One story across the squad</h2><p>Inside the sprint, the change is easiest to see by following one story. The BA brings the business need and rules; an agent drafts the stories, acceptance criteria and its own questions; the team checks and corrects them together. AWS calls this step Mob Elaboration in its AI-Driven Development Life Cycle. In my design the sprint stays, so the comparison and the committed dates line up, and agent work runs in short cycles inside it.</p>
+<figure class="fig"><a href="/content/squad-ai-pilot/story.jpg"><img src="/content/squad-ai-pilot/story.jpg" alt="One story moving through the squad: the analyst, developer and tester each work with an agent from one shared, approved record." loading="lazy"></a><figcaption>One story moving through the squad: the analyst, developer and tester each work with an agent from one shared, approved record. A proposed arrangement, not an adopted one. Click to enlarge.</figcaption></figure>
+<p>Six decisions stay with people: the BA says the story is ready, the tech lead approves the agent's technical plan before any code, a developer reviews the code, the tester confirms the acceptance criteria pass, the business owner accepts the work, and the change board approves the release. Agents work on the team without being accountable for anything; the person who approves an agent's plan is never the person who accepts its result.</p>
+<p>The instructions agents follow, their skills, are shared across the squad. Each has a named owner and a version, and changing one sends work in progress back for review.</p></section><section id="what-i-d-do-first-in-a-new-team" class="cs-sec"><h2>What I'd do first in a new team</h2><p>In the first three weeks, before any agent touches the work, I'd name the sponsor, clear the gatekeepers, and pull the baseline from the last six sprints: accepted points, squad cost, changes that failed after release, review time, and defects found within 30 days. Then two learning sprints that don't count (a third if the squad is still settling), four measured sprints, and the final call 30 days after the last release, so late defects have time to show.</p>
+<p>One squad against one other can only show a large difference, and I'd say so to the sponsor on day one. That's why the rule treats a small gain as adjust. If the result clears normal swing, it goes to the next squad with the playbook, including the weeks that went badly.</p></section><section id="downloads" class="cs-sec"><h2>Downloads</h2><ul class="dl"><li><a href="/content/squad-ai-pilot/squad-ai-pilot-playbook.pdf" download>The pilot playbook (PDF)</a><span>The problem, the people, the measures, the limits and the method, in one document.</span></li><li><a href="/content/squad-ai-pilot/squad-ai-pilot-measures-sheet.csv" download>The measures sheet (CSV)</a><span>A template a squad fills in each sprint. Opens in Excel or Google Sheets.</span></li><li><a href="/content/squad-ai-pilot/squad-ai-pilot-sources.pdf" download>Sources (PDF)</a><span>Every study cited, with its date and what it found.</span></li></ul><p class="src">Sources: Accenture, Future of Work Trends 2026 (p.16). McKinsey, The state of AI, November 2025. Faros AI, The AI Productivity Paradox, data as of June 2025. AWS DevOps Blog, AI-Driven Development Life Cycle, July 2025. NAIC Model Bulletin on the Use of AI Systems by Insurers, 2023; adoption count from Quarles, April 2025.</p></section>
+      </article>
+    </div>
+  </section>
+  <section class="section contact" id="contact">
+    <div class="wrap two">
+      <h2 class="display">Contact</h2>
+      <div>
+        <a class="email" href="mailto:milan.khanal25@gmail.com">milan.khanal25@gmail.com</a>
+        <div class="links">
+          <a href="https://www.linkedin.com/in/milankhanal41">LinkedIn</a>
+          <a href="https://github.com/Mkhanal04/portfolio">GitHub</a>
+          <a href="https://calendly.com/milan-khanal25/new-meeting">Book a call</a>
+          <a href="/Milan_Khanal_Resume.pdf">Resume (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Milan Khanal · Dallas, TX</span>
+    <span><a href="/work">Work</a> · <a href="/lab">Lab</a> · <a href="/writing">Writing</a> · <a href="/about">About</a></span>
+  </div>
+</footer>
+<script src="/assets/site.js"></script>
+<script>
+  (function () {
+    var links = document.querySelectorAll('.cs-toc a');
+    var map = {};
+    links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove('on'); });
+          var a = map[e.target.id]; if (a) a.classList.add('on');
+        }
+      });
+    }, { rootMargin: '-90px 0px -65% 0px' });
+    document.querySelectorAll('.cs-sec').forEach(function (s) { io.observe(s); });
+  })();
+</script>
+</body>
+</html>
